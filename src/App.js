@@ -58,25 +58,7 @@ function App() {
       >
      
         <Hero/>
-        <div
-  className="blurrer"
-  style={{
-    height: '10px', // Adjust height as needed for a smoother transition
-    backgroundColor: 'rgba(146, 111, 243,0.4)', // Semi-transparent overlay
-    backdropFilter: 'blur(15px)', // Adjust the blur amount
-    zIndex: 1
-  }}
-></div>
-
-{/* Gradient section */}
-<div
-  className="emptySpecial2 backdrop-blur-md bg-opacity-85"
-  style={{
-    background: 'linear-gradient(180deg, #926FF3, #4E31A2, #000000)',
-    height: '150px', // Adjust height as needed
-    marginTop:'-10px'
-  }}
-></div>
+        <div className="empty " style={{backgroundColor:'#010103'}}/>
         <Info/>
         <div className="empty " style={{backgroundColor:'#010103'}}/>
         <Contact/>

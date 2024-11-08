@@ -62,7 +62,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative w-full h-full "
+    <div id="home" className="relative w-full h-full "
     
     >
       <AnimatePresence>
@@ -75,7 +75,7 @@ const Hero = () => {
             exit="exit"
           >
             <div className="flex items-center">
-              <motion.h1 className="text-6xl font-bold text-white">
+              <motion.h1 className="text-3xl md:text-6xl font-bold text-white">
                 HollowPurple
               </motion.h1>
               <svg style={{ width: "60px", height: "60px" }} viewBox="0 0 24 24">
@@ -98,7 +98,7 @@ const Hero = () => {
 
       {/* The content of the Hero section that will be revealed */}
       {!introVisible && (
-        <div className="hero-content w-full h-full flex flex-col gap-8">
+        <div id="home" className="hero-content w-full h-full flex flex-col gap-8">
           <motion.div
             variants={navbarAnimation}
             initial="hidden"
@@ -121,7 +121,7 @@ const Hero = () => {
                 />
               </svg>
               </motion.h1>
-            <motion.p  variants={pTagAnimation}><SlideTabs /></motion.p>
+              <motion.p  className="hidden md:block" variants={pTagAnimation}><SlideTabs /></motion.p>
             <motion.p style={{opacity:0}} >3</motion.p>
           </motion.div>
 
@@ -189,9 +189,9 @@ const Hero = () => {
               <span class="text_button">Check Products</span>
             </button>
 
-              <button className="p-2 rounded-full"
+              <button className="p-2 rounded-full text-sm md:text-md"
               style={{backgroundColor:'rgba(36, 35, 41,0.4)',color:'#d6d6dc',border:'1px solid #6f6e9e'}}
-              >Learn More</button>
+              ><a href="features">Learn More</a></button>
             </motion.div>
             <motion.div
              variants={pTagAnimation}
@@ -212,6 +212,15 @@ const Hero = () => {
           </motion.div>
         </div>
       )}
+    
+  <motion.p  
+  initial={{ opacity: 0, }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 1.5,delay:3 }} // Increase duration for debugging
+  style={{ zIndex: 2000 }} className="fixed md:hidden top-1.5 left-1/2 transform -translate-x-1/2">
+    <SlideTabs />
+  </motion.p>
+
     </div>
   );
 };
@@ -226,16 +235,41 @@ const SlideTabs = () => {
     opacity: 0,
   });
 
+  const [activeSection, setActiveSection] = useState('');
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('div[id]');
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1, // Lowering the threshold may help detect intersections more easily
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log('Intersecting section:', entry.target, 'with id:', entry.target.id);
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
   return (
     <ul
       onMouseLeave={() => {
-        setPosition((pv) => ({
-          ...pv,
+        setPosition((prev) => ({
+          ...prev,
           opacity: 0,
         }));
       }}
-      className="relative mx-auto flex w-fit rounded-full  p-0.5 -ml-0 md:-ml-36"
-      style={{backgroundColor:'transparent',border:'1px solid #3b3b45'}}
+      className="heroControler relative mx-auto flex w-fit rounded-full p-0.5 -ml-0 md:-ml-36"
     >
       <div className="hidden md:flex">
       <Tab setPosition={setPosition}>Home</Tab>
@@ -243,20 +277,44 @@ const SlideTabs = () => {
       <Tab setPosition={setPosition}><a href="#contact">Contact</a></Tab>
       <Tab setPosition={setPosition}><a href="#faq">FAQ</a></Tab>
       </div>
-      <div className="flex md:hidden">
-      <Tab setPosition={setPosition}><MdOutlineHome style={{width:'20px',height:'20px'}}/></Tab>
-      <Tab setPosition={setPosition}><a href="#features"><MdOutlineListAlt style={{width:'20px',height:'20px'}}/></a></Tab>
-      <Tab setPosition={setPosition}><a href="#contact"><MdOutlineContactEmergency style={{width:'20px',height:'20px'}}/></a></Tab>
-      <Tab setPosition={setPosition}><a href="#faq"><MdOutlineQuestionAnswer style={{width:'20px',height:'20px'}}/></a></Tab>
-      </div>
-      
 
-      <Cursor position={position} />
+      <div className="flex md:hidden">
+  <Tab 
+    setPosition={setPosition} 
+    style={{ backgroundColor: activeSection === 'home' ? '#6f6e9e' : 'transparent',borderRadius:'10px',transition:'all 0.7s ease' }}
+  >
+    <a href="#home"><MdOutlineHome style={{ width: '20px', height: '20px' }} /></a> 
+  </Tab>
+  <Tab 
+    setPosition={setPosition} 
+    style={{ backgroundColor: activeSection === 'features' ? '#6f6e9e' : 'transparent',borderRadius:'10px',transition:'all 0.7s ease' }}
+  >
+    <a href="#features"><MdOutlineListAlt style={{ width: '20px', height: '20px' }} /></a>
+  </Tab>
+  <Tab 
+    setPosition={setPosition} 
+    style={{ backgroundColor: activeSection === 'contact' ? '#6f6e9e' : 'transparent',borderRadius:'10px',transition:'all 0.7s ease' }}
+  >
+    <a href="#contact"><MdOutlineContactEmergency style={{ width: '20px', height: '20px' }} /></a>
+  </Tab>
+  <Tab 
+    setPosition={setPosition} 
+    style={{ backgroundColor: activeSection === 'faq' ? '#6f6e9e' : 'transparent',borderRadius:'10px',transition:'all 0.7s ease' }}
+  >
+    <a href="#faq"><MdOutlineQuestionAnswer style={{ width: '20px', height: '20px' }} /></a>
+  </Tab>
+</div>
+
+
+     <div className="hidden md:block">
+     <Cursor position={position} />
+     </div>
     </ul>
   );
 };
 
-const Tab = ({ children, setPosition }) => {
+
+const Tab = ({ children, setPosition,style }) => {
   const ref = useRef(null);
 
   return (
@@ -274,7 +332,7 @@ const Tab = ({ children, setPosition }) => {
         });
       }}
       className="relative z-10 block cursor-pointer px-3 py-1.5 text-xs uppercase md:px-5 md:py-3 md:text-base"
-      style={{color:'#fbfbfb'}}
+      style={style} 
     >
       {children}
     </li>
