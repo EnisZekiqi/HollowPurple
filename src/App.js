@@ -6,6 +6,8 @@ import Hero from './Hero Section/Hero'
 import Info from './Hero Section/Info';
 import Contact from './Hero Section/Contact';
 import FAQ from './Hero Section/FAQ';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProductsPage from './All Products/Products';
 function App() {
 
   const [theme,setTheme]=useState('light')
@@ -52,24 +54,39 @@ function App() {
 
 
   return (
-    <div className="App">
-      <header className="App-header"
-      style={{backgroundColor:themeChanger==='light'?'#121221':'#000000'}}
-      >
-     
-        <Hero/>
-        <div className="empty " style={{backgroundColor:'#010103'}}/>
-        <Info/>
-        <div className="empty " style={{backgroundColor:'#010103'}}/>
-        <Contact/>
-        <div className="empty " style={{backgroundColor:'#010103'}}/>
-        <FAQ/>
-        <div className="">
-        <div className="empty2 " style={{backgroundColor:'#010103'}}/>
-        <div className="emptySpecial "></div>
-        </div>
-      </header>
-    </div>
+    <Router>
+  <div className="App">
+    <header
+      className="App-header"
+      style={{ backgroundColor: themeChanger === 'light' ? '#121221' : '#000000' }}
+    >
+      <Routes>
+        {/* Home route, which includes all sections */}
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <div className="empty" style={{ backgroundColor: '#010103' }} />
+              <Info />
+              <div className="empty" style={{ backgroundColor: '#010103' }} />
+              <Contact />
+              <div className="empty" style={{ backgroundColor: '#010103' }} />
+              <FAQ />
+              <div className="">
+                <div className="empty2" style={{ backgroundColor: '#010103' }} />
+                <div className="emptySpecial"></div>
+              </div>
+            </>
+          }
+        />
+        {/* Products page route */}
+        <Route path="/products" element={<ProductsPage />} />
+      </Routes>
+    </header>
+  </div>
+</Router>
+
   );
 }
 

@@ -439,11 +439,9 @@ const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
 const useTimer = (unit) => {
-  const [ref, animate] = useAnimate();
-
+  const [ref, animate] = useAnimate(); // Ensure this is set up properly in your project
   const intervalRef = useRef(null);
   const timeRef = useRef(0);
-
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -455,7 +453,7 @@ const useTimer = (unit) => {
   const handleCountdown = async () => {
     const end = new Date(COUNTDOWN_FROM);
     const now = new Date();
-    const distance = +end - +now;
+    const distance = end - now;
 
     let newTime = 0;
 
@@ -470,22 +468,31 @@ const useTimer = (unit) => {
     }
 
     if (newTime !== timeRef.current) {
-      // Exit animation
-      await animate(
-        ref.current,
-        { y: ["0%", "-50%"], opacity: [1, 0] },
-        { duration: 0.35 }
-      );
+      // Only run animation if `ref.current` is valid
+      if (ref.current) {
+        try {
+          // Exit animation
+          await animate(
+            ref.current,
+            { y: ["0%", "-50%"], opacity: [1, 0] },
+            { duration: 0.35 }
+          );
 
-      timeRef.current = newTime;
-      setTime(newTime);
+          timeRef.current = newTime;
+          setTime(newTime);
 
-      // Enter animation
-      await animate(
-        ref.current,
-        { y: ["50%", "0%"], opacity: [0, 1] },
-        { duration: 0.35 }
-      );
+          // Enter animation
+          await animate(
+            ref.current,
+            { y: ["50%", "0%"], opacity: [0, 1] },
+            { duration: 0.35 }
+          );
+        } catch (error) {
+          console.error('Animation error:', error);
+        }
+      } else {
+        console.warn('ref.current is not defined during animation');
+      }
     }
   };
 

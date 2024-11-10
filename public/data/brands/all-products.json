@@ -1,0 +1,203 @@
+[
+    {
+      "id": 1,
+      "brand": "Sony",
+      "name": "Headphones Sony WH-CH520",
+      "stock": 50,
+      "price": 64.5,
+      "description": "Sony WH-CH520 wireless headphones with excellent sound and technological features. other bluetooth technologies, the comfort of the headphones and their convenience.",
+      "details": [
+        {
+            "Warranty":1,
+            "Microphone":"Integrated",
+            "Charging Option":"USB-C",
+            "Wireless Type":"Bluetooth v5.2"
+        }
+      ]
+    },
+    {
+        "id": 2,
+        "brand": "Sony",
+        "name": "Headphones Sony MDR-ZX110",
+        "stock": 32,
+        "price": 19.5,
+        "description": "SONY MDR-ZX110 headphones offer very high quality sound and thanks to their unique design and light weight they are very comfortable to carry.",
+        "details": [
+            {
+                "Warranty":1,
+                "Microphone":"Not Integrated",
+                "Charging Option":"3.5mm (TRS)",
+                "Wireless Type":"Not Wireless"
+            }
+          ]
+      },
+      {
+        "id": 3,
+        "brand": "Sony",
+        "name": "Headphones Sony MRD7506",
+        "stock": 7,
+        "price": 127,
+        "description": "Sony MDR7506 headphones/headset Wired Head-band Stage/Studio Black",
+        "details": [
+            {
+                "Warranty":1,
+                "Microphone":"Integrated",
+                "Cable Length":"3m",
+                "Wireless Type":"Not Wireless"
+            }
+          ]
+      },
+      {
+        "id": 4,
+        "brand": "Sony",
+        "name": "Controller Sony DualSense PlayStation 5",
+        "stock": 5,
+        "price": 106,
+        "description": "Discover a new world of gaming with the Sony DualSense Controller for Playstation 5, now in a stylish silver color! This wireless controller brings an unforgettable gaming experience thanks to its advanced technology and ergonomic design.",
+        "details": [
+            {
+                "Color":"Silver",
+                "Battery":"3000 mAh",
+                "Wireless Type":"Wireless"
+            }
+          ]
+      },
+      {
+        "id": 5,
+        "brand": "Sony",
+        "name": "Earphones Sony Noise Cancelling",
+        "stock": 50,
+        "price": 100,
+        "description": "SONY Noise Canceling WF-1000XM5 headphones with special design and wireless Hi-Res sound transmission bring you the most authentic audio experience. The feature-packed headphones offer a high level of comfort even during long hours of use, and also offer Qi wireless charging.",
+        "details": [
+            {
+                "Warranty":1,
+                "Color":"Black",
+                "Duration":"12 hours",
+                "Wireless Type":"Bluetooth v5.3",
+                "Case Battery":"800 mAh"
+            }
+          ]
+      },
+      {
+        "id": 7,
+        "brand": "Sony",
+        "name": "Camera Sony Vlog AV-E10",
+        "stock": 50,
+        "price": 1006,
+        "description": "The Sony AV-E10 camera is a vlog camera for creating professional video content. CMOS sensor with 3: 2 aspect ratio and 24.2 MPx resolution. Interchangeable bayonet lens",
+        "details": [
+            {
+                "Warranty":1,
+                "Color":"Black",
+                "Camera":"48MP",
+                "Video":"4K 60 FPS",
+                "Charging":"USB-C"
+            }
+          ]
+      },
+      {
+        "id": 8,
+        "brand": "Sony",
+        "name": "CellPhone Sony Xperia 1",
+        "stock": 50,
+        "price": 250,
+        "description": "Sony Xperia comes with a very modern design, resistance and exceptional performance. This mobile phone comes with a 6.5 touch screen that displays HD quality images with a resolution of 3840 x 1644 pixels",
+       "details": [
+            {
+                "Dual SIM":2,
+                "Color":"Grey",
+                "Connectivity":"5G,LTE",
+                "Weight":"181.4g",
+                "Display":"OLED",
+                "Screen Protector":"IP65, IP68",
+                "Internal Memory":"256GB",
+                "Operating system":"Android",
+                "Battery":"5000 mAh",
+                "Screen size [inches]":"6.5"
+            }
+          ]
+      },
+      {
+        "id": 9,
+        "brand": "Benq",
+        "name": "Monitor BenQ ZOWIE XL2540K",
+        "stock": 50,
+        "price": 319,
+        "description": "The new base is designed to take up less space while maintaining the same stability. This gives players more room to move and gives them the flexibility to make adjustments and play comfortably.",
+       "details": [
+            {
+                "Dual SIM":2,
+                "Color":"Black and Red",
+                "Weight":"181.4g",
+                "Hub USB":"USB 3.0",
+                "Refresh Rate":"240 Hz",
+                "Energy Consumption [W]":"35",
+                "Diagonal of Screen":"24.5, 24.5"
+            }
+          ]
+      },
+      {
+        "id": 10,
+        "brand": "Benq",
+        "name": "Benq Projector MH536",
+        "stock": 50,
+        "price": 742,
+        "description": "The BenQ MH536 business projector allows you to present your ideas in an effective way to all colleagues, management or business partners with the BenQ MH536 projector - the ideal projector for any occasion.",
+        "details": [
+            {
+                "Warranty":2,
+                "Color":"White",
+                "Production":"China",
+                "Design dimensions [inches]":"300, 300"
+            }
+          ]
+      },
+      {
+        "id": 11,
+        "brand": "Benq",
+        "name": "ZOWIE Mouse FK-1",
+        "stock": 50,
+        "price": 100,
+        "description": "Get a gaming mouse that is perfect in every way. Not only is it lightweight and comfortable, but it also offers a low profile, which provides better control even when playing passionate games.",
+        "details": [
+            {
+                "Warranty":1,
+                "Reaction Time [ms]":1,
+                "Maximum sensitivity [DPI]":"3200",
+                "Wheel":"Mechanical",
+                "Motion sensor":"Optical",
+                "Weight":"74g",
+                "Technology":"USB-A"
+            }
+          ]
+      },
+      {
+        "id": 12,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },
+      {
+        "id": 13,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },
+      {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }
+
+  ]
