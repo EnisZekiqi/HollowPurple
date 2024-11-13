@@ -6,7 +6,7 @@ import Hero from './Hero Section/Hero'
 import Info from './Hero Section/Info';
 import Contact from './Hero Section/Contact';
 import FAQ from './Hero Section/FAQ';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router-dom';
 import ProductsPage from './All Products/Products';
 function App() {
 
@@ -50,15 +50,40 @@ function App() {
   }, []); // Empty dependency array to run only once
 
 
+  const [headerHeight, setHeaderHeight] = useState('100vh');
 
+  // Track pathname changes using window.location
+  useEffect(() => {
+    // Listen for changes to the pathname
+    const handleRouteChange = () => {
+      const currentPath = window.location.pathname;
+      if (currentPath === '/products') {
+        setHeaderHeight('100%'); // Adjust header height for the products page
+      } else {
+        setHeaderHeight('100vh'); // Default header height
+      }
+    };
+
+    // Set up event listener for path changes (on initial load and subsequent changes)
+    window.addEventListener('popstate', handleRouteChange);
+    handleRouteChange(); // Run initially to set the correct height
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []); // Empty dependency arra
 
 
   return (
     <Router>
   <div className="App">
-    <header
+  <header
       className="App-header"
-      style={{ backgroundColor: themeChanger === 'light' ? '#121221' : '#000000' }}
+      style={{
+        backgroundColor: '#121221',
+        // Dynamically set height based on the current path
+      }}
     >
       <Routes>
         {/* Home route, which includes all sections */}
@@ -89,5 +114,7 @@ function App() {
 
   );
 }
+
+
 
 export default App;

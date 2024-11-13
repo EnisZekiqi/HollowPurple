@@ -21,9 +21,18 @@ html {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.pdoructImage{
+  width:380px;
+height:380px;
+object-fit: contain;
+}
 .intro{
-  background-color: rgba(3, 3, 5, 0.5);
-  
+  background: rgba( 3, 3, 5, 0.55 );
+  background-image: url(./images/1.png);
+  color: #fafafc;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .contactus{
   border-bottom-right-radius: 20px;
@@ -464,12 +473,11 @@ position: fixed !important;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100vh;
   font-family: "Open Sans", sans-serif;
 }
-.hero-content2 {
+.hero-content {
   background-color: rgba(24, 24, 27, 0.5); /* Adjust this to match the inline style */
-  background-image: url(./images/testttt.png);
+  background-image: url(./images/1.png);
   color: #fafafc;
   background-position: center center;
   background-size: cover;

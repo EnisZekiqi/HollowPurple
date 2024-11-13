@@ -66,13 +66,13 @@ const Hero = () => {
   };
 
   return (
-    <div id="home" className="relative w-full h-full "
+    <div id="home" className="relative w-full h-screen "
     
     >
       <AnimatePresence>
         {introVisible && (
           <motion.div
-            className="intro flex flex-col gap-2 items-center justify-center absolute inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-md"
+            className="intro flex flex-col gap-2 items-center justify-center absolute inset-0  bg-opacity-60 backdrop-blur-lg"
             variants={firstAnimation}
             initial="hidden"
             animate="visible"
@@ -102,7 +102,7 @@ const Hero = () => {
 
       {/* The content of the Hero section that will be revealed */}
       {!introVisible && (
-        <div id="home" className="hero-content w-full h-full flex flex-col gap-8">
+        <div id="home" className="hero-content w-full h-screen flex flex-col gap-8">
           <motion.div
             variants={navbarAnimation}
             initial="hidden"

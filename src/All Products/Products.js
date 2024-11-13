@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdOutlineHome,MdOutlineListAlt,MdOutlineShoppingCart ,MdOutlineQuestionAnswer, MdFavoriteBorder   } from "react-icons/md"
+import { MdOutlineHome,MdOutlineNotifications ,MdOutlineShoppingCart ,MdOutlineLocalShipping , MdFavoriteBorder   } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
@@ -60,7 +60,7 @@ const handleGoBack =()=>{
   setShowProduct(null)
 }
   return (
-    <div className='products h-screen' >
+    <div className='products ' >
      {showProduct ? (
       <ProductDetails 
       product={showProduct}
@@ -154,10 +154,13 @@ const handleGoBack =()=>{
       ))}
     </div>
   </div>
+  
 </div>
       </div>
      )}
-    
+   <div className="empty"></div>
+   <div className="empty"></div>
+   
     </div>
   );
 }
@@ -197,12 +200,25 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
 
 
     
-    ///go back to searching function /////
+    ///select product /////
     
   
+    const[productValue,setProductValue]=useState(1)
+    const [manyProduct,setManyProduct]=useState(false)
+
+    useEffect(() => {
+      if (productValue > product.stock) {
+        setManyProduct(true)
+        setTimeout(() => {
+          setManyProduct(false)
+        }, 3000);
+      }
+    }, [productValue,product.stock]);
+    
+
 
   return (
-    <div className="product-details p-4">
+    <div className="product-details p-4 h-screen ">
        <AnimatePresence>
        <motion.div
        initial={{opacity:0,y:-10}}
@@ -227,7 +243,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
            style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center">
-        <MdOutlineHome style={{width:'22px',height:'22px'}}/>
+        <MdOutlineNotifications style={{width:'22px',height:'22px'}}/>
         <MdFavoriteBorder style={{width:'22px',height:'22px'}}/>
         <MdOutlineShoppingCart style={{width:'22px',height:'22px'}}/>
     </div>
@@ -262,19 +278,49 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
       )}
     </div>
   )}
-    <div className="bread flex items-center gap-2 text-xs font-light cursor-pointer" style={{color:'#9f9fac',transition:'all 0.5s'}}>
-      <MdOutlineHome style={{width:'15px',height:'15px'}}/>
+    <motion.div
+     initial={{opacity:0,y:-5}}
+     animate={{opacity:1,y:0,transition:{duration:0.5}}}
+    className="bread flex items-center gap-2 text-xs font-light cursor-pointer" style={{color:'#9f9fac',transition:'all 0.5s'}}>
+      <a href="/"><MdOutlineHome style={{width:'15px',height:'15px'}}/></a>
       <IoIosArrowForward/>
-      <p>Product</p>
+     <a href="/products"><p>Product</p></a>
       <IoIosArrowForward/>
       <p>{product.type}</p>
       <IoIosArrowForward/>
       <p>{product.name}</p>
+    </motion.div>
+    <div className="empty"></div>
+    <div className="flex justify-between px-2 items-start">
+    <div className='w-[35%]'
+    >{product.image && <img src={product.image}  alt={product.name} className="pdoructImage " />}</div>
+      <div className="flex flex-col gap-4 w-[65%] items-start justify-start">
+     <div className="flex items-center gap-2">
+     {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+      <h2 className="text-2xl font-bold text-start">{product.name}</h2>
+     </div>
+      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2">
+              <button onClick={()=>setProductValue(productValue - 1)}>-</button>
+              <p>{productValue}</p>
+              <button onClick={()=>setProductValue(productValue + 1)}>+</button>
+            </div>
+          <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{product.stock} on Stock</p>
+      </div>
+      {manyProduct && <div>the value is more than we have on stock</div>}
+      <p className="text-lg text-start">Price: ${product.price}</p>
+      <p className="text-md text-start">{product.description}</p>
+      </div>
     </div>
-      <h2 className="text-2xl font-bold">{product.name}</h2>
-      <p className="text-lg">Price: ${product.price}</p>
-      <p className="text-md">{product.description}</p>
-      {product.image && <img src={product.image} alt={product.name} className="mt-4" />}
+      
+     
       <ul className="mt-2">
         {product.details && product.details.map((detail, index) => (
           <li key={index}>{Object.entries(detail).map(([key, value]) => `${key}: ${value}`).join(', ')}</li>
