@@ -209,9 +209,9 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
     useEffect(() => {
       if (productValue > product.stock) {
         setManyProduct(true)
-        setTimeout(() => {
-          setManyProduct(false)
-        }, 3000);
+        
+      }else{
+        setManyProduct(false)
       }
     }, [productValue,product.stock]);
     
@@ -291,7 +291,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
       <p>{product.name}</p>
     </motion.div>
     <div className="empty"></div>
-    <div className="flex justify-between px-2 items-start">
+    <div className="flex justify-between px-6 items-start">
     <div className='w-[35%]'
     >{product.image && <img src={product.image}  alt={product.name} className="pdoructImage " />}</div>
       <div className="flex flex-col gap-4 w-[65%] items-start justify-start">
@@ -304,18 +304,29 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
            {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-      <h2 className="text-2xl font-bold text-start">{product.name}</h2>
+     <div className="flex flex-col">
+     <h2 className="text-2xl font-bold text-start">{product.name}</h2>
+     <p className="text-lg text-start">Price: ${product.price}</p>
      </div>
-      <div className="flex items-center gap-6">
-      <div className="flex items-center gap-2">
+     </div>
+     <div className="flex gap-2 items-center w-3/4">
+      <p className='text-xs font-light'>Quantity</p>
+      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+     </div>
+      <div className="flex items-center gap-6 mt-3 mb-3">
+      <div className="flex items-center gap-2 ">
               <button onClick={()=>setProductValue(productValue - 1)}>-</button>
               <p>{productValue}</p>
+              <input type="number" style={{backgroundColor:"transparent"}} value={productValue} onChange={(e) => setProductValue(Number(e.target.value))} />
               <button onClick={()=>setProductValue(productValue + 1)}>+</button>
             </div>
           <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{product.stock} on Stock</p>
       </div>
-      {manyProduct && <div>the value is more than we have on stock</div>}
-      <p className="text-lg text-start">Price: ${product.price}</p>
+      {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
+      <div className="flex gap-2 items-center w-3/4">
+      <p className='text-xs font-light'>Transportation</p>
+      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+     </div>
       <p className="text-md text-start">{product.description}</p>
       </div>
     </div>
