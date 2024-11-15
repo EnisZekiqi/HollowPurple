@@ -1,5 +1,7 @@
 import React from 'react';
-import { MdOutlineHome,MdOutlineNotifications ,MdOutlineShoppingCart ,MdOutlineLocalShipping , MdFavoriteBorder   } from "react-icons/md"
+import { MdOutlineHome,MdOutlineNotifications ,MdOutlineShoppingCart 
+  ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
+  ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,MdOutlineVerified ,MdFavorite  } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
@@ -51,6 +53,8 @@ const [showProduct,setShowProduct]=useState(null)
 
 const seeProduct =(product)=>{
   setShowProduct(product)
+  setSearchQuery('')
+  setSearchResults([]); 
 }
 
 ///go back to searching function /////
@@ -103,8 +107,13 @@ const handleGoBack =()=>{
       </navbar>
       <div>
   
-  {searchQuery.trim() !== '' && (
-    <div className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px]" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+      <AnimatePresence>
+       {searchQuery.trim() !== '' && (
+    <motion.div
+    initial={{opacity:0,y:-10}}
+    animate={{opacity:1,y:0,transiton:{duration:0.5}}}
+    exit={{opacity:0,y:-10,transition:{duration:0.2}}}
+    className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
       {searchResults.length > 0 ? (
         searchResults.map(product => (
           <div
@@ -130,8 +139,9 @@ const handleGoBack =()=>{
       ) : (
         <p>No products found.</p>
       )}
-    </div>
+    </motion.div>
   )}
+       </AnimatePresence>
 
   {/* Always show brands and all products */}
   <div>
@@ -183,6 +193,13 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
       }
     };
 
+    useEffect(() => {
+      // Clear search query and results whenever the product changes
+      setSearchQuery('');
+      setSearchResults([]);
+    }, [product]); // This will run when the product changes
+    
+
 
     const brands = [
       {brand:<SiLogitechg style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
@@ -216,6 +233,34 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
     }, [productValue,product.stock]);
     
 
+    const [detailTransport,setDetailTransport]=useState(false) ///// for more information in transport 
+
+   const [fav,setFav]=useState(false) /// favorite alert and other functions
+
+   useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('favourite')) || [];
+    // Check if the current product is in the favorites list
+    if (favorites.includes(product.id)) {
+      setFav(true);
+    }
+  }, [product.id]);
+
+  // Toggle the favorite status for this specific product
+  const toggleFav = () => {
+    let favorites = JSON.parse(localStorage.getItem('favourite')) || [];
+    if (fav) {
+      // Remove product from favorites
+      favorites = favorites.filter((id) => id !== product.id);
+    } else {
+      // Add product to favorites
+      favorites.push(product.id);
+    }
+    // Update localStorage with the new favorites list
+    localStorage.setItem('favourite', JSON.stringify(favorites));
+    setFav(!fav); // Toggle the favorited state for the current product
+  };
+
+    const heightChange = {height:detailTransport ? 'fit-content':'',transition:'height 1.5s ease',padding:'8px'}
 
   return (
     <div className="product-details p-4 h-screen ">
@@ -224,7 +269,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
        initial={{opacity:0,y:-10}}
        animate={{opacity:1,y:0,transition:{duration:1}}}
        exit={{opacity:0,y:-10,transition:{duration:1}}}
-       className="flex justify-between items-center py-2.5 px-5">
+       className=" flex justify-between items-center py-2.5 px-5">
            <div className='flex items-center gap-1'>
            <h1 onClick={handleGoBack} className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
             <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
@@ -249,8 +294,13 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
     </div>
         </motion.div>
        </AnimatePresence>
+       <AnimatePresence>
        {searchQuery.trim() !== '' && (
-    <div className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px]" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+    <motion.div
+    initial={{opacity:0,y:-10}}
+    animate={{opacity:1,y:0,transiton:{duration:0.5}}}
+    exit={{opacity:0,y:-10,transition:{duration:0.2}}}
+    className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
       {searchResults.length > 0 ? (
         searchResults.map(product => (
           <div
@@ -276,12 +326,13 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
       ) : (
         <p>No products found.</p>
       )}
-    </div>
+    </motion.div>
   )}
+       </AnimatePresence>
     <motion.div
      initial={{opacity:0,y:-5}}
      animate={{opacity:1,y:0,transition:{duration:0.5}}}
-    className="bread flex items-center gap-2 text-xs font-light cursor-pointer" style={{color:'#9f9fac',transition:'all 0.5s'}}>
+    className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit" style={{color:'#9f9fac',transition:'all 0.5s'}}>
       <a href="/"><MdOutlineHome style={{width:'15px',height:'15px'}}/></a>
       <IoIosArrowForward/>
      <a href="/products"><p>Product</p></a>
@@ -306,7 +357,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
            {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
      <div className="flex flex-col">
      <h2 className="text-2xl font-bold text-start">{product.name}</h2>
-     <p className="text-lg text-start">Price: ${product.price}</p>
+     <p className="text-lg text-start" style={{color:'#d6d6dc'}}>{product.price}$</p>
      </div>
      </div>
      <div className="flex gap-2 items-center w-3/4">
@@ -315,28 +366,85 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
      </div>
       <div className="flex items-center gap-6 mt-3 mb-3">
       <div className="flex items-center gap-2 ">
-              <button onClick={()=>setProductValue(productValue - 1)}>-</button>
-              <p>{productValue}</p>
-              <input type="number" style={{backgroundColor:"transparent"}} value={productValue} onChange={(e) => setProductValue(Number(e.target.value))} />
-              <button onClick={()=>setProductValue(productValue + 1)}>+</button>
+              <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue - 1)}>-</button>
+              <input className=" w-[30px]  input-no-arrows" type="text"value={productValue}  onChange={(e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {  // Only allow digits
+      setProductValue(value);
+    }
+  }}
+                />
+              <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue + 1)}>+</button>
             </div>
           <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{product.stock} on Stock</p>
       </div>
       {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
-      <div className="flex gap-2 items-center w-3/4">
+     <div className="flex flex-col w-full">
+     <div className="flex gap-2 items-center w-3/4">
       <p className='text-xs font-light'>Transportation</p>
       <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
      </div>
-      <p className="text-md text-start">{product.description}</p>
+     <div className="flex flex-col gap-2" >
+        <div className="flex items-center gap-4 mt-3 pt-3" >
+          <MdOutlineLocalShipping style={{width:'20px',height:'20px',color:'#6f6e9e'}}/>
+          <div className="flex items-center gap-6">
+            <p className='text-xs font-light' style={{color:"#d6d6dc"}}>{product.deliveryKosovo}</p>
+            <p className="hr block" style={{ width: '1px', height: '100%', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} >|</p>
+            <p className='text-xs font-light' style={{color:"#d6d6dc"}}>{product.deliveryBallkan}</p>
+           <div onClick={()=>setDetailTransport(prev=>!prev)} className="moreInfoText flex items-center gap-0.5 ml-6 cursor-pointer">
+            <p className="text-xs font-extralight">More info</p>
+           <MdOutlineKeyboardArrowDown/>
+           </div>
+          </div>
+        </div>
+        <AnimatePresence>
+        {detailTransport && 
+        <motion.div
+        initial={{opacity:0,y:-10}}
+        animate={{opacity:1,y:0,transition:{duration:0.3}}}
+        exit={{opacity:0,y:-10,transition:{duration:0.3}}}
+        style={heightChange}
+        className='transportInfo flex justify-center items-center rounded-md w-3/4 mt-1.5'
+        >
+        <div className="flex items-center gap-6 px-4">
+          <div style={{widht:'30px',height:'30px'}}>
+          <MdInfoOutline   style={{color:'#d6d6dc'}}/>
+          </div>
+          <p className='text-xs font-extralight text-start'>
+          Product arrival time means the period from when your order is verified, and the verification notification you receive via email or SMS.
+          If the order is placed now, the product arrives according to the time frame set above. You will be continuously notified via email of the location of your order, including when the product arrives at our warehouse, and when it is shipped to you.
+          </p>
+        </div>
+       </motion.div>}
+        </AnimatePresence>
+      </div>
+     </div>
+     <div className="flex gap-2 items-center w-3/4 mt-3">
+      <p className='text-xs font-light'>Payment</p>
+      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+     </div>
+     <div className="flex items-center gap-4 justify-between mt-3">
+      <div className="flex items-center gap-2">
+      <MdEuro style={{color:'#6f6e9e'}}/>
+      <p  className='font-light text-sm' style={{color:'#9f9fac'}}>Pay in cash</p>
+      </div>
+      <div className="flex items-center gap-2">
+      <MdCreditCard style={{color:'#6f6e9e'}}/>
+      <p className='font-light text-sm' style={{color:'#9f9fac'}}>Pay Online</p>
+      </div>
+      <div className="flex items-center gap-2 ">
+      <MdOutlinePayments  style={{color:'#6f6e9e'}}/>
+      <p className='font-light text-sm' style={{color:'#9f9fac'}}>Pay by bank transfer</p>
+      </div>
+     </div>
+     <div className="buttonss flex items-center gap-6 mt-3">
+      <button className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button>
+      <button className='order2 text-xl font-normal'>Add to Cart</button>
+      <button  onClick={toggleFav} className='order2'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
+     </div>
       </div>
     </div>
-      
-     
-      <ul className="mt-2">
-        {product.details && product.details.map((detail, index) => (
-          <li key={index}>{Object.entries(detail).map(([key, value]) => `${key}: ${value}`).join(', ')}</li>
-        ))}
-      </ul>
+    
     </div>
   );
 }

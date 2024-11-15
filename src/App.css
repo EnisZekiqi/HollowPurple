@@ -34,7 +34,40 @@ object-fit: contain;
   background-size: cover;
   background-repeat: no-repeat;
 }
-
+.transportInfo{
+  background-color:rgba(24, 24, 27,0.2);
+  border:1px solid #3b3b45
+}
+.order{
+  border-radius: 10px;
+  background:#6f6e9e ;
+  color:#e8e8f0;
+  padding: 7px 7px 7px 7px;
+}
+.order:hover{
+  border-radius: 10px;
+  background-color:#434363 ;
+  transition: all 0.5s ease;
+}
+.order2{
+  border-radius: 10px;
+  padding: 7px 7px 7px 7px;
+  color:#d6d6dc
+}
+.bread{
+  color:#9f9fac
+}
+.bread :hover{
+  color:#d6d6dc;
+  transition:color 0.5s ease
+}
+.moreInfoText{
+  color:#9f9fac
+}
+.moreInfoText :hover{
+  color:#d6d6dc;
+  transition:color 0.5s ease
+}
 .contactus{
   border-bottom-right-radius: 20px;
  
@@ -252,6 +285,17 @@ background-color: transparent;
   user-select: none;
  }
  
+ .input-no-arrows {
+  background-color: transparent;
+  appearance: none;
+  Moz-appearance: textfield;
+  Webkit-appearance: none;
+  border-top: 1px solid #3b3b45;
+  border-bottom: 1px solid #3b3b45;
+height: 30px;
+  text-align: center;  /* Optional: center the text */
+}
+
  /* Create a custom checkbox */
  .checkmark {
   position: relative;
