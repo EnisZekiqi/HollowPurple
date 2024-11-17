@@ -10,25 +10,6 @@ import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router
 import ProductsPage from './All Products/Products';
 function App() {
 
-  const [theme,setTheme]=useState('light')
-
-  const toggleTheme =(theme)=>{
-    setTheme(theme)
-    localStorage.setItem('theme',theme)
-  }
-
-
-  useEffect(() => {
-      const themeChanger = localStorage.getItem('theme')
-
-      if (themeChanger) {
-        setTheme(themeChanger)
-      }
-
-  },[] );
-
-  const themeChanger = localStorage.getItem('theme')
-
   //////////////
 
   const [data, setData] = useState([]);

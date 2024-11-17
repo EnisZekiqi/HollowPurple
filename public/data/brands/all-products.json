@@ -12,12 +12,17 @@
             "Microphone":"Integrated",
             "Charging Option":"USB-C",
             "Wireless Type":"Bluetooth v5.2"
+            
         }
       ],
       "type":"Headphones",
       "deliveryKosovo":"3 day in Kosovo",
       "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
-    "image": "https://res.cloudinary.com/datm8nslc/image/upload/v1731530295/sony_headphones1-removebg-preview_futrj5.png"
+      "images": [
+        "https://res.cloudinary.com/datm8nslc/image/upload/v1731530295/sony_headphones1-removebg-preview_futrj5.png",
+        "https://res.cloudinary.com/datm8nslc/image/upload/v1731872664/sony_headphones1-removebg-preview_1_efmipp.png",
+        "https://res.cloudinary.com/datm8nslc/image/upload/v1731872715/sony_headphones1-removebg-preview_2_pxia8w.png"
+      ]
     },
     {
         "id": 2,
