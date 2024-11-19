@@ -148,7 +148,7 @@ const Hero = () => {
                initial="hidden"
                animate="visible"
               className=" text-sm sm:text-lg font-light w-full md:w-1/2"
-              style={{color:'#9f9fac'}}
+              style={{color:'#d6d6dc'}}
             >
             We're here to empower your every step of the way. Explore unique fashion pieces and accessories that elevate you
             </motion.p>

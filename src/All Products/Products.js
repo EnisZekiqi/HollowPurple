@@ -1,4 +1,5 @@
-import React from 'react';
+
+import * as React from 'react';
 import { MdOutlineHome,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
@@ -7,9 +8,13 @@ import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
 import { IoIosArrowForward } from "react-icons/io";
-import { DotButton, useDotButton } from './ImagesCarousel/EmblaCarouselDotButton'
 import Slider from 'react-slick';
 import notfound from '../images/undraw_empty_cart_co35.svg'
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
+import Cart from './Cart'
 
 function ProductsPage() {
 
@@ -72,6 +77,7 @@ const handleGoBack =()=>{
 
 const [FavCount,setFavCount]=useState(0)
 const [fav,setFav]=useState(false)
+const [alertFav,setAlertFav]=useState('')
 
  useEffect(() => {
   const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -86,13 +92,40 @@ const removeFavorites =(product)=>{
 
   localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
 
-  // Optionally update state (if you have setFav or similar to update the UI)
+  setShowProduct(null)
   setFav(false);  // Example of removing from state if needed
-  alert('Product removed from favorites!');
+  setOpen(true)
+  setAlertFav('Product removed from favorites!');
+
 }
 
+const [open, setOpen] = React.useState(false);
+
+const handleClose = (event, reason) => {  //// close the alert 
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpen(false);
+};
+
+const action = (
+  <React.Fragment>
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  </React.Fragment>
+);
+
+
   return (
-    <div className='products h-full' >
+  <div>
+      <div className='products h-full' >
      {showProduct ? (
       <ProductDetails 
       product={showProduct}
@@ -204,6 +237,28 @@ const removeFavorites =(product)=>{
    <div className="empty"></div>
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
+    {open && 
+    <Snackbar
+    open={open}
+    autoHideDuration={6000}
+    onClose={handleClose}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+    ContentProps={{
+      style: {
+        backgroundColor: '#585782',
+        color: '#e8e8f0',
+        position: 'fixed', // Change to fixed
+        bottom: 20,        // Adjust as needed
+        left: '15%',       // Center it horizontally
+        transform: 'translateX(-50%)', // Center it based on its width
+        zIndex: 1000,     // Ensure it's above other content
+      },
+    }}
+    message={alertFav} 
+    action={action}
+  />
+    }
+  </div>
   );
 }
 
@@ -268,6 +323,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
     const [detailTransport,setDetailTransport]=useState(false) ///// for more information in transport 
 
    const [fav,setFav]=useState(false) /// favorite alert and other functions
+   const [alertFav,setAlertFav]=useState('')
 
    useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem('favourite')) || [];
@@ -286,9 +342,14 @@ const addToFavorites = (product) => {
     favorites.push(product);
     localStorage.setItem('favorites', JSON.stringify(favorites));
     setFav(true)
-    alert('Product added to favorites!');
+    setOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+    }, 3000);
+    setAlertFav('Product added to favorites!');
   } else {
-    alert('Product is already in favorites!');
+    setAlertFav('Product is already in favorites!');
+    setOpen(true)
   }
 };
 
@@ -299,9 +360,52 @@ const removeFavorites =(product)=>{
   localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
 
   // Optionally update state (if you have setFav or similar to update the UI)
-  setFav(false);  // Example of removing from state if needed
-  alert('Product removed from favorites!');
+  setFav(false); 
+  setOpen(true) // Example of removing from state if needed
+  setAlertFav('Product removed from favorites!');
 }
+
+useEffect(() => {
+  const favIcon = localStorage.getItem('favorites')
+
+  if (fav) {
+    setFav(favIcon)
+  }
+
+}, []);
+
+const [alertCart,setAlertCart]=useState('')
+
+const handleAddCart = (product) => {
+  let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
+  const isAlreadyInCart = addedCart.some(item => item.id === product.id);
+
+  if (!isAlreadyInCart) {
+    addedCart.push(product);
+    localStorage.setItem('cart', JSON.stringify(addedCart));
+
+    setOpen(true);
+    setAlertCart('Product added to cart!');
+    setTimeout(() => setOpen(false), 3000);
+  } else {
+    setAlertCart('Product is already in the cart!');
+    setOpen(true);
+    setTimeout(() => setOpen(false), 3000);
+  }
+};
+
+
+const handleRemoveCart = (product) => {
+  let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
+  const updatedCart = addedCart.filter(item => item.id !== product.id);
+
+  localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+  setOpen(true);
+  setAlertCart('Product removed from cart!');
+  setTimeout(() => setOpen(false), 3000);
+};
+
 
 useEffect(() => {
   const favIcon = localStorage.getItem('favorites')
@@ -357,8 +461,37 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
   setFavCount(storedFavorites.length );
 }, []);
 
+
+//// add to cart all functions below !! //
+
+const [open, setOpen] = React.useState(false);
+
+const handleClose = (event, reason) => {  //// close the alert 
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpen(false);
+};
+
+const action = (
+  <React.Fragment>
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  </React.Fragment>
+);
+
+
+
   return (
-    <div className="product-details p-4 h-full ">
+   <div>
+     <div className="product-details p-4 h-screen">
        <AnimatePresence>
       <div className="navbarfinally" style={{
   position: 'sticky',
@@ -394,7 +527,7 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
         </div>
-        <MdOutlineShoppingCart style={{width:'25px',height:'25px'}}/>
+        <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
     </div>
         </motion.div>
       </div>
@@ -446,7 +579,8 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
       <IoIosArrowForward/>
       <p>{product.name}</p>
     </motion.div>
-    <div className="empty"></div>
+    <div className="empty">
+    </div>
     <div className="flex justify-between px-6 items-start">
     <div className='w-[35%]'
     >
@@ -556,13 +690,17 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
       <p className='font-light text-sm' style={{color:'#9f9fac'}}>Pay by bank transfer</p>
       </div>
      </div>
+     <div className="flex flex-col gap-2">
      <div className="buttonss flex items-center gap-6 mt-3">
       <button className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button>
-      <button className='order2 text-xl font-normal rounded-md' style={{border:'1px solid #434363'}}>Add to Cart</button>
+      <button onClick={()=> handleAddCart(product)} className='order2 text-xl font-normal rounded-md' style={{border:'1px solid #434363'}}>Add to Cart</button>
       <button  onClick={() =>addToFavorites(product)} className='order2'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
      </div>
+    
+     </div>
      <div className="detailsdescription flex flex-col mt-4 p-2" 
-     style={{backgroundColor:'rgba( 1, 1, 3, 0.35 )',border:'1px solid rgba(67, 67, 99,0.4)',borderRadius:'10px'}}>
+     style={{backgroundColor:'rgba( 1, 1, 3, 0.35 )',
+     border:'1px solid rgba(67, 67, 99,0.4)',borderRadius:'10px'}}>
       <div className="flex justify-around gap-1">
       <div className="flex flex-col ">
       <button onClick={()=>changeDescription('description')}>Description</button>
@@ -605,6 +743,28 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
     </div>
     <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
+    {open && 
+    <Snackbar
+    open={open}
+    autoHideDuration={6000}
+    onClose={handleClose}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+    ContentProps={{
+      style: {
+        backgroundColor: '#585782',
+        color: '#e8e8f0',
+        position: 'fixed', // Change to fixed
+        bottom: 20,        // Adjust as needed
+        left: '15%',       // Center it horizontally
+        transform: 'translateX(-50%)', // Center it based on its width
+        zIndex: 1000,     // Ensure it's above other content
+      },
+    }}
+    message={alertFav} 
+    action={action}
+  />
+  }
+   </div>
   );
 }
 
@@ -672,7 +832,8 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
         <ul className='flex flex-col items-center justify-center px-2'>
           {favorites.length > 0 ? (
             favorites.map((product, index) => (
-              <li onClick={()=>seeProduct(product)} key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
+              <li key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
+                <div onClick={()=>seeProduct(product)}>
                 <div className="flex items-center justify-center w-full mb-4">
                 {product.images && product.images.length > 0 && (
                   <img src={product.images[0]} alt=""style={{ width: '85px', height: '85px',objectFit:'contain' }} />
@@ -680,9 +841,10 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
                 </div>
                 <p><strong>{product.name}</strong></p>
                 <p>Price: ${product.price}</p>
+                </div>
                 <div className="flex justify-around mt-4">
                   <button style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
-                  <button onClick={()=>removeFavorites(product)} className='bg-[#585782] text-[#e8e8f0] rounded-md p-1.5'><MdDeleteOutline style={{width:'20px',height:'20px'}}/></button>
+                  <button  onClick={()=>removeFavorites(product)} className='bg-[#585782] text-[#e8e8f0] rounded-md p-1.5 z-100'><MdDeleteOutline style={{width:'20px',height:'20px'}}/></button>
                 </div>
               </li>
             ))
@@ -693,6 +855,7 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
           )}
         </ul>
       </motion.div>
+      
       </>
     )}
   </AnimatePresence>

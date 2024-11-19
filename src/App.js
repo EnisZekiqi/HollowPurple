@@ -8,6 +8,7 @@ import Contact from './Hero Section/Contact';
 import FAQ from './Hero Section/FAQ';
 import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router-dom';
 import ProductsPage from './All Products/Products';
+import Cart from './All Products/Cart'
 function App() {
 
   //////////////
@@ -88,6 +89,7 @@ function App() {
         />
         {/* Products page route */}
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </header>
   </div>
