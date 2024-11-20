@@ -462,6 +462,13 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
 }, []);
 
 
+const [cartCount,setCartCount]=useState(0)
+
+setTimeout(() => {
+  const storedCart = JSON.parse(localStorage.getItem('cart')) || []
+  setCartCount(storedCart.length)
+}, []);
+
 //// add to cart all functions below !! //
 
 const [open, setOpen] = React.useState(false);
@@ -527,7 +534,10 @@ const action = (
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
         </div>
-        <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
+      <div className="relative">
+      {cartCount === 0 ?'' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
+      <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
+      </div>
     </div>
         </motion.div>
       </div>

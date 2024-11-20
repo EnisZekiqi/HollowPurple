@@ -1,42 +1,90 @@
-import { useEffect, useState } from 'react';
 
-const Cart = ({ seeProduct }) => {
-  const [cartItems, setCartItems] = useState([]);
+import { useState,useEffect } from "react";
+import none from '../images/undraw_web_search_re_efla.svg'
+import { MdDeleteOutline   } from "react-icons/md"
+const Cart = ({ seeProduct}) => {
+    const [cartItems, setCartItems] = useState([]);
+  
+    useEffect(() => {
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCartItems(storedCart);
+    }, []);
+  
+    const handleRemoveItem = (product) => {
+      const updatedCart = cartItems.filter((item) => item.id !== product.id);
+      setCartItems(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
 
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartItems(storedCart);
-  }, []);
+    
+  
+    return (
+      <div className="cart h-screen">
+        <div className="flex p-1.5"> 
+        <div className='flex items-center gap-1'>
+          <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
+            <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+                <path
+                  d="M7 17L17 7M17 7H8M17 7V16"
+                  stroke="#5a58a5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+           </div>
 
-  const handleRemoveItem = (product) => {
-    let updatedCart = cartItems.filter(item => item.id !== product.id);
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-  };
-
-  return (
-    <div className="cart">
-      <h2>Your Cart</h2>
-      {cartItems.length > 0 ? (
-        cartItems.map((product, index) => (
-          <div key={index} className="cart-item">
-            <div onClick={() => seeProduct(product)}>
-              <div className="flex items-center justify-center w-full mb-4">
-                {product.images && product.images.length > 0 && (
-                  <img src={product.images[0]} alt="" style={{ width: '85px', height: '85px', objectFit: 'contain' }} />
-                )}
+        </div>
+        <div className="empty"></div>
+        <h2 className="mt-4 font-bold text-3xl text-[#fbfbfb] text-start pl-8 mb-8">Your Cart</h2>
+        {cartItems.length > 0 ? (
+          cartItems.map((product, index) => (
+            <div key={index} className="cart-item pl-12">
+              <div onClick={() => seeProduct(product)}>
+                <div className="flex items-center justify-start w-full mb-4">
+                  {product.images && product.images.length > 0 && (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      style={{ width: '85px', height: '85px', objectFit: 'contain' }}
+                    />
+                  )}
+                   <div className="flex items-center gap-14 justify-around">
+                   <p className="flex flex-col gap-2">
+                  <strong className="text-md font-semibold text-[#fbfbfb] text-start">{product.name}</strong>
+                  <p className="text-sm font-light text-[#d6d6dc] text-start">{product.stock} Avilable</p>
+                </p>
+                <div className="flex flex-col gap-2">
+                  <p className="text-md font-semibold text-[#fbfbfb] text-center">Price</p>
+                  <p className="text-sm font-light text-[#d6d6dc] text-center">{product.price}$</p>
+                  </div>
+               <div className="flex flex-col gap-2">
+                <p className="text-md font-semibold text-[#fbfbfb] text-center">Type</p>
+               <p  className="text-sm font-light text-[#d6d6dc] text-center" style={{border:'1px solid #3b3b45',backgroundColor:'#242329',padding:'4px',borderRadius:'10px'}}>{product.type}</p>
+               </div>
+               <div className="flex flex-col gap-2">
+                <p className="text-md font-semibold text-[#fbfbfb] text-center">Brand</p>
+               <p  className="text-sm font-light text-[#d6d6dc] text-center" >{product.brand}</p>
+               </div>
+             <div className="flex gap-2 ml-8">
+             <button className="order" onClick={() => handleRemoveItem(product)}>Order Now</button>
+             <button onClick={() => handleRemoveItem(product)}><MdDeleteOutline style={{width:'25px',height:'25px'}}/></button>
+             </div>
+                   </div>
+                </div>
               </div>
-              <p><strong>{product.name}</strong></p>
-              <p>Price: ${product.price}</p>
             </div>
-            <button onClick={() => handleRemoveItem(product)}>Remove</button>
+          ))
+        ) : (
+          <div className="flex flex-col justify-center items-center w-full gap-3">
+            <img width="300px" height="300px" src={none} alt="" />
+            <p className="text-md font-light text-[#d6d6dc]">Your cart is empty</p>
+            <a href="/products"><p className="text-sm font-light text-[#9f9fac]">Check some product and come again</p></a>
           </div>
-        ))
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
-    </div>
-  );
-};
-
-export default Cart;
+        )}
+      </div>
+    );
+  };
+  
+  export default Cart;
+  

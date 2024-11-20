@@ -9,6 +9,7 @@ import FAQ from './Hero Section/FAQ';
 import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router-dom';
 import ProductsPage from './All Products/Products';
 import Cart from './All Products/Cart'
+import { useNavigate } from 'react-router-dom';
 function App() {
 
   //////////////
@@ -57,6 +58,16 @@ function App() {
   }, []); // Empty dependency arra
 
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const seeProduct = (product) => {
+    setSelectedProduct(product);
+    console.log('Selected product:', product);
+    // You can navigate or show a modal with detailed product information.
+  };
+  
+
+
   return (
     <Router>
   <div className="App">
@@ -88,8 +99,11 @@ function App() {
           }
         />
         {/* Products page route */}
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/products" element={<ProductsPage selectedProduct={selectedProduct}/>} />
+        <Route
+              path="/cart"
+              element={<Cart seeProduct={seeProduct}/>}
+            />
       </Routes>
     </header>
   </div>
