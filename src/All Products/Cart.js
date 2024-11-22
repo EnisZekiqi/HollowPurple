@@ -2,6 +2,7 @@
 import { useState,useEffect } from "react";
 import none from '../images/undraw_web_search_re_efla.svg'
 import { MdDeleteOutline   } from "react-icons/md"
+import { motion } from "framer-motion";
 const Cart = ({ seeProduct}) => {
     const [cartItems, setCartItems] = useState([]);
   
@@ -16,8 +17,27 @@ const Cart = ({ seeProduct}) => {
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
-    
+    useEffect(() => {
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(storedCart.map(item => ({ ...item, quantity: 1 }))); // Add quantity to each item
+    }, []);
   
+
+    const[productValue,setProductValue]=useState(1)
+    const [manyProduct,setManyProduct]=useState(false)
+
+    const handleQuantityChange = (productId, delta) => {
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === productId
+            ? {
+                ...item,
+                quantity: Math.max(1, Math.min(item.stock, item.quantity + delta)), // Keep within valid range
+              }
+            : item
+        )
+      );
+    };
     return (
       <div className="cart h-screen">
         <div className="flex p-1.5"> 
@@ -36,10 +56,16 @@ const Cart = ({ seeProduct}) => {
 
         </div>
         <div className="empty"></div>
-        <h2 className="mt-4 font-bold text-3xl text-[#fbfbfb] text-start pl-8 mb-8">Your Cart</h2>
+        <motion.h2
+        initial={{opacity:0,y:-10}}
+        animate={{opacity:1,y:0,transition:{duration:0.5,delay:0}}}
+         className="mt-4 font-bold text-3xl text-[#fbfbfb] text-start pl-8 mb-8">Your Cart</motion.h2>
         {cartItems.length > 0 ? (
           cartItems.map((product, index) => (
-            <div key={index} className="cart-item pl-12">
+            <motion.div
+            initial={{opacity:0,y:-15}}
+            animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
+           key={index} className="cart-item pl-12">
               <div onClick={() => seeProduct(product)}>
                 <div className="flex items-center justify-start w-full mb-4">
                   {product.images && product.images.length > 0 && (
@@ -54,18 +80,46 @@ const Cart = ({ seeProduct}) => {
                   <strong className="text-md font-semibold text-[#fbfbfb] text-start">{product.name}</strong>
                   <p className="text-sm font-light text-[#d6d6dc] text-start">{product.stock} Avilable</p>
                 </p>
-                <div className="flex flex-col gap-2">
-                  <p className="text-md font-semibold text-[#fbfbfb] text-center">Price</p>
-                  <p className="text-sm font-light text-[#d6d6dc] text-center">{product.price}$</p>
+                   <div className="flex flex-col justify-around gap-8">
+                   <div className="flex justify-around items-center gap-16">
+                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Price</p>
+                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Type</p>
+                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Brand</p>
+                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Quantity</p>
+                    </div>
+                    <div className="flex justify-around items-center gap-16">
+                    <p className="text-sm font-light text-[#d6d6dc] text-center">{product.price}$</p>
+                    <p  className="text-sm font-light text-[#d6d6dc] text-center" style={{border:'1px solid #3b3b45',backgroundColor:'#242329',padding:'4px',borderRadius:'10px'}}>{product.type}</p>
+                    <p  className="text-sm font-light text-[#d6d6dc] text-center" >{product.brand}</p>
+                    <div className="flex flex-col gap-2 items-center">
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="px-2 py-1"
+                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
+                        onClick={() => handleQuantityChange(product.id, -1)}
+                      >
+                        -
+                      </button>
+                      <input
+                        className="w-[30px] input-no-arrows"
+                        type="text"
+                        value={product.quantity}
+                        readOnly
+                      />
+                      <button
+                        className="px-2 py-1"
+                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
+                        onClick={() => handleQuantityChange(product.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-               <div className="flex flex-col gap-2">
-                <p className="text-md font-semibold text-[#fbfbfb] text-center">Type</p>
-               <p  className="text-sm font-light text-[#d6d6dc] text-center" style={{border:'1px solid #3b3b45',backgroundColor:'#242329',padding:'4px',borderRadius:'10px'}}>{product.type}</p>
-               </div>
-               <div className="flex flex-col gap-2">
-                <p className="text-md font-semibold text-[#fbfbfb] text-center">Brand</p>
-               <p  className="text-sm font-light text-[#d6d6dc] text-center" >{product.brand}</p>
-               </div>
+                    </div>
+                   </div>
+                  
+                
+             
              <div className="flex gap-2 ml-8">
              <button className="order" onClick={() => handleRemoveItem(product)}>Order Now</button>
              <button onClick={() => handleRemoveItem(product)}><MdDeleteOutline style={{width:'25px',height:'25px'}}/></button>
@@ -73,7 +127,10 @@ const Cart = ({ seeProduct}) => {
                    </div>
                 </div>
               </div>
-            </div>
+              {product.quantity >= product.stock && (
+                      <p className="text-xs text-center font-extralight">The value exceeds available stock</p>
+                    )}
+            </motion.div>
           ))
         ) : (
           <div className="flex flex-col justify-center items-center w-full gap-3">

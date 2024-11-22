@@ -23,7 +23,19 @@ html {
   height: 40vmin;
   pointer-events: none;
 }
-
+.login{
+  background-image: url(./images/fff.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.loginForm{
+  background: rgba( 36, 35, 41, 0.25 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

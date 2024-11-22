@@ -3,12 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ClerkProvider } from '@clerk/clerk-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
+const clerkFrontendApi = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+console.log(process.env.REACT_APP_CLERK_PUBLISHABLE_KEY); 
+if (!clerkFrontendApi) {
+  console.error("Clerk publishable key is missing! Check your .env.local file.");
+}
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ClerkProvider frontendApi={clerkFrontendApi}>
+  <App />
+</ClerkProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,9 +1,9 @@
 
 import * as React from 'react';
-import { MdOutlineHome,MdOutlineNotifications ,MdOutlineShoppingCart 
+import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
-  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline   } from "react-icons/md"
+  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome   } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
@@ -109,6 +109,14 @@ const handleClose = (event, reason) => {  //// close the alert
   setOpen(false);
 };
 
+const [cartCount,setCartCount]=useState(0)
+
+setTimeout(() => {
+  const storedCart = JSON.parse(localStorage.getItem('cart')) || []
+  setCartCount(storedCart.length)
+}, []);
+
+
 const action = (
   <React.Fragment>
     <IconButton
@@ -159,12 +167,15 @@ const action = (
            style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center cursor-pointer">
-        <MdOutlineHome style={{width:'22px',height:'22px'}}/>
+       <a href="/login"> <MdOutlineAccountCircle  style={{width:'22px',height:'22px'}}/></a>
         <div className="relative">
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
         </div>
-        <MdOutlineShoppingCart style={{width:'22px',height:'22px'}}/>
+        <div className="relative">
+      {cartCount === 0 ?'' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
+      <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
+      </div>
     </div>
         </motion.div>
        </AnimatePresence>
@@ -529,7 +540,7 @@ const action = (
            style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center cursor-pointer">
-        <MdOutlineNotifications style={{width:'25px',height:'25px'}}/>
+      <a href="/login">  <MdOutlineAccountCircle  style={{width:'25px',height:'25px'}}/></a>
         <div className="relative">
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
@@ -581,7 +592,7 @@ const action = (
      initial={{opacity:0,y:-5}}
      animate={{opacity:1,y:0,transition:{duration:0.5}}}
     className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit" style={{color:'#9f9fac',transition:'all 0.5s'}}>
-      <a href="/"><MdOutlineHome style={{width:'15px',height:'15px'}}/></a>
+      <a href="/login"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
       <IoIosArrowForward/>
      <a href="/products"><p>Product</p></a>
       <IoIosArrowForward/>
@@ -751,7 +762,7 @@ const action = (
      </div>
       </div>
     </div>
-    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 
     <Snackbar
@@ -790,8 +801,26 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
     setFavorites(storedFavorites);
   }, [DrawerIsOpen]); // Reload favorites when the drawer opens
 
+  const [alertCart,setAlertCart]=useState('')
+  const [open,setOpen]=useState(false)
 
-
+  const handleAddCart = (product) => {
+    let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const isAlreadyInCart = addedCart.some(item => item.id === product.id);
+  
+    if (!isAlreadyInCart) {
+      addedCart.push(product);
+      localStorage.setItem('cart', JSON.stringify(addedCart));
+  
+      setOpen(true);
+      setAlertCart('Product added to cart!');
+      setTimeout(() => setOpen(false), 3000);
+    } else {
+      setAlertCart('Product is already in the cart!');
+      setOpen(true);
+      setTimeout(() => setOpen(false), 3000);
+    }
+  };
 
   return (
   <AnimatePresence>
@@ -853,7 +882,7 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
                 <p>Price: ${product.price}</p>
                 </div>
                 <div className="flex justify-around mt-4">
-                  <button style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
+                  <button onClick={()=>handleAddCart(product)} style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
                   <button  onClick={()=>removeFavorites(product)} className='bg-[#585782] text-[#e8e8f0] rounded-md p-1.5 z-100'><MdDeleteOutline style={{width:'20px',height:'20px'}}/></button>
                 </div>
               </li>
