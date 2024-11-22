@@ -10,8 +10,8 @@ import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router
 import ProductsPage from './All Products/Products';
 import Cart from './All Products/Cart'
 import { useNavigate } from 'react-router-dom';
-import LogIn from './All Products/LogIn';
-import { SignIn } from '@clerk/clerk-react';
+import Order from './All Products/Order';
+
 function App() {
 
   //////////////
@@ -107,8 +107,8 @@ function App() {
               element={<Cart  seeProduct={seeProduct}/>}
             />
             <Route
-              path="/sign-in"
-              element={<SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />}
+              path="/Order"
+              element={<Order seeProduct={seeProduct}/>}
             />
       </Routes>
     </header>

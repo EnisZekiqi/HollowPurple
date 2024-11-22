@@ -364,6 +364,43 @@ const addToFavorites = (product) => {
   }
 };
 
+const [OrderDrawer,setOrderDrawer]=useState(false)
+
+
+const orderNow = async (productId) => {
+  try {
+    // 1. Fetch the products data (assuming your JSON file is hosted at this location)
+    const response = await fetch('/data/brands/all-products.json');
+    if (!response.ok) {
+      throw new Error('Product not found');
+    }
+
+    // 2. Parse the product data
+    const products = await response.json();
+
+    // 3. Find the specific product based on productId
+    const product = products.find((prod) => prod.id === productId);
+    
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    // Store the product in localStorage (optional)
+    let favorites = JSON.parse(localStorage.getItem("order")) || [];
+    favorites.push(product);
+    localStorage.setItem("order", JSON.stringify(favorites));
+
+    // Optionally, store it in the state to show it immediately
+    setFav(true);
+    setOpen(true);
+    setOrderDrawer(true);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+  }
+};
+
+
+
 const removeFavorites =(product)=>{
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
   const updatedFavorites = favorites.filter(item => item.id !== product.id);
@@ -713,7 +750,7 @@ const action = (
      </div>
      <div className="flex flex-col gap-2">
      <div className="buttonss flex items-center gap-6 mt-3">
-      <button className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button>
+     <Link to="/Order"> <button onClick={()=>orderNow(product.id)} className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button></Link>
       <button onClick={()=> handleAddCart(product)} className='order2 text-xl font-normal rounded-md' style={{border:'1px solid #434363'}}>Add to Cart</button>
       <button  onClick={() =>addToFavorites(product)} className='order2'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
      </div>
@@ -762,6 +799,7 @@ const action = (
      </div>
       </div>
     </div>
+    <TheOrderDrawer seeProduct={seeProduct} OrderDrawer={OrderDrawer} removeFavorites={removeFavorites} onClose={()=>setOrderDrawer(false)}/>
     <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 
@@ -789,10 +827,119 @@ const action = (
   );
 }
 
+/// Drawer component for buying 
+const TheOrderDrawer = ({ OrderDrawer, onClose,removeFavorites,seeProduct }) => {
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('order')) || [];
+    setFavorites(storedFavorites);
+  }, [OrderDrawer]); // Reload favorites when the drawer opens
+
+  const [alertCart,setAlertCart]=useState('')
+  const [open,setOpen]=useState(false)
+
+  const handleAddCart = (product) => {
+    let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const isAlreadyInCart = addedCart.some(item => item.id === product.id);
+  
+    if (!isAlreadyInCart) {
+      addedCart.push(product);
+      localStorage.setItem('cart', JSON.stringify(addedCart));
+  
+      setOpen(true);
+      setAlertCart('Product added to cart!');
+      setTimeout(() => setOpen(false), 3000);
+    } else {
+      setAlertCart('Product is already in the cart!');
+      setOpen(true);
+      setTimeout(() => setOpen(false), 3000);
+    }
+  };
+
+  return (
+  <AnimatePresence>
+      {OrderDrawer && (
+    <>
+      <motion.div
+       initial={{ opacity:0 }}  // Start with width 0 and off-screen
+       animate={{ opacity:1 }}  // Expand width and move into view
+       exit={{ opacity:0}}  // Contract width and move off-screen
+       transition={{ type: 'spring', stiffness: 300, damping: 30 }} 
+      onClick={onClose} 
+      className="backdrop" 
+      style={{
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        bottom: 0, 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        zIndex: 999, 
+      }} 
+    />
+      <motion.div
+       initial={{ opacity:0 }}  // Start with width 0 and off-screen
+       animate={{ opacity:1 }}  // Expand width and move into view
+       exit={{ opacity:0}}  // Contract width and move off-screen
+       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      className="drawer1 flex flex-col justify-start overflow-y-auto"
+       style={{  position: 'absolute',
+        top: 0,
+        right: 0, width: '320px', height: '100%',  zIndex: 1000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
+       <div className=" flex items-start justify-between w-[100%]">
+         <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
+          <MdArrowBackIos style={{width:'20px',height:'20px'}}/></button>
+          <div className="lowo">
+          <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+                <path
+                  d="M7 17L17 7M17 7H8M17 7V16"
+                  stroke="#e8e8f0"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+          </div>
+          </div> 
+        <h3 className='text-md font-semibold text-[#fbfbfb] mt-6'>Order</h3>
+        <ul className='flex flex-col items-center justify-center px-2'>
+          {favorites.length > 0 ? (
+            favorites.map((product, index) => (
+              <li key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
+                <div onClick={()=>seeProduct(product)}>
+                <div className="flex items-center justify-center w-full mb-4">
+                {product.images && product.images.length > 0 && (
+                  <img src={product.images[0]} alt=""style={{ width: '85px', height: '85px',objectFit:'contain' }} />
+                )}
+                </div>
+                <p><strong>{product.name}</strong></p>
+                <p>Price: ${product.price}</p>
+                </div>
+                <div className="flex justify-around mt-4">
+                  <button onClick={()=>handleAddCart(product)} style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
+                  <button  onClick={()=>removeFavorites(product)} className='bg-[#585782] text-[#e8e8f0] rounded-md p-1.5 z-100'><MdDeleteOutline style={{width:'20px',height:'20px'}}/></button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <div className='flex flex-col items-center justify-center gap-4 mt-8'>
+              <img src={notfound} alt="" srcset="" width="200px"height="200px" />
+              <p className='font-light text-sm text-[#d6d6dc]'>No favorite products yet</p></div>
+          )}
+        </ul>
+      </motion.div>
+      
+      </>
+    )}
+  </AnimatePresence>
+  );
+};
 
 
 
-// Drawer component
+
+// Drawer component for favorites 
 const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) => {
   const [favorites, setFavorites] = useState([]);
 
