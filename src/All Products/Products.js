@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
-  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome   } from "react-icons/md"
+  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose    } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
@@ -14,6 +14,8 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import Cart from './Cart'
 
 function ProductsPage() {
@@ -365,41 +367,20 @@ const addToFavorites = (product) => {
 };
 
 const [OrderDrawer,setOrderDrawer]=useState(false)
-
+const [orderProduct, setOrderProduct] = useState(null);
 
 const orderNow = async (productId) => {
-  try {
-    // 1. Fetch the products data (assuming your JSON file is hosted at this location)
-    const response = await fetch('/data/brands/all-products.json');
-    if (!response.ok) {
-      throw new Error('Product not found');
-    }
-
-    // 2. Parse the product data
-    const products = await response.json();
-
-    // 3. Find the specific product based on productId
-    const product = products.find((prod) => prod.id === productId);
-    
-    if (!product) {
-      throw new Error('Product not found');
-    }
-
-    // Store the product in localStorage (optional)
-    let favorites = JSON.parse(localStorage.getItem("order")) || [];
-    favorites.push(product);
-    localStorage.setItem("order", JSON.stringify(favorites));
-
-    // Optionally, store it in the state to show it immediately
-    setFav(true);
-    setOpen(true);
-    setOrderDrawer(true);
-  } catch (error) {
-    console.error('Error fetching product:', error);
-  }
+  setOrderProduct(product);
+   setOrderDrawer(true);
 };
 
+//// for link 
 
+const navigate = useNavigate();
+
+const orderNowPT2 = (product) => {
+  navigate('/Order', { state: { product } });
+};
 
 const removeFavorites =(product)=>{
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -750,7 +731,8 @@ const action = (
      </div>
      <div className="flex flex-col gap-2">
      <div className="buttonss flex items-center gap-6 mt-3">
-     <Link to="/Order"> <button onClick={()=>orderNow(product.id)} className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button></Link>
+      <button onClick={()=>orderNow(product)}>OrderNow</button>
+     <button onClick={()=>orderNowPT2(product)} className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button>
       <button onClick={()=> handleAddCart(product)} className='order2 text-xl font-normal rounded-md' style={{border:'1px solid #434363'}}>Add to Cart</button>
       <button  onClick={() =>addToFavorites(product)} className='order2'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
      </div>
@@ -799,7 +781,7 @@ const action = (
      </div>
       </div>
     </div>
-    <TheOrderDrawer seeProduct={seeProduct} OrderDrawer={OrderDrawer} removeFavorites={removeFavorites} onClose={()=>setOrderDrawer(false)}/>
+    <TheOrderDrawer productValue={productValue} orderProduct={orderProduct} OrderDrawer={OrderDrawer}  onClose={()=>setOrderDrawer(false)}/>
     <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 
@@ -828,34 +810,8 @@ const action = (
 }
 
 /// Drawer component for buying 
-const TheOrderDrawer = ({ OrderDrawer, onClose,removeFavorites,seeProduct }) => {
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('order')) || [];
-    setFavorites(storedFavorites);
-  }, [OrderDrawer]); // Reload favorites when the drawer opens
-
-  const [alertCart,setAlertCart]=useState('')
-  const [open,setOpen]=useState(false)
-
-  const handleAddCart = (product) => {
-    let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const isAlreadyInCart = addedCart.some(item => item.id === product.id);
-  
-    if (!isAlreadyInCart) {
-      addedCart.push(product);
-      localStorage.setItem('cart', JSON.stringify(addedCart));
-  
-      setOpen(true);
-      setAlertCart('Product added to cart!');
-      setTimeout(() => setOpen(false), 3000);
-    } else {
-      setAlertCart('Product is already in the cart!');
-      setOpen(true);
-      setTimeout(() => setOpen(false), 3000);
-    }
-  };
+const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
+ 
 
   return (
   <AnimatePresence>
@@ -874,7 +830,7 @@ const TheOrderDrawer = ({ OrderDrawer, onClose,removeFavorites,seeProduct }) => 
         left: 0, 
         right: 0, 
         bottom: 0, 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        backgroundColor: 'rgba(0, 0, 0, 0.7)', 
         zIndex: 999, 
       }} 
     />
@@ -884,50 +840,54 @@ const TheOrderDrawer = ({ OrderDrawer, onClose,removeFavorites,seeProduct }) => 
        exit={{ opacity:0}}  // Contract width and move off-screen
        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="drawer1 flex flex-col justify-start overflow-y-auto"
-       style={{  position: 'absolute',
-        top: 0,
-        right: 0, width: '320px', height: '100%',  zIndex: 1000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
-       <div className=" flex items-start justify-between w-[100%]">
-         <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
-          <MdArrowBackIos style={{width:'20px',height:'20px'}}/></button>
-          <div className="lowo">
-          <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
-                <path
-                  d="M7 17L17 7M17 7H8M17 7V16"
-                  stroke="#e8e8f0"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+      style={{
+        position: 'fixed', // Use fixed to center on screen
+        top: '1%', // Leave some margin from the top
+        bottom: '5%', // Leave some margin from the bottom
+        left: '25%', // Leave some margin from the left
+        right: '25%', // Leave some margin from the righ // Background color for the drawer
+        borderRadius: '10px', // Optional: Add rounded corners
+        zIndex: 1000,
+        padding: '20px', // Add padding inside the drawer
+        overflow: 'hidden', // Hide overflow if content exceeds
+      }}>
+       <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+       <h3 className='text-lg md:text-xl font-semibold text-[#fbfbfb] mt-6'>Order</h3>
+          <div className="s">
+          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
+          <MdOutlineClose style={{width:'20px',height:'20px'}}/></button>
           </div>
           </div> 
-        <h3 className='text-md font-semibold text-[#fbfbfb] mt-6'>Order</h3>
-        <ul className='flex flex-col items-center justify-center px-2'>
-          {favorites.length > 0 ? (
-            favorites.map((product, index) => (
-              <li key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
-                <div onClick={()=>seeProduct(product)}>
-                <div className="flex items-center justify-center w-full mb-4">
-                {product.images && product.images.length > 0 && (
-                  <img src={product.images[0]} alt=""style={{ width: '85px', height: '85px',objectFit:'contain' }} />
-                )}
-                </div>
-                <p><strong>{product.name}</strong></p>
-                <p>Price: ${product.price}</p>
-                </div>
-                <div className="flex justify-around mt-4">
-                  <button onClick={()=>handleAddCart(product)} style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
-                  <button  onClick={()=>removeFavorites(product)} className='bg-[#585782] text-[#e8e8f0] rounded-md p-1.5 z-100'><MdDeleteOutline style={{width:'20px',height:'20px'}}/></button>
-                </div>
-              </li>
-            ))
-          ) : (
-            <div className='flex flex-col items-center justify-center gap-4 mt-8'>
-              <img src={notfound} alt="" srcset="" width="200px"height="200px" />
-              <p className='font-light text-sm text-[#d6d6dc]'>No favorite products yet</p></div>
-          )}
-        </ul>
+       
+        <div>
+      <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+      <img width="50px" src={orderProduct.images[0]} alt="" />
+     <div className="flex flex-col items-start gap-1">
+     <p> {orderProduct?.name}</p>
+     <div className="flex gap-6">
+       <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Price</strong>{orderProduct?.price}$</p>
+     <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
+     </div>
+      </div>
+      <div className="flex justify-between items-center gap-4 mt-6">
+      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Name" />
+      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Surname" />
+      </div>
+      <div className="flex justify-between items-center gap-4 mt-8">
+      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
+      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" />
+      </div>
+      <div className="flex justify-between items-center gap-4 mt-8">
+      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
+      <select className="rounded-md p-1 w-full" name="" id=""style={{backgroundColor:'transparent',border:'1px solid #585782',color:"#00000"}}>
+        <option value="">1</option>
+        <option value="">2</option>
+        <option value="">3</option>
+        <option value="">4</option>
+        <option value="">5</option>
+      </select>
+      </div>
+    </div>
       </motion.div>
       
       </>

@@ -464,8 +464,8 @@ const action = (
 
                    <div className="flex flex-col gap-2 items-center px-3">
                          <div className="flex flex-col gap-4 items-center mt-2">
-                          <input className="rounded-full p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" value={emailmessage} onChange={handleEmail} />
-                          <textarea className="rounded-full p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} name="" placeholder="Message" id="" value={textMessage} onChange={handleMessage}></textarea>
+                          <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" value={emailmessage} onChange={handleEmail} />
+                          <textarea className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} name="" placeholder="Message" id="" value={textMessage} onChange={handleMessage}></textarea>
                          </div>
                          <div className="flex justify-between items-center gap-6 mt-2">
                           <div className="useEmail flex gap-2 items-center">

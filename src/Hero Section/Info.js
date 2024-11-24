@@ -358,8 +358,8 @@ const Info = (props) => {
                     >
                   Write your email today and start earning points on every purchase! Enjoy discounts and early access to sales.
                <div className="flex gap-2 items-center mt-3">
-               <input className="rounded-full p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" value={email} onChange={handleEmail} />
-               <button className="rounded-full p-1" style={{backgroundColor:'#585782'}} onClick={handleClick}><CiLocationArrow1 className="send" style={{color:'#fbfbfb',width:'25px',height:'25px'}}/></button>
+               <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" value={email} onChange={handleEmail} />
+               <button className="rounded-md p-1" style={{backgroundColor:'#585782'}} onClick={handleClick}><CiLocationArrow1 className="send" style={{color:'#fbfbfb',width:'25px',height:'25px'}}/></button>
                </div>
                     </p>
                 </motion.div>

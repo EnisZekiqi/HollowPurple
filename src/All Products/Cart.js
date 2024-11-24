@@ -1,4 +1,3 @@
-
 import { useState,useEffect } from "react";
 import none from '../images/undraw_web_search_re_efla.svg'
 import { MdDeleteOutline   } from "react-icons/md"
@@ -65,7 +64,8 @@ const Cart = ({ seeProduct}) => {
             <motion.div
             initial={{opacity:0,y:-15}}
             animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
-           key={index} className="cart-item pl-12">
+           key={index} className="cart-item pl-12 py-3" 
+           style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
               <div onClick={() => seeProduct(product)}>
                 <div className="flex items-center justify-start w-full mb-4">
                   {product.images && product.images.length > 0 && (
