@@ -51,6 +51,26 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     border-radius: 10px;
     border: 1px solid #585782;
 }
+
+.drawer1::-webkit-scrollbar {
+  width: 8px; /* Width of the scroll bar */
+}
+
+.drawer1::-webkit-scrollbar-track {
+  background: #2c2c2f; /* Background color of the track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.drawer1::-webkit-scrollbar-thumb {
+  background-color: #6f6e9e; /* Scroll thumb color */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid #2c2c2f; /* Adds a border for contrast */
+}
+
+.drawer1::-webkit-scrollbar-thumb:hover {
+  background-color: #8b88c5; /* Darker shade when hovering */
+}
+
 .pdoructImage{
   width:400px;
 height:400px;

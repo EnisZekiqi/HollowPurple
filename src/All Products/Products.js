@@ -3,7 +3,9 @@ import * as React from 'react';
 import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
-  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose    } from "react-icons/md"
+  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,
+  MdOutlineCircle ,MdCircle 
+} from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
 import { motion,AnimatePresence }from 'framer-motion'
@@ -16,7 +18,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 import Cart from './Cart'
+import { ChangeHistoryTwoTone } from '@mui/icons-material';
 
 function ProductsPage() {
 
@@ -245,8 +249,6 @@ const action = (
 </div>
       </div>
      )}
-   <div className="empty"></div>
-   <div className="empty"></div>
    <div className="empty"></div>
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
@@ -812,6 +814,45 @@ const action = (
 /// Drawer component for buying 
 const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
  
+  useEffect(() => {
+    if (OrderDrawer) {
+      // Disable body scrolling
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Re-enable body scrolling
+      document.body.style.overflow = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [OrderDrawer]);
+
+
+const optionsCity = [
+  { city: 'Vushtrri' },
+  { city: 'Prishtina' },
+  { city: 'Mitrovica' },
+  { city: 'Podujeva' },
+  { city: 'Gjilan' },
+  { city: 'Prizren' },
+  { city: 'Obiliq' },
+  { city: 'Gjakove' },
+  { city: 'Drenas' },
+];
+
+const [citySelect,setCitySelect]=useState('')
+
+const handleCityChange =(e)=>{
+  setCitySelect(e.target.value)
+}
+
+
+
+const [transport,setTransport]=useState('standard')
+
+const [payment,setPayment]=useState('cash')
 
   return (
   <AnimatePresence>
@@ -843,13 +884,13 @@ const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
       style={{
         position: 'fixed', // Use fixed to center on screen
         top: '1%', // Leave some margin from the top
-        bottom: '5%', // Leave some margin from the bottom
+        bottom: '15%', // Leave some margin from the bottom
         left: '25%', // Leave some margin from the left
         right: '25%', // Leave some margin from the righ // Background color for the drawer
         borderRadius: '10px', // Optional: Add rounded corners
         zIndex: 1000,
         padding: '20px', // Add padding inside the drawer
-        overflow: 'hidden', // Hide overflow if content exceeds
+        overflow: 'auto', // Hide overflow if content exceeds
       }}>
        <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
        <h3 className='text-lg md:text-xl font-semibold text-[#fbfbfb] mt-6'>Order</h3>
@@ -879,14 +920,52 @@ const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
       <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
-      <select className="rounded-md p-1 w-full" name="" id=""style={{backgroundColor:'transparent',border:'1px solid #585782',color:"#00000"}}>
-        <option value="">1</option>
-        <option value="">2</option>
-        <option value="">3</option>
-        <option value="">4</option>
-        <option value="">5</option>
-      </select>
+      <select
+      className="rounded-md p-1 w-full"
+      name="City"
+      id="city-select"
+      aria-label='City'
+      style={{ backgroundColor: 'transparent', border: '1px solid #585782', color: "#9f9fac" }}
+      value={citySelect} // Bind value to the selected city
+      onChange={handleCityChange} // Handle city selection change
+    >
+      <option value=""style={{backgroundColor:'#18181b',color:"#d6d6dc"}}>Select a City</option>
+      {optionsCity.map((option, index) => (
+        <option style={{backgroundColor:'#18181b',color:"#d6d6dc"}} key={index} value={option.city}>
+          {option.city}
+        </option>
+      ))}
+    </select>
       </div>
+      <div className="flex flex-col mt-8">
+        <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Transport</h1>
+        <button className='text-start mt-2 mb-2 rounded-md pl-1 py-2 flex items-center gap-1' 
+        onClick={()=>setTransport('standard')}
+        style={{color:transport === 'standard' ? '#fbfbfb':'#d6d6dc',border:transport ==='standard' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+          >{transport === 'standard' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Standard - Transport Free</button>
+        <button className='text-start mt-2 rounded-md pl-1 py-2 flex items-center gap-1' onClick={()=>setTransport('office')}
+           style={{color:transport ==='office' ? '#fbfbfb':'#d6d6dc',border:transport ==='office' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+          >{transport === 'office' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Take in our Office - Free</button>
+      </div>
+      <div className="flex flex-col mt-8">
+      <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
+      <div className="flex items-center justify-between gap-2">
+       
+        <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
+        onClick={()=>setPayment('cash')}
+        style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+          >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
+        <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+         onClick={()=>setPayment('online')}
+           style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+          >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
+           <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+         onClick={()=>setPayment('bank')}
+           style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+          >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
+      </div>
+      </div>
+      <button className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
     </div>
       </motion.div>
       
