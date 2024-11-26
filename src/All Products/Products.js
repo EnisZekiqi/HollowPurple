@@ -250,6 +250,7 @@ const action = (
       </div>
      )}
    <div className="empty"></div>
+  
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 
@@ -529,7 +530,7 @@ const action = (
 
   return (
    <div>
-     <div className="product-details p-4 h-screen">
+     <div className="product-details p-4 h-full">
        <AnimatePresence>
       <div className="navbarfinally" style={{
   position: 'sticky',
@@ -785,6 +786,7 @@ const action = (
     </div>
     <TheOrderDrawer productValue={productValue} orderProduct={orderProduct} OrderDrawer={OrderDrawer}  onClose={()=>setOrderDrawer(false)}/>
     <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+    
     </div>
     {open && 
     <Snackbar
@@ -814,20 +816,7 @@ const action = (
 /// Drawer component for buying 
 const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
  
-  useEffect(() => {
-    if (OrderDrawer) {
-      // Disable body scrolling
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Re-enable body scrolling
-      document.body.style.overflow = '';
-    }
-
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [OrderDrawer]);
+ 
 
 
 const optionsCity = [
@@ -854,6 +843,46 @@ const [transport,setTransport]=useState('standard')
 
 const [payment,setPayment]=useState('cash')
 
+
+//// input functions //// /
+
+const [Name,setName]=useState('')
+const [Surname,setSurname]=useState('')
+const [Phone,setPhone]=useState('')
+const [Email,setEmail]=useState('')
+const [Adress,setAdress]=useState('')
+
+const [errorBuy,setErrorBuy]=useState('')
+
+const handleNameChange =(e)=>{
+  setName(e.target.value)
+}
+const handleSurnameChange =(e)=>{
+  setSurname(e.target.value)
+}
+const handlePhoneChange =(e)=>{
+  setPhone(e.target.value)
+}
+const handleEmailChange =(e)=>{
+  setEmail(e.target.value)
+}
+const handleAdressChange =(e)=>{
+  setAdress(e.target.value)
+}
+
+
+const submitOrder = ()=>{
+  if (Name.trim() || Surname.trim() || Phone.trim() || Email.trim() || Adress.trim() || citySelect.trim() === '') {
+    setErrorBuy('Please submit all the fields')
+    setTimeout(() => {
+      setErrorBuy('')
+    }, 3000);
+  }else{
+    setErrorBuy('')
+  }
+ 
+}
+
   return (
   <AnimatePresence>
       {OrderDrawer && (
@@ -872,7 +901,7 @@ const [payment,setPayment]=useState('cash')
         right: 0, 
         bottom: 0, 
         backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-        zIndex: 999, 
+        zIndex: 2000, 
       }} 
     />
       <motion.div
@@ -880,16 +909,15 @@ const [payment,setPayment]=useState('cash')
        animate={{ opacity:1 }}  // Expand width and move into view
        exit={{ opacity:0}}  // Contract width and move off-screen
        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="drawer1 flex flex-col justify-start overflow-y-auto"
+      className="drawer1 flex flex-col justify-start overflow-y-auto px-4 py-2 h-[550px]"
       style={{
         position: 'fixed', // Use fixed to center on screen
-        top: '1%', // Leave some margin from the top
-        bottom: '15%', // Leave some margin from the bottom
+        top: '10%', // Leave some margin from the top
+        bottom: '25%', // Leave some margin from the bottom
         left: '25%', // Leave some margin from the left
         right: '25%', // Leave some margin from the righ // Background color for the drawer
         borderRadius: '10px', // Optional: Add rounded corners
-        zIndex: 1000,
-        padding: '20px', // Add padding inside the drawer
+        zIndex: 3000,
         overflow: 'auto', // Hide overflow if content exceeds
       }}>
        <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
@@ -911,15 +939,15 @@ const [payment,setPayment]=useState('cash')
      </div>
       </div>
       <div className="flex justify-between items-center gap-4 mt-6">
-      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Name" />
-      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Surname" />
+      <input value={Name} onChange={handleNameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Name" />
+      <input value={Surname} onChange={handleSurnameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Surname" />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
-      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
-      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" />
+      <input value={Phone} onChange={handlePhoneChange } className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
+      <input value={Email} onChange={handleEmailChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
-      <input className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
+      <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Adress" />
       <select
       className="rounded-md p-1 w-full"
       name="City"
@@ -965,7 +993,10 @@ const [payment,setPayment]=useState('cash')
           >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
       </div>
       </div>
-      <button className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
+      {errorBuy === '' ?  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>By filling all the forms the order will be more accurate and more faster to you , please fill them with caution</p>
+      :  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>{errorBuy}</p>  } 
+     
+      <button onClick={submitOrder} className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
     </div>
       </motion.div>
       
