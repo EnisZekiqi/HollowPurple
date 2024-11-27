@@ -37,6 +37,10 @@ const Cart = ({ seeProduct}) => {
         )
       );
     };
+
+    
+
+
     return (
       <div className="cart h-screen">
         <div className="flex p-1.5"> 

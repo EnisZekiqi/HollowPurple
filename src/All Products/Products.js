@@ -4,7 +4,7 @@ import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,
-  MdOutlineCircle ,MdCircle 
+  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining 
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
@@ -173,7 +173,7 @@ const action = (
            style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center cursor-pointer">
-       <a href="/login"> <MdOutlineAccountCircle  style={{width:'22px',height:'22px'}}/></a>
+       <a href="/login"> <MdOutlineDeliveryDining  style={{width:'22px',height:'22px'}}/></a>
         <div className="relative">
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
@@ -527,6 +527,24 @@ const action = (
 );
 
 
+//// stock changes when the order is complete ///// 
+
+const [productStock, setProductStock] = useState(product.stock);
+
+const handleStockUpdate = (newStock) => {
+  setProductStock(newStock);
+  localStorage.setItem(`productStock-${product.id}`, newStock);
+};
+
+
+useEffect(() => {
+  const savedStock = localStorage.getItem(`productStock-${product.id}`);
+  if (savedStock) {
+    setProductStock(Number(savedStock)); // Load from localStorage
+  } else {
+    setProductStock(product.stock); // Default to the product's initial stock if not found in localStorage
+  }
+}, [product.id]);
 
   return (
    <div>
@@ -561,7 +579,7 @@ const action = (
            style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center cursor-pointer">
-      <a href="/login">  <MdOutlineAccountCircle  style={{width:'25px',height:'25px'}}/></a>
+      <a href="/login">  <MdOutlineDeliveryDining  style={{width:'25px',height:'25px'}}/></a>
         <div className="relative">
        {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
         <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
@@ -613,7 +631,7 @@ const action = (
      initial={{opacity:0,y:-5}}
      animate={{opacity:1,y:0,transition:{duration:0.5}}}
     className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit" style={{color:'#9f9fac',transition:'all 0.5s'}}>
-      <a href="/login"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
+      <a href="/"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
       <IoIosArrowForward/>
      <a href="/products"><p>Product</p></a>
       <IoIosArrowForward/>
@@ -671,7 +689,7 @@ const action = (
                 />
               <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue + 1)}>+</button>
             </div>
-          <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{product.stock} on Stock</p>
+          <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{productStock} on Stock</p>
       </div>
       {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
      <div className="flex flex-col w-full">
@@ -784,7 +802,14 @@ const action = (
      </div>
       </div>
     </div>
-    <TheOrderDrawer productValue={productValue} orderProduct={orderProduct} OrderDrawer={OrderDrawer}  onClose={()=>setOrderDrawer(false)}/>
+    <TheOrderDrawer
+     productValue={productValue}
+      orderProduct={orderProduct}
+       OrderDrawer={OrderDrawer} 
+       product={product}
+       productStock={productStock}
+       handleStockUpdate={handleStockUpdate}
+        onClose={()=>setOrderDrawer(false)}/>
     <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     
     </div>
@@ -814,7 +839,7 @@ const action = (
 }
 
 /// Drawer component for buying 
-const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue }) => {
+const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue, productStock, handleStockUpdate }) => {
  
  
 
@@ -871,17 +896,48 @@ const handleAdressChange =(e)=>{
 }
 
 
-const submitOrder = ()=>{
-  if (Name.trim() || Surname.trim() || Phone.trim() || Email.trim() || Adress.trim() || citySelect.trim() === '') {
-    setErrorBuy('Please submit all the fields')
+
+
+const submitOrder = () => {
+  if (
+    !Name.trim() || 
+    !Surname.trim() || 
+    !Phone.trim() || 
+    !Email.trim() || 
+    !Adress.trim() || 
+    !citySelect.trim()
+  ) {
+    setErrorBuy('Please submit all the fields');
     setTimeout(() => {
-      setErrorBuy('')
+      setErrorBuy('');
     }, 3000);
-  }else{
-    setErrorBuy('')
+    return;
   }
- 
-}
+
+  if (productValue > productStock) {
+    setErrorBuy('Insufficient stock for this order');
+    setTimeout(() => setErrorBuy(''), 3000);
+    return;
+  }
+
+  const updatedStock = productStock - productValue;
+  handleStockUpdate(updatedStock); // Save to state and localStorage
+
+  setErrorBuy('Order submitted successfully');
+  setTimeout(() => setErrorBuy(''), 3000);
+
+  // Reset the form fields
+  setName('');
+  setSurname('');
+  setPhone('');
+  setEmail('');
+  setAdress('');
+  setCitySelect('');
+  setTransport('');
+  setPayment('');
+};
+
+
 
   return (
   <AnimatePresence>
