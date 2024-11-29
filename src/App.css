@@ -92,6 +92,34 @@ object-fit: contain;
   background-size: cover;
   background-repeat: no-repeat;
 }
+.logosmall{
+  background: transparent;
+  color: #585782;
+  width: 25px;
+  height: 25px;
+  stroke: #585782;
+}
+
+@media(max-width:764px){
+  .logosmall{
+    width: 30px;
+    height: 30px;
+    background: #585782;
+    color: #e8e8f0;
+    stroke: #e8e8f0;
+  }
+}
+
+.searchProduct{
+  width: 270px;
+}
+
+
+@media(max-width:764px){
+  .searchProduct{
+    width: 190px;
+  }
+}
 .transportInfo{
   background-color:rgba(24, 24, 27,0.2);
   border:1px solid #3b3b45
@@ -362,6 +390,13 @@ height: 30px;
 .detailsdescription{
   width: 650px;
 }
+
+@media(max-width:764px){
+  .detailsdescription{
+    width: 300px;
+  }
+}
+
  /* Create a custom checkbox */
  .checkmark {
   position: relative;

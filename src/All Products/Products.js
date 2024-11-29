@@ -561,23 +561,26 @@ useEffect(() => {
        initial={{opacity:0,y:-10}}
        animate={{opacity:1,y:0,transition:{duration:1}}}
        exit={{opacity:0,y:-10,transition:{duration:1}}}
-       className=" flex justify-between items-center px-1.5 py-2" >
+       className=" flex justify-between items-center px-3 md:px-1.5 py-2" >
            <div className='flex items-center gap-1'>
-           <h1 onClick={handleGoBack} className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
-            <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+            <div className="">
+            <h1 onClick={handleGoBack} className='hidden md:block font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
+            <svg className='logosmall' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
                 <path
                   d="M7 17L17 7M17 7H8M17 7V16"
-                  stroke="#5a58a5"
+                 
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
+            </div>
            </div>
            <input
             value={searchQuery}
             onChange={handleSearch}
-           style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
+            className='searchProduct'
+           style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px'}} 
            type="text" placeholder='Search Products' />
     <div className="flex gap-3 items-center cursor-pointer">
       <a href="/login">  <MdOutlineDeliveryDining  style={{width:'25px',height:'25px'}}/></a>
@@ -631,7 +634,7 @@ useEffect(() => {
     <motion.div
      initial={{opacity:0,y:-5}}
      animate={{opacity:1,y:0,transition:{duration:0.5}}}
-    className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit" style={{color:'#9f9fac',transition:'all 0.5s'}}>
+    className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit mt-4 md:mt-0" style={{color:'#9f9fac',transition:'all 0.5s'}}>
       <a href="/"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
       <IoIosArrowForward/>
      <a href="/products"><p>Product</p></a>
@@ -640,17 +643,17 @@ useEffect(() => {
       <IoIosArrowForward/>
       <p>{product.name}</p>
     </motion.div>
-    <div className="empty">
+    <div className="empty hidden md:block">
     </div>
-    <div className="flex justify-between px-6 items-start">
-    <div className='w-[35%]'
+    <div className="flex flex-col md:flex-row justify-center md:justify-between px-6 items-start">
+    <div className='w-full flex justify-center items-center md:w-[35%]'
     >
-      <div className="product-details w-[50%] ml-8">
+      <div className="product-details w-[45%] md:w-[50%] ml-8">
       <Slider {...settings}>
       {product.images && product.images.length > 0 ? (
         product.images.map((image, index) => (
           <div key={index}>
-            <img className='pdoructImage mb-2' src={image} alt={`${product.name} ${index}`} />
+            <img className='pdoructImage mb-0 md:mb-2' src={image} alt={`${product.name} ${index}`} />
           </div>
         ))
       ) : (
@@ -659,7 +662,8 @@ useEffect(() => {
       </Slider>
     </div>
     </div>
-      <div className="flex flex-col gap-4 w-[65%] items-start justify-start">
+    <div className="empty block md:hidden"/>
+      <div className="flex flex-col gap-4 w-full  md:w-[65%] items-center md:items-start justify-start">
      <div className="flex items-center gap-2">
      {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
@@ -670,7 +674,7 @@ useEffect(() => {
            {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
      <div className="flex flex-col">
-     <h2 className="text-2xl font-bold text-start">{product.name}</h2>
+     <h2 className="text-xl md:text-2xl font-bold text-start">{product.name}</h2>
      <p className="text-lg text-start" style={{color:'#d6d6dc'}}>{product.price}$</p>
      </div>
      </div>
@@ -693,18 +697,18 @@ useEffect(() => {
           <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{productStock} on Stock</p>
       </div>
       {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
-     <div className="flex flex-col w-full">
+     <div className="flex flex-col w-full items-center md:items-stretch">
      <div className="flex gap-2 items-center w-3/4">
       <p className='text-xs font-light'>Transportation</p>
       <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
      </div>
      <div className="flex flex-col gap-2" >
-        <div className="flex items-center gap-4 mt-3 pt-3" >
-          <MdOutlineLocalShipping style={{width:'20px',height:'20px',color:'#6f6e9e'}}/>
-          <div className="flex items-center gap-6">
-            <p className='text-xs font-light' style={{color:"#d6d6dc"}}>{product.deliveryKosovo}</p>
+        <div className="flex items-center gap-2 md:gap-4 mt-3 pt-3" >
+        <div className="hidden md:block">  <MdOutlineLocalShipping style={{width:'20px',height:'20px',color:'#6f6e9e'}}/></div>
+          <div className="flex items-center gap-3 md:gap-6">
+            <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryKosovo}</p>
             <p className="hr block" style={{ width: '1px', height: '100%', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} >|</p>
-            <p className='text-xs font-light' style={{color:"#d6d6dc"}}>{product.deliveryBallkan}</p>
+            <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryBallkan}</p>
            <div onClick={()=>setDetailTransport(prev=>!prev)} className="moreInfoText flex items-center gap-0.5 ml-6 cursor-pointer">
             <p className="text-xs font-extralight">More info</p>
            <MdOutlineKeyboardArrowDown/>
@@ -718,15 +722,15 @@ useEffect(() => {
         animate={{opacity:1,y:0,transition:{duration:0.3}}}
         exit={{opacity:0,y:-10,transition:{duration:0.3}}}
         style={heightChange}
-        className='transportInfo flex justify-center items-center rounded-md w-3/4 mt-1.5'
+        className='transportInfo flex justify-center items-center rounded-md w-full md:w-3/4 mt-1.5'
         >
         <div className="flex items-center gap-6 px-4">
           <div style={{widht:'30px',height:'30px'}}>
           <MdInfoOutline   style={{color:'#d6d6dc'}}/>
           </div>
-          <p className='text-xs font-extralight text-start'>
+          <p className='text-xs  font-extralight text-start'>
           Product arrival time means the period from when your order is verified, and the verification notification you receive via email or SMS.
-          If the order is placed now, the product arrives according to the time frame set above. You will be continuously notified via email of the location of your order, including when the product arrives at our warehouse, and when it is shipped to you.
+          <p className='hidden md:block'>If the order is placed now, the product arrives according to the time frame set above. You will be continuously notified via email of the location of your order, including when the product arrives at our warehouse, and when it is shipped to you.</p>
           </p>
         </div>
        </motion.div>}
@@ -797,7 +801,7 @@ useEffect(() => {
       initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
           exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }}
-      className='mt-4 text-sm font-light' style={{color:"#fbfbfb"}}>{product.description}</motion.p>:''}
+      className='mt-4 text-xs md:text-sm font-light' style={{color:"#fbfbfb"}}>{product.description}</motion.p>:''}
     </AnimatePresence>
         
      </div>
