@@ -537,6 +537,7 @@ const handleStockUpdate = (newStock) => {
 };
 
 
+
 useEffect(() => {
   const savedStock = localStorage.getItem(`productStock-${product.id}`);
   if (savedStock) {
@@ -1051,6 +1052,72 @@ const submitOrder = () => {
       </div>
       {errorBuy === '' ?  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>By filling all the forms the order will be more accurate and more faster to you , please fill them with caution</p>
       :  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>{errorBuy}</p>  } 
+       <AnimatePresence>
+      {errorBuy === 'Order submitted successfully' ? (
+        <motion.div
+          initial={{ clipPath: 'circle(0% at 50% 50%)' }}
+          animate={{ clipPath: 'circle(100% at 50% 50%)' }}
+          exit={{ clipPath: 'circle(0% at 50% 50%)' }}
+          transition={{
+            duration: 0.8,
+            ease: 'easeInOut',
+          }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'rgba(0, 0, 0, 0.5)', // backdrop dark overlay
+            backdropFilter: 'blur(10px)', // blur effect
+            zIndex: 9999,
+            height:'100vh' // ensure it sits on top of other content
+          }}
+        >
+          <motion.svg
+            viewBox="0 -0.5 25 25"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            width="100px" // Adjust size as needed
+            height="100px"
+          >
+            <motion.path
+              d="M5.5 12.5L10.167 17L19.5 8"
+              stroke="#6f6e9e"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              exit={{ pathLength: 0 }}
+              transition={{
+                duration: 1.5, // duration of path drawing
+                ease: 'easeInOut',
+              }}
+            />
+          </motion.svg>
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.4,
+            ease: 'easeInOut',
+          }}
+          style={{
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          {errorBuy}
+        </motion.div>
+      )}
+    </AnimatePresence>
      
       <button onClick={submitOrder} className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
     </div>
