@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
-  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,
+  MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,MdOutlineDone ,
   MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining 
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
@@ -65,13 +65,17 @@ function ProductsPage() {
 
 
 const [showProduct,setShowProduct]=useState(null)
-
+const [loadingTime,setLoadingTime]=useState(false)
 
 const seeProduct =(product)=>{
   setShowProduct(product)
   setSearchQuery('')
   setSearchResults([]); 
   setDrawerOpener(false)
+  setLoadingTime(true)
+  setTimeout(() => {
+    setLoadingTime(false)
+  }, 4000);
 }
 
 ///go back to searching function /////
@@ -145,63 +149,115 @@ const action = (
       product={showProduct}
        handleGoBack={handleGoBack} 
        allProducts={allProducts} 
-       seeProduct={seeProduct}/>
+       seeProduct={seeProduct}
+       loadingTime={loadingTime}/>
      ):(
       <div>
-         <navbar className=""  >
-       <AnimatePresence>
-       <motion.div
-       initial={{opacity:0,y:-10}}
-       animate={{opacity:1,y:0,transition:{duration:1}}}
-       exit={{opacity:0,y:-10,transition:{duration:1}}}
-       className="flex justify-between items-center py-2.5 px-5">
-           <div className='flex items-center gap-1'>
-           <h1 className='font-bold text-lg md:text-xl'>HollowPurple</h1>
-            <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+        <div className="navbarfinally" style={{
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    width: '100%'
+  }}>
+    {/* Full navbar content that shows only when scrolled up */}
+   
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+        exit={{ opacity: 0, y: -10, transition: { duration: 1 } }}
+        className="flex flex-col px-3 md:px-1.5 py-2 mb-2.5"
+      >
+        <div className="flex justify-between items-center">
+          <div className='flex items-center gap-1'>
+            <div className="flex items-center gap-1">
+              <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
+              <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
                 <path
                   d="M7 17L17 7M17 7H8M17 7V16"
-                  stroke="#5a58a5"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
-           </div>
-           <input
+            </div>
+          </div>
+          <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
+          <input
             value={searchQuery}
             onChange={handleSearch}
-           style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px',width:'270px'}} 
-           type="text" placeholder='Search Products' />
-    <div className="flex gap-3 items-center cursor-pointer">
-       <a href="/login"> <MdOutlineDeliveryDining  style={{width:'22px',height:'22px'}}/></a>
-        <div className="relative">
-       {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
-        <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
+            className="searchProduct"
+            style={{
+              background: 'transparent',
+              border: '1px solid #6f6e9e',
+              padding: '3px',
+              borderRadius: '5px',
+              transition: 'width 0.3s ease-in-out',
+              width: '50%', // Adjust as needed
+            }}
+            type="text"
+            placeholder='Search Products'
+          />
         </div>
-        <div className="relative">
-      {cartCount === 0 ?'' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
-      <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
-      </div>
-    </div>
-        </motion.div>
-       </AnimatePresence>
-      </navbar>
+          <div className="flex gap-3 items-center cursor-pointer">
+            <a href="/login">
+              <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+            </a>
+            <div className="relative">
+              {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
+              <div onClick={()=>setDrawerOpener(true)}>
+                <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+              </div>
+            </div>
+            <div className="relative">
+              {cartCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
+              <Link to="/cart">
+                <MdOutlineShoppingCart style={{ width: '25px', height: '25px' }} />
+              </Link>
+            </div>
+          </div>
+        
+        </div>
+
+        {/* Main Search Bar */}
+        <div className="flex md:hidden items-center justify-center w-full mt-2.5">
+          <input
+            value={searchQuery}
+            onChange={handleSearch}
+            className="searchProduct"
+            style={{
+              background: 'transparent',
+              border: '1px solid #6f6e9e',
+              padding: '3px',
+              borderRadius: '5px',
+              transition: 'width 0.3s ease-in-out',
+              width: '100%', // Adjust as needed
+            }}
+            type="text"
+            placeholder='Search Products'
+          />
+        </div>
+      </motion.div>
+  
+
+    {/* Floating search bar that stays when scrolled down */}
+   
+  </div>
       <div>
   
       <AnimatePresence>
-       {searchQuery.trim() !== '' && (
-    <motion.div
-    initial={{opacity:0,y:-10}}
-    animate={{opacity:1,y:0,transiton:{duration:0.5}}}
-    exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-    className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
-      {searchResults.length > 0 ? (
-        searchResults.map(product => (
-          <div
-           key={product.id}
-           onClick={()=>seeProduct(product)}
-           className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
-           {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+      {searchQuery.trim() !== '' && (
+  <motion.div
+  initial={{opacity:0,y:-10}}
+  animate={{opacity:1,y:0,transiton:{duration:0.5}}}
+  exit={{opacity:0,y:-10,transition:{duration:0.2}}}
+  className="search-results sticky left-[3%] right-[3%] md:left-[20%] md:right-[20%] top-24 md:top-20 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+    {searchResults.length > 0 ? (
+      searchResults.map(product => (
+        <div
+         key={product.id}
+         onClick={()=>seeProduct(product)}
+         className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
+         {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
@@ -210,16 +266,16 @@ const action = (
            {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
            {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
 
-           <div className="flex flex-col gap-2">
-           <h3 className='font-semibold text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
-           <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
-           </div>
-           
-          </div>
-        ))
-      ) : (
-        <p>No products found.</p>
-      )}
+         <div className="flex flex-col gap-2">
+         <h3 className='font-semibold text-start text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
+         <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
+         </div>
+         
+        </div>
+      ))
+    ) : (
+      <p>No products found.</p>
+    )}
     </motion.div>
   )}
        </AnimatePresence>
@@ -278,7 +334,7 @@ const action = (
   );
 }
 
-const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
+const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime })=>{
 
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -327,7 +383,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct })=>{
     const [manyProduct,setManyProduct]=useState(false)
 
     useEffect(() => {
-      if (productValue > product.stock) {
+      if (productValue > productStock) {
         setManyProduct(true)
         
       }else{
@@ -406,7 +462,8 @@ useEffect(() => {
 
 }, []);
 
-const [alertCart,setAlertCart]=useState('')
+const [alertCart,setAlertCart]=useState(false)
+const [alertProductId, setAlertProductId] = useState(null);
 
 const handleAddCart = (product) => {
   let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -416,16 +473,31 @@ const handleAddCart = (product) => {
     addedCart.push(product);
     localStorage.setItem('cart', JSON.stringify(addedCart));
 
+    // Show alert only if the added product is the one that triggered it
+    if (alertProductId !== product.id) {
+      setAlertProductId(product.id);
+      setAlertCart(true);
+      setTimeout(() => setAlertCart(false), 3000);
+    }
+
     setOpen(true);
-    setAlertCart('Product added to cart!');
-    setTimeout(() => setOpen(false), 3000);
   } else {
-    setAlertCart('Product is already in the cart!');
-    setOpen(true);
-    setTimeout(() => setOpen(false), 3000);
+    // Reset the alert state if the same product is being added again
+    setAlertCart(false);
+    setOpen(false);
+    setTimeout(() => setAlertCart(false), 3000);
   }
 };
 
+// Use an effect to clear the `alertProductId` after the alert is shown
+useEffect(() => {
+  if (alertCart) {
+    setTimeout(() => {
+      setAlertCart(false);
+      setAlertProductId(null);
+    }, 3000);
+  }
+}, [alertCart]);
 
 const handleRemoveCart = (product) => {
   let addedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -547,298 +619,350 @@ useEffect(() => {
   }
 }, [product.id]);
 
+
   return (
    <div>
-     <div className="product-details p-4 h-full">
-       <AnimatePresence>
-      <div className="navbarfinally" style={{
-  position: 'sticky',
-  top: 0, // Keeps the navbar at the top of the viewport
-  zIndex: 1000, // Ensures it stays above other elements, // Optional background color
-  width: '100%',
-}}>
+    {loadingTime === true ? <div className='h-screen flex items-center justify-center bg-gray-900 bg-opacity-60 backdrop-blur-md'
+    style={{ backgroundColor: 'rgba(1, 1, 3,0.7)' }}
+    >
+      <div className="loader"></div>
+      <div className="empty"></div>
+    </div> :
+     <motion.div
+     
+     className="product-details p-2 md:p-4 h-full">
+     <AnimatePresence>
+     <div className="navbarfinally" style={{
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    width: '100%'
+  }}>
+    {/* Full navbar content that shows only when scrolled up */}
+   
       <motion.div
-       initial={{opacity:0,y:-10}}
-       animate={{opacity:1,y:0,transition:{duration:1}}}
-       exit={{opacity:0,y:-10,transition:{duration:1}}}
-       className=" flex justify-between items-center px-3 md:px-1.5 py-2" >
-           <div className='flex items-center gap-1'>
-            <div className="">
-            <h1 onClick={handleGoBack} className='hidden md:block font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
-            <svg className='logosmall' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+        exit={{ opacity: 0, y: -10, transition: { duration: 1 } }}
+        className="flex flex-col px-3 md:px-1.5 py-2 mb-2.5"
+      >
+        <div className="flex justify-between items-center">
+          <div className='flex items-center gap-1'>
+            <div className="flex items-center gap-1">
+              <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
+              <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
                 <path
                   d="M7 17L17 7M17 7H8M17 7V16"
-                 
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
             </div>
-           </div>
-           <input
+          </div>
+          <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
+          <input
             value={searchQuery}
             onChange={handleSearch}
-            className='searchProduct'
-           style={{background:'transparent',border:'1px solid #6f6e9e',padding:'3px',borderRadius:'5px'}} 
-           type="text" placeholder='Search Products' />
-    <div className="flex gap-3 items-center cursor-pointer">
-      <a href="/login">  <MdOutlineDeliveryDining  style={{width:'25px',height:'25px'}}/></a>
-        <div className="relative">
-       {FavCount === 0 ? '':  <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
-        <div onClick={()=>setDrawerOpener(true)}> <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></div>
+            className="searchProduct"
+            style={{
+              background: 'transparent',
+              border: '1px solid #6f6e9e',
+              padding: '3px',
+              borderRadius: '5px',
+              transition: 'width 0.3s ease-in-out',
+              width: '50%', // Adjust as needed
+            }}
+            type="text"
+            placeholder='Search Products'
+          />
         </div>
-      <div className="relative">
-      {cartCount === 0 ?'' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
-      <Link to="/cart"> <MdOutlineShoppingCart style={{width:'25px',height:'25px'}} /></Link>
-      </div>
-    </div>
-        </motion.div>
-      </div>
-       </AnimatePresence>
-       <AnimatePresence>
-       {searchQuery.trim() !== '' && (
-    <motion.div
-    initial={{opacity:0,y:-10}}
-    animate={{opacity:1,y:0,transiton:{duration:0.5}}}
-    exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-    className="search-results fixed left-[20%] right-[20%] top-14 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
-      {searchResults.length > 0 ? (
-        searchResults.map(product => (
-          <div
-           key={product.id}
-           onClick={()=>seeProduct(product)}
-           className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
-           {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-
-           <div className="flex flex-col gap-2">
-           <h3 className='font-semibold text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
-           <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
-           </div>
-           
-          </div>
-        ))
-      ) : (
-        <p>No products found.</p>
-      )}
-    </motion.div>
-  )}
-       </AnimatePresence>
-    <motion.div
-     initial={{opacity:0,y:-5}}
-     animate={{opacity:1,y:0,transition:{duration:0.5}}}
-    className="bread flex items-center gap-2 text-xs font-light cursor-pointer w-fit mt-4 md:mt-0" style={{color:'#9f9fac',transition:'all 0.5s'}}>
-      <a href="/"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
-      <IoIosArrowForward/>
-     <a href="/products"><p>Product</p></a>
-      <IoIosArrowForward/>
-      <p>{product.type}</p>
-      <IoIosArrowForward/>
-      <p>{product.name}</p>
-    </motion.div>
-    <div className="empty hidden md:block">
-    </div>
-    <div className="flex flex-col md:flex-row justify-center md:justify-between px-6 items-start">
-    <div className='w-full flex justify-center items-center md:w-[35%]'
-    >
-      <div className="product-details w-[45%] md:w-[50%] ml-8">
-      <Slider {...settings}>
-      {product.images && product.images.length > 0 ? (
-        product.images.map((image, index) => (
-          <div key={index}>
-            <img className='pdoructImage mb-0 md:mb-2' src={image} alt={`${product.name} ${index}`} />
-          </div>
-        ))
-      ) : (
-        <p>No images available</p>
-      )}
-      </Slider>
-    </div>
-    </div>
-    <div className="empty block md:hidden"/>
-      <div className="flex flex-col gap-4 w-full  md:w-[65%] items-center md:items-start justify-start">
-     <div className="flex items-center gap-2">
-     {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-     <div className="flex flex-col">
-     <h2 className="text-xl md:text-2xl font-bold text-start">{product.name}</h2>
-     <p className="text-lg text-start" style={{color:'#d6d6dc'}}>{product.price}$</p>
-     </div>
-     </div>
-     <div className="flex gap-2 items-center w-3/4">
-      <p className='text-xs font-light'>Quantity</p>
-      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
-     </div>
-      <div className="flex items-center gap-6 mt-3 mb-3">
-      <div className="flex items-center gap-2 ">
-              <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue - 1)}>-</button>
-              <input className=" w-[30px]  input-no-arrows" type="text"value={productValue}  onChange={(e) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value)) {  // Only allow digits
-      setProductValue(value);
-    }
-  }}
-                />
-              <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue + 1)}>+</button>
-            </div>
-          <p className='text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{productStock} on Stock</p>
-      </div>
-      {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
-     <div className="flex flex-col w-full items-center md:items-stretch">
-     <div className="flex gap-2 items-center w-3/4">
-      <p className='text-xs font-light'>Transportation</p>
-      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
-     </div>
-     <div className="flex flex-col gap-2" >
-        <div className="flex items-center gap-2 md:gap-4 mt-3 pt-3" >
-        <div className="hidden md:block">  <MdOutlineLocalShipping style={{width:'20px',height:'20px',color:'#6f6e9e'}}/></div>
-          <div className="flex items-center gap-3 md:gap-6">
-            <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryKosovo}</p>
-            <p className="hr block" style={{ width: '1px', height: '100%', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} >|</p>
-            <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryBallkan}</p>
-           <div onClick={()=>setDetailTransport(prev=>!prev)} className="moreInfoText flex items-center gap-0.5 ml-6 cursor-pointer">
-            <p className="text-xs font-extralight">More info</p>
-           <MdOutlineKeyboardArrowDown/>
-           </div>
-          </div>
-        </div>
-        <AnimatePresence>
-        {detailTransport && 
-        <motion.div
-        initial={{opacity:0,y:-10}}
-        animate={{opacity:1,y:0,transition:{duration:0.3}}}
-        exit={{opacity:0,y:-10,transition:{duration:0.3}}}
-        style={heightChange}
-        className='transportInfo flex justify-center items-center rounded-md w-full md:w-3/4 mt-1.5'
-        >
-        <div className="flex items-center gap-6 px-4">
-          <div style={{widht:'30px',height:'30px'}}>
-          <MdInfoOutline   style={{color:'#d6d6dc'}}/>
-          </div>
-          <p className='text-xs  font-extralight text-start'>
-          Product arrival time means the period from when your order is verified, and the verification notification you receive via email or SMS.
-          <p className='hidden md:block'>If the order is placed now, the product arrives according to the time frame set above. You will be continuously notified via email of the location of your order, including when the product arrives at our warehouse, and when it is shipped to you.</p>
-          </p>
-        </div>
-       </motion.div>}
-        </AnimatePresence>
-      </div>
-     </div>
-     <div className="flex gap-2 items-center w-3/4 mt-3">
-      <p className='text-xs font-light'>Payment</p>
-      <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
-     </div>
-     <div className="flex items-center gap-4 justify-between mt-3">
-      <div className="flex items-center gap-2">
-      <MdEuro style={{color:'#6f6e9e'}}/>
-      <p  className='font-light text-sm' style={{color:'#9f9fac'}}>Pay in cash</p>
-      </div>
-      <div className="flex items-center gap-2">
-      <MdCreditCard style={{color:'#6f6e9e'}}/>
-      <p className='font-light text-sm' style={{color:'#9f9fac'}}>Pay Online</p>
-      </div>
-      <div className="flex items-center gap-2 ">
-      <MdOutlinePayments  style={{color:'#6f6e9e'}}/>
-      <p className='font-light text-sm' style={{color:'#9f9fac'}}>Pay by bank transfer</p>
-      </div>
-     </div>
-     <div className="flex flex-col gap-2">
-     <div className="buttonss flex items-center gap-6 mt-3">
-      <button onClick={()=>orderNow(product)}>OrderNow</button>
-     <button onClick={()=>orderNowPT2(product)} className='order flex items-center gap-1 text-xl font-normal'><MdOutlineVerified /> Order Now</button>
-      <button onClick={()=> handleAddCart(product)} className='order2 text-xl font-normal rounded-md' style={{border:'1px solid #434363'}}>Add to Cart</button>
-      <button  onClick={() =>addToFavorites(product)} className='order2'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
-     </div>
-    
-     </div>
-     <div className="detailsdescription flex flex-col mt-4 p-2" 
-     style={{backgroundColor:'rgba( 1, 1, 3, 0.35 )',
-     border:'1px solid rgba(67, 67, 99,0.4)',borderRadius:'10px'}}>
-      <div className="flex justify-around gap-1">
-      <div className="flex flex-col ">
-      <button onClick={()=>changeDescription('description')}>Description</button>
-      {moreDescription === 'description' ?  <hr className="hr block" style={{ width: '100%', height: '2px', backgroundColor: '#6f6e9e', opacity: '0.4' }} /> : ''}
-      </div>
-        <div className="flex flex-col">
-        <button onClick={()=>changeDescription('details')}>Details</button>
-        {moreDescription === 'details' ? <div style={{width:moreDescription === 'details' ? '100%':'0%',transition:'width 1 ease',}}><hr className="hr block" style={{ width:'100%' ,height: '2px', backgroundColor: '#6f6e9e', opacity: '0.4' }} /></div> : ''}
-        </div>
-      </div>
-    <AnimatePresence mode='wait'>
-    {moreDescription === 'details' ?  <motion.div
-    initial={{ opacity: 0, y: -10 }}
-    animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
-    exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }}
-    >
-     <ul className="mt-4 grid-flow-col-dense grid-cols-2 gap-4 justify-center items-center w-full">
-        {product.details && product.details.map((detail, index) => (
-          <li key={index} className="flex flex-col justify-center items-center">
-            {Object.entries(detail).map(([key, value], i) => (
-              <div className='flex' key={i}>
-                <span className='text-sm font-light'>{key}</span>: 
-                <span style={{ color: '#9f9fac', marginLeft: '4px' }}>{value}</span>
+          <div className="flex gap-3 items-center cursor-pointer">
+            <a href="/login">
+              <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+            </a>
+            <div className="relative">
+              {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
+              <div onClick={()=>setDrawerOpener(true)}>
+                <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
               </div>
-            ))}
-          </li>
-        ))}
-      </ul>
-
-    </motion.div>:''}
-    {moreDescription === 'description' ? <motion.p
-      initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
-          exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }}
-      className='mt-4 text-xs md:text-sm font-light' style={{color:"#fbfbfb"}}>{product.description}</motion.p>:''}
-    </AnimatePresence>
+            </div>
+            <div className="relative">
+              {cartCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
+              <Link to="/cart">
+                <MdOutlineShoppingCart style={{ width: '25px', height: '25px' }} />
+              </Link>
+            </div>
+          </div>
         
-     </div>
+        </div>
+
+        {/* Main Search Bar */}
+        <div className="flex md:hidden items-center justify-center w-full mt-2.5">
+          <input
+            value={searchQuery}
+            onChange={handleSearch}
+            className="searchProduct"
+            style={{
+              background: 'transparent',
+              border: '1px solid #6f6e9e',
+              padding: '3px',
+              borderRadius: '5px',
+              transition: 'width 0.3s ease-in-out',
+              width: '100%', // Adjust as needed
+            }}
+            type="text"
+            placeholder='Search Products'
+          />
+        </div>
+      </motion.div>
+  
+
+    {/* Floating search bar that stays when scrolled down */}
+   
+  </div>
+     </AnimatePresence>
+     <AnimatePresence>
+     {searchQuery.trim() !== '' && (
+  <motion.div
+  initial={{opacity:0,y:-10}}
+  animate={{opacity:1,y:0,transiton:{duration:0.5}}}
+  exit={{opacity:0,y:-10,transition:{duration:0.2}}}
+  className="search-results sticky left-[3%] right-[3%] md:left-[20%] md:right-[20%] top-24 md:top-20 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+    {searchResults.length > 0 ? (
+      searchResults.map(product => (
+        <div
+         key={product.id}
+         onClick={()=>seeProduct(product)}
+         className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
+         {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+           {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+
+         <div className="flex flex-col gap-2">
+         <h3 className='font-semibold text-start text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
+         <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
+         </div>
+         
+        </div>
+      ))
+    ) : (
+      <p>No products found.</p>
+    )}
+  </motion.div>
+)}
+     </AnimatePresence>
+  <motion.div
+   initial={{opacity:0,y:-5}}
+   animate={{opacity:1,y:0,transition:{duration:0.5}}}
+  className="bread hidden md:flex items-center gap-1 md:gap-2 text-xs font-light cursor-pointer w-fit mt-4 md:mt-0" style={{color:'#9f9fac',transition:'all 0.5s'}}>
+    <a href="/"><MdOutlineHome  style={{width:'15px',height:'15px'}}/></a>
+    <IoIosArrowForward/>
+   <a href="/products"><p>Product</p></a>
+    <IoIosArrowForward/>
+    <p>{product.type}</p>
+    <IoIosArrowForward/>
+    <p>{product.name}</p>
+  </motion.div>
+  <div className="empty hidden md:block">
+  </div>
+  <motion.div
+  initial={{opaicty:0}}
+  animate={{opacity:1,transition:{duration:0.5}}}
+  className="flex flex-col md:flex-row justify-center md:justify-between px-6 items-start">
+  <div className='w-full flex justify-center items-center md:w-[35%]'
+  >
+    <div className="product-details w-[45%] md:w-[50%] ml-8">
+    <Slider {...settings}>
+    {product.images && product.images.length > 0 ? (
+      product.images.map((image, index) => (
+        <div key={index}>
+          <img className='pdoructImage mb-0 md:mb-2' src={image} alt={`${product.name} ${index}`} />
+        </div>
+      ))
+    ) : (
+      <p>No images available</p>
+    )}
+    </Slider>
+  </div>
+  </div>
+  <div className="empty block md:hidden"/>
+    <div className="flex flex-col gap-4 w-full  md:w-[65%] items-center md:items-start justify-start">
+   <div className="flex items-center gap-2">
+   {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+         {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+   <div className="flex flex-col">
+   <h2 className="text-xl md:text-2xl font-bold text-start">{product.name}</h2>
+   <p className="text-lg text-start" style={{color:'#d6d6dc'}}>{product.price}$</p>
+   </div>
+   </div>
+   <div className="flex gap-2 items-center w-3/4">
+    <p className='text-xs font-light'>Quantity</p>
+    <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+   </div>
+    <div className="flex items-center gap-6 mt-3 mb-3">
+    <div className="flex items-center gap-2 ">
+            <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue - 1)}>-</button>
+            <input className=" w-[30px]  input-no-arrows" type="text"value={productValue}  onChange={(e) => {
+  const value = e.target.value;
+  if (/^\d*$/.test(value)) {  // Only allow digits
+    setProductValue(value);
+  }
+}}
+              />
+            <button className='px-2 py-1' style={{border:'1px solid #3b3b45',borderRadius:'5px'}} onClick={()=>setProductValue(productValue + 1)}>+</button>
+          </div>
+        <p className='text-xs md:text-sm font-light' style={{borderRadius:'9999px',padding:'4px',backgroundColor:'#242329'}}>{productStock} on Stock</p>
+    </div>
+    {manyProduct && <p className='text-xs font-extralight'>The value is more than we have on stock</p>}
+   <div className="flex flex-col w-full items-center md:items-stretch">
+   <div className="flex gap-2 items-center w-3/4">
+    <p className='text-xs font-light'>Transportation</p>
+    <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+   </div>
+   <div className="flex flex-col gap-2" >
+      <div className="flex items-center gap-2 md:gap-4 mt-3 pt-3" >
+      <div className="hidden md:block">  <MdOutlineLocalShipping style={{width:'20px',height:'20px',color:'#6f6e9e'}}/></div>
+        <div className="flex items-center gap-3 md:gap-6">
+          <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryKosovo}</p>
+          <p className="hr block" style={{ width: '1px', height: '100%', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} >|</p>
+          <p className='text-xs font-extralight md:font-light' style={{color:"#d6d6dc"}}>{product.deliveryBallkan}</p>
+         <div onClick={()=>setDetailTransport(prev=>!prev)} className="moreInfoText flex items-center gap-0.5 ml-6 cursor-pointer">
+          <p className="text-xs font-extralight">More info</p>
+         <MdOutlineKeyboardArrowDown/>
+         </div>
+        </div>
+      </div>
+      <AnimatePresence>
+      {detailTransport && 
+      <motion.div
+      initial={{opacity:0,y:-10}}
+      animate={{opacity:1,y:0,transition:{duration:0.3}}}
+      exit={{opacity:0,y:-10,transition:{duration:0.3}}}
+      style={heightChange}
+      className='transportInfo flex justify-center items-center rounded-md w-full md:w-3/4 mt-1.5'
+      >
+      <div className="flex items-center gap-6 px-4">
+        <div style={{widht:'30px',height:'30px'}}>
+        <MdInfoOutline   style={{color:'#d6d6dc'}}/>
+        </div>
+        <p className='text-xs  font-extralight text-start'>
+        Product arrival time means the period from when your order is verified, and the verification notification you receive via email or SMS.
+        <p className='hidden md:block'>If the order is placed now, the product arrives according to the time frame set above. You will be continuously notified via email of the location of your order, including when the product arrives at our warehouse, and when it is shipped to you.</p>
+        </p>
+      </div>
+     </motion.div>}
+      </AnimatePresence>
+    </div>
+   </div>
+   <div className="flex gap-2 items-center w-3/4 mt-3">
+    <p className='text-xs font-light'>Payment</p>
+    <hr className="hr block" style={{ width: '100%', height: '1px', backgroundColor: 'rgba(36, 35, 41, 0.25)', opacity: '0.2' }} />
+   </div>
+   <div className="flex items-center gap-4 justify-between mt-3">
+    <div className="flex flex-col md:flex-row items-center gap-2">
+    <MdEuro style={{color:'#6f6e9e'}}/>
+    <p  className='font-light text-xs md:text-sm' style={{color:'#9f9fac'}}>Pay in cash</p>
+    </div>
+    <div className="flex flex-col md:flex-row items-center gap-2">
+    <MdCreditCard style={{color:'#6f6e9e'}}/>
+    <p className='font-light text-xs md:text-sm' style={{color:'#9f9fac'}}>Pay Online</p>
+    </div>
+    <div className="flex flex-col md:flex-row items-center gap-2 ">
+    <MdOutlinePayments  style={{color:'#6f6e9e'}}/>
+    <p className='font-light text-xs md:text-sm' style={{color:'#9f9fac'}}>Pay by bank transfer</p>
+    </div>
+   </div>
+   <div className="flex flex-col gap-2">
+   <div className="buttonss flex items-center gap-6 mt-3">
+   <button onClick={()=>orderNow(product)} className='order flex items-center gap-1 text-xs md:text-xl  font-light md:font-normal'>Order Now</button>
+   <button
+  onClick={() => handleAddCart(product)}
+  className='order2 text-xs md:text-xl font-light md:font-normal rounded-md'
+  style={{ border: '1px solid #434363', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '7px 7px' }} // Adjust padding as needed
+>
+  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+    {alertCart ? (
+      <div className="flex">
+        <span className='opacity-0'>add </span>
+        <MdOutlineDone style={{ width: '20px', height: '20px' }} />
+        <span className='opacity-0'>cart</span>
+      </div> // Adjust size as needed
+    ) : (
+      'Add to Cart'
+    )}
+  </span>
+</button>
+    <button  onClick={() =>addToFavorites(product)} className='order4'> {fav ? <MdFavorite style={{width:'30px',height:'30px'}}/>:<MdFavoriteBorder style={{width:'30px',height:'30px'}}/>}</button>
+   </div>
+  
+   </div>
+   <div className="detailsdescription flex flex-col mt-4 p-2" 
+   style={{backgroundColor:'rgba( 1, 1, 3, 0.35 )',
+   border:'1px solid rgba(67, 67, 99,0.4)',borderRadius:'10px'}}>
+    <div className="flex justify-around gap-1">
+    <div className="flex flex-col ">
+    <button className='text-sm font-normal' onClick={()=>changeDescription('description')}>Description</button>
+    {moreDescription === 'description' ?  <hr className="hr block" style={{ width: '100%', height: '2px', backgroundColor: '#6f6e9e', opacity: '0.4' }} /> : ''}
+    </div>
+      <div className="flex flex-col">
+      <button className='text-sm font-normal' onClick={()=>changeDescription('details')}>Details</button>
+      {moreDescription === 'details' ? <div style={{width:moreDescription === 'details' ? '100%':'0%',transition:'width 1 ease',}}><hr className="hr block" style={{ width:'100%' ,height: '2px', backgroundColor: '#6f6e9e', opacity: '0.4' }} /></div> : ''}
       </div>
     </div>
-    <TheOrderDrawer
-     productValue={productValue}
-      orderProduct={orderProduct}
-       OrderDrawer={OrderDrawer} 
-       product={product}
-       productStock={productStock}
-       handleStockUpdate={handleStockUpdate}
-        onClose={()=>setOrderDrawer(false)}/>
-    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
-    
+  <AnimatePresence mode='wait'>
+  {moreDescription === 'details' ?  <motion.div
+  initial={{ opacity: 0, y: -10 }}
+  animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
+  exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }}
+  >
+   <ul className="mt-4 grid-flow-col-dense grid-cols-2 gap-4 justify-center items-center w-full">
+      {product.details && product.details.map((detail, index) => (
+        <li key={index} className="flex flex-col justify-center items-center">
+          {Object.entries(detail).map(([key, value], i) => (
+            <div className='flex items-center' key={i}>
+              <span className='text-xs font-light'>{key}</span>: 
+              <span style={{ color: '#9f9fac', marginLeft: '4px',fontWeight:300,fontSize:'14px' }}>{value}</span>
+            </div>
+          ))}
+        </li>
+      ))}
+    </ul>
+
+  </motion.div>:''}
+  {moreDescription === 'description' ? <motion.p
+    initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
+        exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }}
+    className='mt-4 text-xs md:text-sm font-light' style={{color:"#fbfbfb"}}>{product.description}</motion.p>:''}
+  </AnimatePresence>
+      
+   </div>
     </div>
-    {open && 
-    <Snackbar
-    open={open}
-    autoHideDuration={6000}
-    onClose={handleClose}
-    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-    ContentProps={{
-      style: {
-        backgroundColor: '#585782',
-        color: '#e8e8f0',
-        position: 'fixed', // Change to fixed
-        bottom: 20,        // Adjust as needed
-        left: '15%',       // Center it horizontally
-        transform: 'translateX(-50%)', // Center it based on its width
-        zIndex: 1000,     // Ensure it's above other content
-      },
-    }}
-    message={alertFav} 
-    action={action}
-  />
-  }
+  </motion.div>
+  <TheOrderDrawer
+   productValue={productValue}
+    orderProduct={orderProduct}
+     OrderDrawer={OrderDrawer} 
+     product={product}
+     productStock={productStock}
+     handleStockUpdate={handleStockUpdate}
+      onClose={()=>setOrderDrawer(false)}/>
+  <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+  
+  </motion.div>
+    }
    </div>
   );
 }
@@ -847,7 +971,14 @@ useEffect(() => {
 const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue, productStock, handleStockUpdate }) => {
  
  
-
+  useEffect(() => {
+    // Add class to body to disable scrolling when the drawer is open
+    if (OrderDrawer) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto'; // Re-enable scrolling when drawer is closed
+    }
+  }, [OrderDrawer]);
 
 const optionsCity = [
   { city: 'Vushtrri' },
@@ -970,13 +1101,13 @@ const submitOrder = () => {
        animate={{ opacity:1 }}  // Expand width and move into view
        exit={{ opacity:0}}  // Contract width and move off-screen
        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="drawer1 flex flex-col justify-start overflow-y-auto px-4 py-2 h-[550px]"
+      className="drawer1 flex flex-col justify-start overflow-y-auto px-4 py-2 h-screen md:h-[550px]"
       style={{
         position: 'fixed', // Use fixed to center on screen
-        top: '10%', // Leave some margin from the top
-        bottom: '25%', // Leave some margin from the bottom
-        left: '25%', // Leave some margin from the left
-        right: '25%', // Leave some margin from the righ // Background color for the drawer
+        top: '50%', // Leave some margin from the top
+        bottom: '50%', // Leave some margin from the bottom
+        left: '0%', // Leave some margin from the left
+        right: '0%', // Leave some margin from the righ // Background color for the drawer
         borderRadius: '10px', // Optional: Add rounded corners
         zIndex: 3000,
         overflow: 'auto', // Hide overflow if content exceeds
@@ -1143,6 +1274,12 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(storedFavorites);
+
+    if (DrawerIsOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   }, [DrawerIsOpen]); // Reload favorites when the drawer opens
 
   const [alertCart,setAlertCart]=useState('')
@@ -1192,10 +1329,10 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
        animate={{ opacity:1 }}  // Expand width and move into view
        exit={{ opacity:0}}  // Contract width and move off-screen
        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="drawer1 flex flex-col justify-start overflow-y-auto"
+      className="drawer1 flex flex-col justify-start overflow-y-auto w-full md:w-[300px]"
        style={{  position: 'absolute',
         top: 0,
-        right: 0, width: '320px', height: '100%',  zIndex: 1000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
+        right: 0,height: '100%', maxHeight: '100vh',  zIndex: 1000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
        <div className=" flex items-start justify-between w-[100%]">
          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
           <MdArrowBackIos style={{width:'20px',height:'20px'}}/></button>

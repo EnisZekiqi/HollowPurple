@@ -130,14 +130,54 @@ object-fit: contain;
   color:#e8e8f0;
   padding: 7px 7px 7px 7px;
 }
+.order3{
+  border-radius: 10px;
+  background:#6f6e9e ;
+  color:#e8e8f0;
+  padding: 5px 5px 5px 5px;
+}
 .order:hover{
   border-radius: 10px;
   background-color:#434363 ;
   transition: all 0.5s ease;
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-right-color: #585782;
+  animation: l15 1s infinite linear;
+}
+.loader::before,
+.loader::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
+}
+.loader::after {
+  margin: 8px;
+  animation-duration: 3s;
+}
+@keyframes l15{ 
+  100%{transform: rotate(1turn)}
+}
+
 .order2{
   border-radius: 10px;
   padding: 7px 7px 7px 7px;
+  color:#d6d6dc
+}
+
+.order4{
+  border-radius: 10px;
+  padding: 5px 5px 5px 5px;
   color:#d6d6dc
 }
 .bread{
@@ -195,9 +235,16 @@ border-radius: 10px;
   }
 }
 .products{
-  background: rgba( 1, 1, 3, 0.6  5 );
+  background: rgba( 1, 1, 3, 0.6 );
 backdrop-filter: blur( 8px );
 -webkit-backdrop-filter: blur( 8px );
+}
+@media(max-width:764px){
+  .products{
+    background: rgba( 1, 1, 3, 1 );
+  backdrop-filter: blur( 8px );
+  -webkit-backdrop-filter: blur( 8px );
+  }
 }
 .brandcover{
   border-radius: 10px;
@@ -382,7 +429,7 @@ height: 30px;
   text-align: center;  /* Optional: center the text */
 }
 .navbarfinally{
-  background: rgba( 1, 1, 3, 0.87 );
+  background: rgba(1, 1, 3, 0.87);
      backdrop-filter: blur( 12px );
     -webkit-backdrop-filter: blur( 12px );
     border-radius: 10px;

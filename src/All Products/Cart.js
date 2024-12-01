@@ -98,7 +98,12 @@ const Cart = ({ seeProduct}) => {
  
 
     return (
-      <div className="cart h-screen">
+      <div className="">
+        <div className="block md:hidden">
+          <CartResponsive/>
+        </div>
+        <div className="hidden md:block">
+        <div className="cart h-screen">
         <div className="flex p-1.5"> 
         <div className='flex items-center gap-1'>
           <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
@@ -207,6 +212,8 @@ const Cart = ({ seeProduct}) => {
   handleStockUpdate={handleStockUpdate}
   onClose={() => setOrderDrawer(false)}
 />
+      </div>
+        </div>
       </div>
     );
   };
@@ -362,8 +369,8 @@ const Cart = ({ seeProduct}) => {
             position: 'fixed', // Use fixed to center on screen
             top: '10%', // Leave some margin from the top
             bottom: '25%', // Leave some margin from the bottom
-            left: '25%', // Leave some margin from the left
-            right: '25%', // Leave some margin from the righ // Background color for the drawer
+            left: '3%', // Leave some margin from the left
+            right: '3%', // Leave some margin from the righ // Background color for the drawer
             borderRadius: '10px', // Optional: Add rounded corners
             zIndex: 3000,
             overflow: 'auto', // Hide overflow if content exceeds
@@ -380,7 +387,7 @@ const Cart = ({ seeProduct}) => {
           <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
           <img width="50px" src={orderProduct.images[0]} alt="" />
          <div className="flex flex-col items-start gap-1">
-         <p> {orderProduct?.name}</p>
+         <p className="text-start md:text-center"> {orderProduct?.name}</p>
          <div className="flex gap-6">
            <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Price</strong>{orderProduct?.price}$</p>
          <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
@@ -427,18 +434,18 @@ const Cart = ({ seeProduct}) => {
           <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
           <div className="flex items-center justify-between gap-2">
            
-            <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
+            <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex  items-center gap-1' 
             onClick={()=>setPayment('cash')}
             style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-              >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
+              >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} <p className="hidden md:flex">Pay in</p> Cash</button>
             <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
              onClick={()=>setPayment('online')}
                style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-              >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
+              >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} <p className="hidden md:flex">Pay </p> Online</button>
                <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
              onClick={()=>setPayment('bank')}
                style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-              >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
+              >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>}<p className="hidden md:flex">Pay by</p>Bank </button>
           </div>
           </div>
           {errorBuy === ('' && 'Order submitted successfully') ?  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>By filling all the forms the order will be more accurate and more faster to you , please fill them with caution</p>
@@ -519,6 +526,199 @@ const Cart = ({ seeProduct}) => {
       );
     };
 
+
+
+    const CartResponsive = ()=>{
+
+      const [cartItems, setCartItems] = useState([]);
+  
+      useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCartItems(
+          storedCart.map((item) => ({
+            ...item,
+            stock: Number(localStorage.getItem(`productStock-${item.id}`)) || item.stock,
+            quantity: item.quantity || 1, // Default quantity to 1
+          }))
+        );
+      }, []);
+    
+      const handleRemoveItem = (product) => {
+        const updatedCart = cartItems.filter((item) => item.id !== product.id);
+        setCartItems(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      };
+  
+      useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCartItems(storedCart.map(item => ({ ...item, quantity: 1 }))); // Add quantity to each item
+      }, []);
+  
+    
+  
+      const [allProducts, setAllProducts] = useState([]);
+      const [productStock, setProductStock] = useState({});
+  
+      useEffect(() => {
+        // Load stock from localStorage for all cart items
+        const stocks = {};
+        cartItems.forEach((product) => {
+          const savedStock = localStorage.getItem(`productStock-${product.id}`);
+          if (savedStock) {
+            stocks[product.id] = Number(savedStock); // Store in the state object
+          } else {
+            stocks[product.id] = product.stock; // Default to the initial stock if not found
+          }
+        });
+        setProductStock(stocks);
+      }, [cartItems]); // Re-run when 'product' changes
+  
+    const handleStockUpdate = (productId, newStock) => {
+      setProductStock(newStock);
+      localStorage.setItem(`productStock-${productId}`, newStock);
+    };
+  
+  
+      const[productValue,setProductValue]=useState(1)
+      const [manyProduct,setManyProduct]=useState(false)
+  
+      const handleQuantityChange = (productId, delta) => {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === productId
+              ? {
+                  ...item,
+                  quantity: Math.max(1, Math.min(item.stock, item.quantity + delta)),
+                }
+              : item
+          )
+        );
+      };
+  
+      
+      useEffect(() => {
+        const savedStock = localStorage.getItem(`productStock-${allProducts.id}`);
+        if (savedStock) {
+          setProductStock(Number(savedStock)); // Load from localStorage
+        } else {
+          setProductStock(allProducts.stock); // Default to the product's initial stock if not found in localStorage
+        }
+      }, [allProducts.id]);
+      
+  
+     
+  
+      const orderNow = (product) => {
+        setOrderDrawer(true);
+        setOrderProduct(product);
+        setProductValue(product.quantity)
+      };
+    
+      const [OrderDrawer, setOrderDrawer] = useState(false);
+      const [orderProduct, setOrderProduct] = useState(null);
+
+      
+      return(
+        <div>
+          <div className="cart h-screen">
+        <div className="flex p-1.5"> 
+        <div className='flex items-center gap-1'>
+          <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
+            <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+                <path
+                  d="M7 17L17 7M17 7H8M17 7V16"
+                  stroke="#5a58a5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+           </div>
+
+        </div>
+        <div className="empty"></div>
+        <motion.h2
+        initial={{opacity:0,y:-10}}
+        animate={{opacity:1,y:0,transition:{duration:0.5,delay:0}}}
+         className="mt-4 font-bold text-3xl text-[#fbfbfb] text-start pl-8 mb-8">Your Cart</motion.h2>
+        {cartItems.length > 0 ? (
+          cartItems.map((product, index) => (
+            <motion.div
+            initial={{opacity:0,y:-15}}
+            animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
+           key={index} className="cart-item pl-6 py-3" 
+           style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+              <div>
+                <div className="flex items-center justify-start w-full mb-4">
+                  <div className="flex flex-col px-1.5">
+                  {product.images && product.images.length > 0 && (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      style={{ width: '55px', height: '55px', objectFit: 'contain' }}
+                    />
+                  )}
+                  </div>
+                 <div className="flex items-center h-full">
+                 <div className="flex flex-col gap-1">
+                 <strong className="text-sm font-semibold text-[#fbfbfb] text-start">{product.name}</strong>
+                 <p className="text-xs font-light text-[#d6d6dc] text-start mt-1"> {(productStock && productStock[product.id]) ?? product.stock} Available</p>
+                 </div>
+              <div className="flex flex-col items-center gap-4 mt-4">
+                
+              <button className="ml-2" onClick={() => handleRemoveItem(product)}><MdDeleteOutline style={{width:'22px',height:'22px'}}/></button>
+              <div className="flex items-center gap-2">
+                      <button
+                        className="px-2 py-1"
+                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
+                        onClick={() => handleQuantityChange(product.id, -1)}
+                      >
+                        -
+                      </button>
+                      <input
+                        className="w-[30px] input-no-arrows"
+                        type="text"
+                        value={product.quantity}
+                        readOnly
+                      />
+                      <button
+                        className="px-2 py-1"
+                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
+                        onClick={() => handleQuantityChange(product.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+              </div>
+                 </div>
+                  
+                </div>
+              </div>
+              <button className="order3 w-full " onClick={() => orderNow(product)}>Order Now</button>
+              {product.quantity >= (product.stock || productStock) && (
+                      <p className="text-xs text-center font-extralight">The value exceeds available stock</p>
+                    )}
+            </motion.div>
+          ))
+        ) : (
+          <div className="flex flex-col justify-center items-center w-full gap-3">
+            <img width="300px" height="300px" src={none} alt="" />
+            <p className="text-md font-light text-[#d6d6dc]">Your cart is empty</p>
+            <a href="/products"><p className="text-sm font-light text-[#9f9fac]">Check some product and come again</p></a>
+          </div>
+        )}
+          <TheOrderDrawer
+  OrderDrawer={OrderDrawer}
+  productValue={productValue}
+  orderProduct={orderProduct}
+  productStock={productStock?.[orderProduct?.id] ?? orderProduct?.stock}
+  handleStockUpdate={handleStockUpdate}
+  onClose={() => setOrderDrawer(false)}
+/>
+      </div>
+        </div>
+      )
+    }
 
   export default Cart;
   
