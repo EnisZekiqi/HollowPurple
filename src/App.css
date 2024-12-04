@@ -71,6 +71,25 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   background-color: #8b88c5; /* Darker shade when hovering */
 }
 
+.drawer2::-webkit-scrollbar {
+  width: 8px; /* Width of the scroll bar */
+}
+
+.drawer2::-webkit-scrollbar-track {
+  background: #2c2c2f; /* Background color of the track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.drawer2::-webkit-scrollbar-thumb {
+  background-color: #6f6e9e; /* Scroll thumb color */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid #2c2c2f; /* Adds a border for contrast */
+}
+
+.drawer2::-webkit-scrollbar-thumb:hover {
+  background-color: #8b88c5; /* Darker shade when hovering */
+}
+
 .pdoructImage{
   width:400px;
 height:400px;
@@ -513,8 +532,21 @@ height: 30px;
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
   z-index: 100;
+  width: 750px;
   max-height: 300px; /* Set a max height to enable scrolling */
   overflow-y: auto; /* Enable vertical scrolling */
+}
+@media(max-width:764px){
+  .search-results {
+    background: rgba(24, 24, 27, 0.90);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    z-index: 100;
+    width:100%;
+    max-height: 300px; /* Set a max height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
 }
 
 /* Custom scroll bar styling */

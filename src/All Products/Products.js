@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
+import { Box, Modal } from '@mui/material';
 
 function ProductsPage() {
 
@@ -92,7 +93,10 @@ const [alertFav,setAlertFav]=useState('')
  useEffect(() => {
   const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
   setFavCount(storedFavorites.length );
-}, []);
+}, []);  //// updating when you add to favorites 
+
+
+ //// updating when you remove to favorites 
 
 const [DrawerOpener,setDrawerOpener]=useState(false)
 
@@ -250,7 +254,7 @@ const action = (
   initial={{opacity:0,y:-10}}
   animate={{opacity:1,y:0,transiton:{duration:0.5}}}
   exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-  className="search-results sticky left-[3%] right-[3%] md:left-[20%] md:right-[20%] top-24 md:top-20 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+  className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
     {searchResults.length > 0 ? (
       searchResults.map(product => (
         <div
@@ -305,7 +309,7 @@ const action = (
 </div>
       </div>
      )}
-   <div className="empty"></div>
+   <div className="emptyg"></div>
   
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
@@ -566,6 +570,7 @@ const [DrawerOpener,setDrawerOpener]=useState(false)
 }, []);
 
 
+
 const [cartCount,setCartCount]=useState(0)
 
 setTimeout(() => {
@@ -618,6 +623,31 @@ useEffect(() => {
     setProductStock(product.stock); // Default to the product's initial stock if not found in localStorage
   }
 }, [product.id]);
+
+
+useEffect(() => {
+  if (seeProduct) {
+    setDrawerOpener(false) 
+  }
+}, [seeProduct]);
+
+
+const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
+const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
+
+useEffect(() => {
+  const notifyOrder = localStorage.getItem('orderDetails');
+  if (notifyOrder) {
+    const orderData = JSON.parse(notifyOrder);
+    setOrderCheck(true);
+    setOrderCheckInfo(orderData);  // Set order data, including product and user info
+
+    setTimeout(() => {
+      setOrderCheck(false);
+    }, 7000);
+  }
+}, []);
+
 
 
   return (
@@ -678,13 +708,35 @@ useEffect(() => {
           />
         </div>
           <div className="flex gap-3 items-center cursor-pointer">
-            <a href="/login">
+            <div className='relative'>
               <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-            </a>
+              <div className="absolute">
+              <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white" />
+              {orderCheck && orderCheckInfo && (
+          <div className="absolute">
+            <div className="contentorder">
+              <div className="flex items-center">
+                <div className="flex items-center gap-2">
+                  {/* Show product image */}
+                  <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
+                  {/* Show product name */}
+                  <p>{orderCheckInfo.productName}</p>
+                  {/* Show user name (Name and Surname) */}
+                  <p>Ordered by: {orderCheckInfo.Name} {orderCheckInfo.Surname}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+              </div>
+            </div>
             <div className="relative">
               {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
+              <div className="flex flex-col">
               <div onClick={()=>setDrawerOpener(true)}>
                 <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+              </div>
+
               </div>
             </div>
             <div className="relative">
@@ -728,7 +780,7 @@ useEffect(() => {
   initial={{opacity:0,y:-10}}
   animate={{opacity:1,y:0,transiton:{duration:0.5}}}
   exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-  className="search-results sticky left-[3%] right-[3%] md:left-[20%] md:right-[20%] top-24 md:top-20 z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+  className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
     {searchResults.length > 0 ? (
       searchResults.map(product => (
         <div
@@ -777,7 +829,7 @@ useEffect(() => {
   className="flex flex-col md:flex-row justify-center md:justify-between px-6 items-start">
   <div className='w-full flex justify-center items-center md:w-[35%]'
   >
-    <div className="product-details w-[45%] md:w-[50%] ml-8">
+    <div className="product-details w-[45%] md:w-[50%] ml-8 md:-ml-2">
     <Slider {...settings}>
     {product.images && product.images.length > 0 ? (
       product.images.map((image, index) => (
@@ -894,7 +946,7 @@ useEffect(() => {
 >
   <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
     {alertCart ? (
-      <div className="flex">
+      <div className="flex items-center justify-center">
         <span className='opacity-0'>add </span>
         <MdOutlineDone style={{ width: '20px', height: '20px' }} />
         <span className='opacity-0'>cart</span>
@@ -958,9 +1010,12 @@ useEffect(() => {
      product={product}
      productStock={productStock}
      handleStockUpdate={handleStockUpdate}
+     orderCheck={orderCheck}
+     setOrderCheck={()=>setOrderCheck(true)}
       onClose={()=>setOrderDrawer(false)}/>
-  <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
-  
+  <FavoriteDrawer seeProduct={seeProduct} setDrawerOpener={setDrawerOpener} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+  <div className="empty"></div>
+  <div className="empty"></div>
   </motion.div>
     }
    </div>
@@ -968,17 +1023,25 @@ useEffect(() => {
 }
 
 /// Drawer component for buying 
-const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue, productStock, handleStockUpdate }) => {
+const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue, productStock,
+   handleStockUpdate,orderCheck,setOrderCheck }) => {
  
  
-  useEffect(() => {
-    // Add class to body to disable scrolling when the drawer is open
-    if (OrderDrawer) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto'; // Re-enable scrolling when drawer is closed
-    }
-  }, [OrderDrawer]);
+
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'rgba( 1, 1, 3, 0.87 )',
+    border: '2px solid #585782',
+    boxShadow: 24,
+    p: 2,
+    borderRadius:'10px'
+  };
+
 
 const optionsCity = [
   { city: 'Vushtrri' },
@@ -1032,7 +1095,7 @@ const handleAdressChange =(e)=>{
 }
 
 
-
+ 
 
 const submitOrder = () => {
   if (
@@ -1059,6 +1122,30 @@ const submitOrder = () => {
   const updatedStock = productStock - productValue;
   handleStockUpdate(updatedStock); // Save to state and localStorage
 
+  localStorage.setItem('orderDetails', JSON.stringify({
+    Name,
+    Surname,
+    Phone,
+    Email,
+    Adress,
+    citySelect,
+    productValue,
+  }));
+
+  const product = {
+    name: orderProduct.name, // Replace with the actual product name
+    images: orderProduct.images[0], // Replace with the actual image URL(s)
+  };
+
+
+  localStorage.setItem('orderDetails', JSON.stringify({
+    Name,
+    Surname,
+    productName: product.name,
+    productImage: product.images[0], // Just using the first image
+    productValue,
+  }));
+
   setErrorBuy('Order submitted successfully');
   setTimeout(() => setErrorBuy(''), 3000);
 
@@ -1071,6 +1158,7 @@ const submitOrder = () => {
   setCitySelect('');
   setTransport('');
   setPayment('');
+  setOrderCheck()
 };
 
 
@@ -1096,18 +1184,19 @@ const submitOrder = () => {
         zIndex: 2000, 
       }} 
     />
-      <motion.div
-       initial={{ opacity:0 }}  // Start with width 0 and off-screen
-       animate={{ opacity:1 }}  // Expand width and move into view
-       exit={{ opacity:0}}  // Contract width and move off-screen
-       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="drawer1 flex flex-col justify-start overflow-y-auto px-4 py-2 h-screen md:h-[550px]"
+   
+    <div>
+          <Modal
+      open={OrderDrawer}
+      onClose={onClose}
+     >
+    <Box
+    sx={style}
+    >
+ <div  className="drawer2 flex flex-col justify-start overflow-y-auto px-4 py-2 h-[550px]"
       style={{
-        position: 'fixed', // Use fixed to center on screen
-        top: '50%', // Leave some margin from the top
-        bottom: '50%', // Leave some margin from the bottom
-        left: '0%', // Leave some margin from the left
-        right: '0%', // Leave some margin from the righ // Background color for the drawer
+        position: '', // Use fixed to center on screen
+        
         borderRadius: '10px', // Optional: Add rounded corners
         zIndex: 3000,
         overflow: 'auto', // Hide overflow if content exceeds
@@ -1115,8 +1204,8 @@ const submitOrder = () => {
        <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
        <h3 className='text-lg md:text-xl font-semibold text-[#fbfbfb] mt-6'>Order</h3>
           <div className="s">
-          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
-          <MdOutlineClose style={{width:'20px',height:'20px'}}/></button>
+          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px',zIndex:3001 }}>
+          <MdOutlineClose style={{width:'20px',height:'20px',color:'#fbfbfb'}}/></button>
           </div>
           </div> 
        
@@ -1131,15 +1220,15 @@ const submitOrder = () => {
      </div>
       </div>
       <div className="flex justify-between items-center gap-4 mt-6">
-      <input value={Name} onChange={handleNameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Name" />
-      <input value={Surname} onChange={handleSurnameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Surname" />
+      <input value={Name} onChange={handleNameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Name" />
+      <input value={Surname} onChange={handleSurnameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Surname" />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
-      <input value={Phone} onChange={handlePhoneChange } className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Phone Number" />
-      <input value={Email} onChange={handleEmailChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Email" />
+      <input value={Phone} onChange={handlePhoneChange } className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Phone Number" />
+      <input value={Email} onChange={handleEmailChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Email" />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
-      <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782'}} type="text" placeholder="Adress" />
+      <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />
       <select
       className="rounded-md p-1 w-full"
       name="City"
@@ -1256,7 +1345,11 @@ const submitOrder = () => {
      
       <button onClick={submitOrder} className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
     </div>
-      </motion.div>
+      </div>
+    </Box>
+     </Modal>
+    </div>
+   
       
       </>
     )}
@@ -1277,10 +1370,18 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
 
     if (DrawerIsOpen) {
       document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [DrawerIsOpen]); // Reload favorites when the drawer opens
+  }, [DrawerIsOpen,seeProduct]);
+  
+
+useEffect(() => {
+  const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  setFavorites(storedFavorites);
+}, [removeFavorites]);
+
 
   const [alertCart,setAlertCart]=useState('')
   const [open,setOpen]=useState(false)
@@ -1321,7 +1422,7 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
         right: 0, 
         bottom: 0, 
         backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        zIndex: 999, 
+        zIndex: 2999, 
       }} 
     />
       <motion.div
@@ -1329,10 +1430,10 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
        animate={{ opacity:1 }}  // Expand width and move into view
        exit={{ opacity:0}}  // Contract width and move off-screen
        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="drawer1 flex flex-col justify-start overflow-y-auto w-full md:w-[300px]"
-       style={{  position: 'absolute',
+      className="drawer1 flex flex-col justify-start overflow-y-auto w-full md:w-[320px]"
+       style={{  position: 'fixed',
         top: 0,
-        right: 0,height: '100%', maxHeight: '100vh',  zIndex: 1000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
+        right: 0,height: '100vh',  zIndex: 3000,borderLeft:'1px solid #6f6e9e',transition:'width 0.5 ease' }}>
        <div className=" flex items-start justify-between w-[100%]">
          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px' }}>
           <MdArrowBackIos style={{width:'20px',height:'20px'}}/></button>
@@ -1352,15 +1453,15 @@ const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) =>
         <ul className='flex flex-col items-center justify-center px-2'>
           {favorites.length > 0 ? (
             favorites.map((product, index) => (
-              <li key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
+              <li key={index} style={{ borderBottom: '1px solid #3b3b45', padding: '10px',paddingBottom:'12px' }}>
                 <div onClick={()=>seeProduct(product)}>
                 <div className="flex items-center justify-center w-full mb-4">
                 {product.images && product.images.length > 0 && (
                   <img src={product.images[0]} alt=""style={{ width: '85px', height: '85px',objectFit:'contain' }} />
                 )}
                 </div>
-                <p><strong>{product.name}</strong></p>
-                <p>Price: ${product.price}</p>
+                <p className='text-[#d6d6dc] text-md'><strong>{product.name}</strong></p>
+                <p className='text-sm font-light text-[#9f9fac]'>{product.price}$</p>
                 </div>
                 <div className="flex justify-around mt-4">
                   <button onClick={()=>handleAddCart(product)} style={{border:'1px solid #6f6e9e'}} className=' rounded-md p-1.5'>Add to Cart</button>
