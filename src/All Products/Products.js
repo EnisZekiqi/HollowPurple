@@ -634,19 +634,38 @@ useEffect(() => {
 
 const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
 const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
+const [orderCheckPrice,setOrderCheckPrice]=useState(orderValue.length)
+const [orderCountShow, setOrderCountShow] = useState(false);
+const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
+
+const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
 
 useEffect(() => {
+  // Retrieve 'orderDetails' from localStorage
   const notifyOrder = localStorage.getItem('orderDetails');
+  
   if (notifyOrder) {
-    const orderData = JSON.parse(notifyOrder);
+    const orderData = JSON.parse(notifyOrder);  // Parse it into a valid array or object
     setOrderCheck(true);
     setOrderCheckInfo(orderData);  // Set order data, including product and user info
-
-    setTimeout(() => {
-      setOrderCheck(false);
-    }, 7000);
+    setOrderCheckPrice(orderData);
   }
-}, []);
+
+  // Parse the 'orderDetails' or default to an empty array if it's not found or invalid
+  const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
+  
+  // Make sure it's an array before trying to get its length
+  const count = orderValue.length;
+  console.log('Order count:', count);  // Log to debug
+  
+  setOrderCount(count);  // Update order count directly
+
+  // Set the order count visible after a timeout (7 seconds)
+  setTimeout(() => {
+    setOrderCountShow(true);  // Show the count after 7 seconds
+  }, 7000);
+
+}, []);   // Empty dependency array ensures it runs only once when the component mounts
 
 
 
@@ -708,28 +727,52 @@ useEffect(() => {
           />
         </div>
           <div className="flex gap-3 items-center cursor-pointer">
-            <div className='relative'>
-              <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-              <div className="absolute">
-              <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white" />
-              {orderCheck && orderCheckInfo && (
-          <div className="absolute">
-            <div className="contentorder">
-              <div className="flex items-center">
-                <div className="flex items-center gap-2">
-                  {/* Show product image */}
+          <Link 
+        to="/order-summary" 
+        state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
+        className="order-info-link"
+      >
+           <div className='relative'>
+           {orderCountShow && (orderCount === 0 ? '' : 
+  <p className="absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
+    {orderCount}
+  </p>
+)}
+  
+  <div className="flex flex-col">
+    <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+  </div>
+  
+  <div className="absolute">
+    {orderCheck && orderCheckInfo && (
+        <div className='ml-2 mr-4'>
+          <div className="absolute left-1/2 top-2.5 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+            <div className="contentorder ">
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-2 " style={{width:'280px'}}>
                   <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
-                  {/* Show product name */}
-                  <p>{orderCheckInfo.productName}</p>
-                  {/* Show user name (Name and Surname) */}
-                  <p>Ordered by: {orderCheckInfo.Name} {orderCheckInfo.Surname}</p>
+                  <div className="flex flex-col">
+                    <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
+                    </p>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
+                    </p>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
-              </div>
-            </div>
+        </div>
+    )}
+  </div>
+</div>
+        </Link>
             <div className="relative">
               {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
               <div className="flex flex-col">
@@ -1075,7 +1118,7 @@ const [Surname,setSurname]=useState('')
 const [Phone,setPhone]=useState('')
 const [Email,setEmail]=useState('')
 const [Adress,setAdress]=useState('')
-
+const [priceQuantity,setPriceQuantity]=useState(0)
 const [errorBuy,setErrorBuy]=useState('')
 
 const handleNameChange =(e)=>{
@@ -1094,8 +1137,18 @@ const handleAdressChange =(e)=>{
   setAdress(e.target.value)
 }
 
+useEffect(() => {
+  const productPrice = productValue * orderProduct?.price
+    if (productPrice) {
+      setPriceQuantity(productPrice)
+    }
 
+
+}, [productValue,orderProduct]);
  
+
+
+const navigate = useNavigate();
 
 const submitOrder = () => {
   if (
@@ -1120,9 +1173,9 @@ const submitOrder = () => {
   }
 
   const updatedStock = productStock - productValue;
-  handleStockUpdate(updatedStock); // Save to state and localStorage
+  handleStockUpdate(updatedStock);
 
-  localStorage.setItem('orderDetails', JSON.stringify({
+  const orderDetails = {
     Name,
     Surname,
     Phone,
@@ -1130,26 +1183,21 @@ const submitOrder = () => {
     Adress,
     citySelect,
     productValue,
-  }));
-
-  const product = {
-    name: orderProduct.name, // Replace with the actual product name
-    images: orderProduct.images[0], // Replace with the actual image URL(s)
+    productName: orderProduct.name,
+    productImage: orderProduct.images[0], // first image
+    priceQuantity,
   };
 
-
-  localStorage.setItem('orderDetails', JSON.stringify({
-    Name,
-    Surname,
-    productName: product.name,
-    productImage: product.images[0], // Just using the first image
-    productValue,
-  }));
+  localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+  
+  // Save the order time as the current time
+  const orderTime = new Date().toLocaleString();
+  localStorage.setItem('orderTime', orderTime);
 
   setErrorBuy('Order submitted successfully');
   setTimeout(() => setErrorBuy(''), 3000);
 
-  // Reset the form fields
+  // Reset the form
   setName('');
   setSurname('');
   setPhone('');
@@ -1158,8 +1206,11 @@ const submitOrder = () => {
   setCitySelect('');
   setTransport('');
   setPayment('');
-  setOrderCheck()
+  setOrderCheck();
+
+  // Navigate to the Order Summary page after submission
 };
+
 
 
 
@@ -1213,19 +1264,51 @@ const submitOrder = () => {
       <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
       <img width="50px" src={orderProduct.images[0]} alt="" />
      <div className="flex flex-col items-start gap-1">
-     <p> {orderProduct?.name}</p>
+     <p className='text-[#fbfbfb]'> {orderProduct?.name}</p>
      <div className="flex gap-6">
-       <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Price</strong>{orderProduct?.price}$</p>
-     <p className='font-semibold text-sm flex items-center gap-1'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
+       <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
+     <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
      </div>
       </div>
       <div className="flex justify-between items-center gap-4 mt-6">
-      <input value={Name} onChange={handleNameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Name" />
-      <input value={Surname} onChange={handleSurnameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Surname" />
+      <input 
+        value={Name} 
+        onChange={handleNameChange} 
+        maxLength={10}  // Limit to 10 characters
+        className="rounded-md p-1 w-full" 
+        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+        type="text" 
+        placeholder="Name" 
+      />
+      <input 
+        value={Surname} 
+        onChange={handleSurnameChange} 
+        maxLength={10}  // Limit to 10 characters
+        className="rounded-md p-1 w-full" 
+        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+        type="text" 
+        placeholder="Surname" 
+      />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
-      <input value={Phone} onChange={handlePhoneChange } className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Phone Number" />
-      <input value={Email} onChange={handleEmailChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Email" />
+      <input 
+        value={Phone} 
+        onChange={handlePhoneChange} 
+        className="rounded-md p-1 w-full" 
+        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+        type="tel" // Phone type for numeric input
+        placeholder="Phone Number" 
+        pattern="\d*" // Restrict to only numbers (optional: use onInput to filter manually)
+      />
+      <input 
+        value={Email} 
+        onChange={handleEmailChange} 
+        className="rounded-md p-1 w-full" 
+        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+        type="email" // Ensures valid email format
+        placeholder="Email" 
+        required 
+      />
       </div>
       <div className="flex justify-between items-center gap-4 mt-8">
       <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />

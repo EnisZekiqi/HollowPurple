@@ -11,6 +11,7 @@ import ProductsPage from './All Products/Products';
 import Cart from './All Products/Cart'
 import { useNavigate } from 'react-router-dom';
 import Order from './All Products/Order';
+import OrderSummary from './All Products/OrderSummary';
 
 function App() {
 
@@ -110,6 +111,10 @@ function App() {
               path="/Order"
               element={<Order seeProduct={seeProduct}/>}
             />
+            <Route
+          path="/order-summary"
+          element={<OrderSummary orderDetails={JSON.parse(localStorage.getItem('orderDetails'))} orderTime={localStorage.getItem('orderTime')} />}
+        />
       </Routes>
     </header>
   </div>
