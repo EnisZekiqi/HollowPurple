@@ -99,7 +99,7 @@ const Cart = ({ seeProduct}) => {
  
 
     return (
-      <div className="">
+      <div className="Cart">
         <div className="block md:hidden">
           <CartResponsive/>
         </div>

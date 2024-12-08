@@ -44,6 +44,21 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 .emptyg{
   width: 20px;
 }
+.Cart{
+  background-color:rgba(1, 1, 3,0.8) ;
+}
+
+.order-summary{
+  background-color:rgba(1, 1, 3,0.8) ;
+}
+@media(max-width:764px){
+  .order-summary{
+    background-color:rgba(1, 1, 3,1) ;
+  }
+  .Cart{
+    background-color:rgba(1, 1, 3,1) ;
+  }
+}
 .drawer1{
   background: rgba( 1, 1, 3, 0.87 );
      backdrop-filter: blur( 12px );

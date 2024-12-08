@@ -145,6 +145,58 @@ const action = (
 );
 
 
+const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
+const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
+const [orderCheckPrice,setOrderCheckPrice]=useState(0)
+const [orderCountShow, setOrderCountShow] = useState(false);
+const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
+
+const DismissOrderInfo = (e) => {
+  // Ensure the click is outside the order details
+  if (e.target.classList.contains('backdrop')) {
+    setOrderCheck(false);
+    setOrderCheckInfo(null);
+  }
+};
+
+useEffect(() => {
+  // Retrieve 'orderDetails' from localStorage
+  const notifyOrder = localStorage.getItem('orderDetails');
+  
+  if (notifyOrder) {
+    const orderData = JSON.parse(notifyOrder);  // Parse it into a valid object
+    setOrderCheck(true);
+    setOrderCheckInfo(orderData);  // Set order data, including product and user info
+    setOrderCheckPrice(orderData);
+  }
+
+  // Parse the 'orderDetails' or default to an empty array if it's not found or invalid
+  const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
+  
+  // Make sure it's an array before trying to get its length
+  const count = orderValue.length;
+  console.log('Order count:', count);  // Log to debug
+  
+  setOrderCount(count);  // Update order count directly
+  
+  // Check screen width
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth >= 764) {
+    // Set the order count visible after a timeout (7 seconds) for larger screens
+    setTimeout(() => {
+      setOrderCountShow(true);  // Show the count after 7 seconds
+    }, 7000);
+  } else {
+    // If the screen width is less than 764px, reset the order check info after 7 seconds
+    setTimeout(() => {
+      setOrderCheck(false);
+      setOrderCheckInfo(null);  // Clear the order check info
+    }, 7000);
+  }
+
+}, []);
+
   return (
   <div>
       <div className='products h-full' >
@@ -203,9 +255,55 @@ const action = (
           />
         </div>
           <div className="flex gap-3 items-center cursor-pointer">
-            <a href="/login">
-              <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-            </a>
+          <Link 
+        to="/order-summary" 
+        state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
+        className="order-info-link"
+      >
+           <div className='relative'>
+           {orderCountShow && (orderCount === 0 ? '' : 
+  <p className="absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
+    !
+  </p>
+)}
+  
+  <div className="flex flex-col">
+    <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+  </div>
+  
+  <div className="absolute">
+    {orderCheck && orderCheckInfo && (
+      
+        <div className='ml-2 mr-4'>
+          <div className="absolute left-1/2 top-2.5 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-14" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+            <div className="contentorder ">
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-2 " style={{width:'280px'}}>
+                  <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
+                  <div className="flex flex-col">
+                   <div className="flex justify-around items-center">
+                   <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
+                   </div>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
+                    </p>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
+                    </p>
+                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                      <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    )}
+  </div>
+</div>
+        </Link>
             <div className="relative">
               {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
               <div onClick={()=>setDrawerOpener(true)}>
@@ -254,7 +352,7 @@ const action = (
   initial={{opacity:0,y:-10}}
   animate={{opacity:1,y:0,transiton:{duration:0.5}}}
   exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-  className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+  className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] -mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
     {searchResults.length > 0 ? (
       searchResults.map(product => (
         <div
@@ -285,7 +383,7 @@ const action = (
        </AnimatePresence>
 
   {/* Always show brands and all products */}
-  <div>
+  <div className='backdrop'>
     <div className="empty flex items-center justify-around mt-6">
       {brands.map((txt, index) => (
         <div className="px-3" key={index}>
@@ -634,18 +732,17 @@ useEffect(() => {
 
 const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
 const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
-const [orderCheckPrice,setOrderCheckPrice]=useState(orderValue.length)
+const [orderCheckPrice,setOrderCheckPrice]=useState(0)
 const [orderCountShow, setOrderCountShow] = useState(false);
 const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
 
-const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
 
 useEffect(() => {
   // Retrieve 'orderDetails' from localStorage
   const notifyOrder = localStorage.getItem('orderDetails');
   
   if (notifyOrder) {
-    const orderData = JSON.parse(notifyOrder);  // Parse it into a valid array or object
+    const orderData = JSON.parse(notifyOrder);  // Parse it into a valid object
     setOrderCheck(true);
     setOrderCheckInfo(orderData);  // Set order data, including product and user info
     setOrderCheckPrice(orderData);
@@ -659,13 +756,24 @@ useEffect(() => {
   console.log('Order count:', count);  // Log to debug
   
   setOrderCount(count);  // Update order count directly
+  
+  // Check screen width
+  const screenWidth = window.innerWidth;
 
-  // Set the order count visible after a timeout (7 seconds)
-  setTimeout(() => {
-    setOrderCountShow(true);  // Show the count after 7 seconds
-  }, 7000);
+  if (screenWidth >= 764) {
+    // Set the order count visible after a timeout (7 seconds) for larger screens
+    setTimeout(() => {
+      setOrderCountShow(true);  // Show the count after 7 seconds
+    }, 7000);
+  } else {
+    // If the screen width is less than 764px, reset the order check info after 7 seconds
+    setTimeout(() => {
+      setOrderCheck(false);
+      setOrderCheckInfo(null);  // Clear the order check info
+    }, 7000);
+  }
 
-}, []);   // Empty dependency array ensures it runs only once when the component mounts
+}, []);  // Empty dependency array ensures it runs only once when the component mounts
 
 
 
@@ -735,7 +843,7 @@ useEffect(() => {
            <div className='relative'>
            {orderCountShow && (orderCount === 0 ? '' : 
   <p className="absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
-    {orderCount}
+    !
   </p>
 )}
   
@@ -747,7 +855,7 @@ useEffect(() => {
     {orderCheck && orderCheckInfo && (
         <div className='ml-2 mr-4'>
           <div className="absolute left-1/2 top-2.5 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
             <div className="contentorder ">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2 " style={{width:'280px'}}>
