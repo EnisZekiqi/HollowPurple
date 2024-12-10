@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import none from '../images/undraw_web_search_re_efla.svg'
 import none2 from '../images/undraw_order_delivered_re_v4ab.svg'
 import { motion,AnimatePresence } from "framer-motion";
-import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
+import { MdNotificationsNone   ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,
@@ -31,22 +31,111 @@ const OrderSummary = ({ orderDetails, orderTime }) => {
     }
   }, [orderTime]);
 
+
+  const [notificationArrival,setNotificationArrival]=useState(false)
+
+
+  useEffect(() => {
+    if (ArrivalTime) {
+      const checkArrival = setInterval(() => {
+        const currentTime = new Date();
+        const arrivalDate = new Date(ArrivalTime);
+
+        // Check if the current time matches the arrival time
+        if (currentTime >= arrivalDate) {
+          clearInterval(checkArrival); // Stop the interval
+          setNotificationArrival(true); // Trigger notification
+        }
+      }, 1000); // Check every second
+
+      // Cleanup interval on component unmount
+      return () => clearInterval(checkArrival);
+    }
+  }, [ArrivalTime]);
+
   return (
     <div className="order-summary h-full" >
-       <div className="flex p-1.5"> 
-        <div className='flex items-center gap-1'>
-          <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
-            <svg style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+       <div className="flex justify-between items-center p-1.5">
+          <div className='flex items-center gap-1'>
+            <div className="flex items-center gap-1">
+              <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
+              <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
                 <path
                   d="M7 17L17 7M17 7H8M17 7V16"
-                  stroke="#5a58a5"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
-           </div>
+            </div>
+          </div>
+         
+          <div className="flex gap-3 items-center cursor-pointer">
+          
+           <a href="/products"> <MdArrowBackIos  style={{color:'#fbfbfb',width:'25px',height:'25px',marginTop:'5px'}}/></a>
+           <div className="relative">
+  {notificationArrival === true && (
+    <p className="absolute ml-4 -mt-1.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
+      !
+    </p>
+  )}
 
+  <div className="flex flex-col mr-2 ">
+    <MdOutlineNotifications style={{ width: "25px", height: "25px" }} />
+  </div>
+
+  <div className="absolute">
+    {notificationArrival && (
+      <div className="ml-2 mr-4">
+        {/* Arrow pointer */}
+        <div
+          className="absolute left-[65%] top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]"
+          style={{
+            borderTop: "1px solid #6f6e9e",
+            borderLeft: "1px solid #6f6e9e",
+            zIndex: 200,
+            borderTopRightRadius:'8px'
+          }}
+        />
+        {/* Notification content */}
+        <div
+          className="absolute -left-full -translate-x-[80%] -translate-y-1/2 top-[181px] bg-[#242329] p-4 rounded-lg w-60 shadow-lg"
+          style={{ border: "1px solid #6f6e9e", zIndex: 100 }}
+        >
+          <h2 className="text-lg font-bold text-[#fbfbfb] mb-2">Order Arrived!</h2>
+          <p className="text-sm text-[#d6d6dc] mb-4">
+            Your order has arrived. Please check your drawer for details.
+          </p>
+          <div className="bg-[#6f6e9e] p-3 rounded-lg">
+            <h3 className="text-base font-bold text-[#fbfbfb] mb-2">Order Details</h3>
+            <p className="text-sm text-[#fbfbfb] mb-1">
+              <strong>Product:</strong> {orderDetails.productName}
+            </p>
+            <p className="text-sm text-[#fbfbfb] mb-1">
+              <strong>Quantity:</strong> {orderDetails.productValue}
+            </p>
+            <p className="text-sm text-[#fbfbfb]">
+              <strong>Price:</strong> {orderDetails.priceQuantity}$
+            </p>
+            <button
+              className="mt-4 bg-[#9f9fac] text-[#242329] px-3 py-1 rounded-md"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default link navigation
+                e.stopPropagation(); // Prevent event bubbling
+                setNotificationArrival(false); // Close the notification
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+          </div>
+        
         </div>
         <div className="empty md:block hidden"></div>
         <div className="emptyg md:hidden block"></div>

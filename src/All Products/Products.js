@@ -159,6 +159,12 @@ const DismissOrderInfo = (e) => {
   }
 };
 
+const DismissOrderCheck =()=>{
+  console.log("DismissOrderCheck triggered");
+  setOrderCheck(false)
+  setOrderCheckInfo(null)
+}
+
 useEffect(() => {
   // Retrieve 'orderDetails' from localStorage
   const notifyOrder = localStorage.getItem('orderDetails');
@@ -273,18 +279,15 @@ useEffect(() => {
   
   <div className="absolute">
     {orderCheck && orderCheckInfo && (
-      
         <div className='ml-2 mr-4'>
-          <div className="absolute left-1/2 top-2.5 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-14" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+          <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
             <div className="contentorder ">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2 " style={{width:'280px'}}>
                   <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
                   <div className="flex flex-col">
-                   <div className="flex justify-around items-center">
-                   <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
-                   </div>
+                    <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
                     <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
                       <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
                     </p>
@@ -296,6 +299,17 @@ useEffect(() => {
                     </p>
                   </div>
                 </div>
+                <button
+                className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link navigation
+                  e.stopPropagation(); // Prevent event bubbling
+                  DismissOrderCheck(); // Close the order check
+                }}
+                style={{ zIndex: 4000 }}
+              >
+                Check Later
+              </button>
               </div>
             </div>
           </div>
@@ -737,6 +751,12 @@ const [orderCountShow, setOrderCountShow] = useState(false);
 const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
 
 
+const DismissOrderCheck =()=>{
+  console.log("DismissOrderCheck triggered");
+  setOrderCheck(false)
+  setOrderCheckInfo(null)
+}
+
 useEffect(() => {
   // Retrieve 'orderDetails' from localStorage
   const notifyOrder = localStorage.getItem('orderDetails');
@@ -854,8 +874,8 @@ useEffect(() => {
   <div className="absolute">
     {orderCheck && orderCheckInfo && (
         <div className='ml-2 mr-4'>
-          <div className="absolute left-1/2 top-2.5 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-14 bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+          <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
             <div className="contentorder ">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2 " style={{width:'280px'}}>
@@ -873,6 +893,17 @@ useEffect(() => {
                     </p>
                   </div>
                 </div>
+                <button
+                className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link navigation
+                  e.stopPropagation(); // Prevent event bubbling
+                  DismissOrderCheck(); // Close the order check
+                }}
+                style={{ zIndex: 4000 }}
+              >
+                Check Later
+              </button>
               </div>
             </div>
           </div>
