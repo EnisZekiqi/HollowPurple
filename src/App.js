@@ -12,6 +12,7 @@ import Cart from './All Products/Cart'
 import { useNavigate } from 'react-router-dom';
 import Order from './All Products/Order';
 import OrderSummary from './All Products/OrderSummary';
+import Tech from './All Products/Tech';
 
 function App() {
 
@@ -69,7 +70,11 @@ function App() {
     // You can navigate or show a modal with detailed product information.
   };
   
+  const [selectedTech,setSelectedTech]=useState(null)
 
+  const chooseTech =(tech)=>{
+    setSelectedTech(tech)
+  }
 
   return (
     <Router>
@@ -102,7 +107,7 @@ function App() {
           }
         />
         {/* Products page route */}
-        <Route path="/products" element={<ProductsPage selectedProduct={selectedProduct}/>} />
+        <Route path="/products" element={<ProductsPage chooseTech={chooseTech}  selectedProduct={selectedProduct}/>} />
         <Route
               path="/cart"
               element={<Cart  seeProduct={seeProduct}/>}
@@ -114,6 +119,10 @@ function App() {
             <Route
           path="/order-summary"
           element={<OrderSummary orderDetails={JSON.parse(localStorage.getItem('orderDetails'))} orderTime={localStorage.getItem('orderTime')} />}
+        />
+        <Route
+          path="/tech"
+          element={<Tech  selectedTech={selectedTech} />}
         />
       </Routes>
     </header>

@@ -25,7 +25,7 @@ import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
 import { Box, Modal } from '@mui/material';
 
-function ProductsPage() {
+function ProductsPage({chooseTech}) {
 
  
     const [allProducts, setAllProducts] = useState([]);
@@ -102,6 +102,9 @@ function ProductsPage() {
         setDrawerTechBrand(!drawerTechBrand);
       };
     
+      const handleTech =(tech)=>{
+        chooseTech(tech)
+      }
 
       const parentAnimation = {
         initial: { opacity: 0 },
@@ -492,13 +495,18 @@ useEffect(() => {
           <button onClick={() => setShowTechBrands('brands')}>
             <MdArrowForwardIos />
           </button>
+          
           {tech.map((txt, index) => (
+           <Link
+           to="/tech"
+           >
             <motion.div
               key={index}
               className="relative px-3"
               variants={childAnimation} 
               initial="initial"
-              animate="animate"// Apply stagger animation for each tech item
+              animate="animate"
+              onClick={()=>handleTech(txt)}
             >
               <div
                 onMouseLeave={() => setshowUnderTech('')}
@@ -514,7 +522,9 @@ useEffect(() => {
                 className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left scale-x-0 rounded-full bg-[#585782] transition-transform duration-300 ease-out"
               />
             </motion.div>
+            </Link>
           ))}
+           
         </motion.div>
       ) : (
         <motion.div
@@ -556,13 +566,15 @@ useEffect(() => {
 </div>
       </div>
      )}
+     {drawerTechBrand && 
       <motion.div
-        className="backdrop fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
-        variants={backdropAnimation}
-        initial="closed"
-        animate={drawerTechBrand ? 'open' : 'closed'}
-        onClick={toggleDrawer} // Close the drawer when the backdrop is clicked
-      />
+      className="backdrop fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
+      variants={backdropAnimation}
+      initial="closed"
+      animate={drawerTechBrand ? 'open' : 'closed'}
+      onClick={toggleDrawer} // Close the drawer when the backdrop is clicked
+    />
+     }
       <motion.div
         className="drawer1 fixed top-0 left-0 w-64 h-full  text-white"
         style={{zIndex:1000}}
@@ -576,18 +588,22 @@ useEffect(() => {
             HollowPurple</h2>
           <div className="emptyg opacity-0">1</div>
           {techResponsive.map((txt, index) => (
+           <Link
+           to="/tech"
+           >
             <motion.div
               key={index}
               variants={childAnimation}
               initial="initial"
               animate="animate" // Apply stagger animation for each brand item
               className="px-3 mb-3.5"
+              onClick={()=>handleTech(txt)}
             >
               <div className="flex items-center gap-4">
               <div className="brandcover2">{txt.tech}</div>
               <p className="brandcover2 text-md font-light text-[#d6d6dc]">{txt.name}</p>
               </div>
-            </motion.div>
+            </motion.div></Link>
           ))}
           <div className="px-2">
           <hr  style={{width:'100%',height:'2px',backgroundColor:'#9f9fac',marginTop:'5px',marginBottom:'5px'}}/>
