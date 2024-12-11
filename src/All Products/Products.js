@@ -1,10 +1,11 @@
 
 import * as React from 'react';
-import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
+import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart ,MdMenu 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,MdOutlineDone ,
-  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining 
+  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, 
+  MdArrowBack
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
 import { SiLogitechg,SiSamsung,SiApple,SiLenovo ,SiRazer,SiSony ,SiHp ,SiAsus     } from "react-icons/si";
@@ -18,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { MdMonitor,MdLaptop,MdOutlinePhoneIphone,MdHeadphones ,MdCameraAlt ,MdMouse    } from "react-icons/md";
 
 import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
@@ -25,6 +27,7 @@ import { Box, Modal } from '@mui/material';
 
 function ProductsPage() {
 
+ 
     const [allProducts, setAllProducts] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -49,6 +52,7 @@ function ProductsPage() {
         setSearchResults(results);
       };
 
+      
 
       const brands = [
         {brand:<SiLogitechg style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
@@ -61,6 +65,81 @@ function ProductsPage() {
         {brand:<SiAsus style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
       ]
 
+      const tech =[
+        {tech:'Pc and Laptops'},
+        {tech:'Headphones'},
+        {tech:'Monitor'},
+        {tech:'Phones'},
+        {tech:'Camera'},
+        {tech:'Projector'},
+        {tech:'Mouse'},
+      ]
+
+      const techResponsive =[
+        {tech:<MdMonitor style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Monitor'},
+        {tech:<MdLaptop style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Laptop'},
+        {tech:<MdOutlinePhoneIphone style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Phones'},
+        {tech:<MdHeadphones style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Headphones'},
+        {tech:<MdCameraAlt style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Camera'},
+        {tech:<MdMouse style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Mouse'},
+      ]
+      const brandsResponsive = [
+        {brand:<SiLogitechg style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Logitech'},
+        {brand:<SiSamsung style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Samsung'},
+        {brand:<SiApple style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Apple'},
+        {brand:<SiLenovo style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Lenovo'},
+        {brand:<SiRazer style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Razer'},
+        {brand:<SiSony style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Sony'},
+        {brand:<SiHp style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Hp'},
+        {brand:<SiAsus style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Asus'},
+      ]
+
+      const [showUnderTech,setshowUnderTech]=useState('') /// hover effect over the tech
+      const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
+      const [drawerTechBrand,setDrawerTechBrand]=useState(false)
+
+      const toggleDrawer = () => {
+        setDrawerTechBrand(!drawerTechBrand);
+      };
+    
+
+      const parentAnimation = {
+        initial: { opacity: 0 },
+        animate: {
+          opacity: 1,
+          staggerChildren: 0.3, // Staggered animation for children
+          transition: { duration: 0.5 },
+        },
+      };
+    
+      const childAnimation = {
+        initial: { opacity: 0 },
+        animate: { opacity: 1, transition: { duration: 0.3 } },
+      };
+
+      const drawerAnimation = {
+        open: {
+          x: 0, // Drawer slides in (left to right)
+          opacity: 1,
+          transition: { type: 'spring', stiffness: 300, damping: 30 },
+        },
+        closed: {
+          x: '-100%', // Drawer slides out completely (offscreen)
+          opacity: 0,
+          transition: { type: 'spring', stiffness: 300, damping: 30 },
+        },
+      };
+
+      const backdropAnimation = {
+        open: {
+          opacity: 1,
+          transition: { duration: 0.3 },
+        },
+        closed: {
+          opacity: 0,
+          transition: { duration: 0.3 },
+        },
+      };
 
 ////selected product on search //////
 
@@ -232,6 +311,9 @@ useEffect(() => {
         <div className="flex justify-between items-center">
           <div className='flex items-center gap-1'>
             <div className="flex items-center gap-1">
+            <button   onClick={() => setDrawerTechBrand(!drawerTechBrand)} className='block md:hidden'>
+                <MdMenu/>
+              </button>
               <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
               <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
                 <path
@@ -281,7 +363,7 @@ useEffect(() => {
     {orderCheck && orderCheckInfo && (
         <div className='ml-2 mr-4'>
           <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-14 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
             <div className="contentorder ">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2 " style={{width:'280px'}}>
@@ -397,32 +479,137 @@ useEffect(() => {
        </AnimatePresence>
 
   {/* Always show brands and all products */}
-  <div className='backdrop'>
-    <div className="empty flex items-center justify-around mt-6">
-      {brands.map((txt, index) => (
-        <div className="px-3" key={index}>
-          <div className="brandcover">
-            {txt.brand}
+  <div className="backdrop">
+      <AnimatePresence>
+      {showTechBrands === 'tech' ? (
+        <motion.div
+          className="empty hidden md:flex items-center justify-around mt-6 bg-[#242329] text-[#fbfbfb]"
+          style={{ height: '60px' }}
+          variants={parentAnimation}
+          initial="initial"
+          animate="animate"
+        >
+          <button onClick={() => setShowTechBrands('brands')}>
+            <MdArrowForwardIos />
+          </button>
+          {tech.map((txt, index) => (
+            <motion.div
+              key={index}
+              className="relative px-3"
+              variants={childAnimation} 
+              initial="initial"
+              animate="animate"// Apply stagger animation for each tech item
+            >
+              <div
+                onMouseLeave={() => setshowUnderTech('')}
+                onMouseEnter={() => setshowUnderTech(txt.tech)}
+                className="brandcover2"
+              >
+                {txt.tech}
+              </div>
+              <span
+                style={{
+                  transform: showUnderTech === txt.tech ? 'scaleX(1)' : 'scaleX(0)',
+                }}
+                className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left scale-x-0 rounded-full bg-[#585782] transition-transform duration-300 ease-out"
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div
+          className="empty hidden md:flex items-center justify-around mt-6 bg-[#242329] text-[#fbfbfb]"
+          style={{ height: '60px' }}
+          variants={parentAnimation}
+          initial="initial"
+          animate="animate"
+        >
+          <button onClick={() => setShowTechBrands('tech')}>
+            <MdArrowForwardIos />
+          </button>
+          {brands.map((txt, index) => (
+            <motion.div
+              key={index}
+              variants={childAnimation}
+              initial="initial"
+              animate="animate" // Apply stagger animation for each brand item
+              className="px-3"
+            >
+              <div className="brandcover">{txt.brand}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      <div className="product-grid flex flex-col md:flex-row justify-center items-center gap-2">
+        {allProducts.map((product) => (
+          <div key={product.id} className="product-card">
+            <h3>{product.name}</h3>
+            <p>Price: ${product.price}</p>
+            {product.image && <img src={`/path/to/images/${product.image}`} alt={product.name} />}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-    <div className="product-grid flex justify-center items-center gap-2">
-      {allProducts.map(product => (
-        <div key={product.id} className="product-card">
-          <h3>{product.name}</h3>
-          <p>Price: ${product.price}</p>
-          {product.image && <img src={`/path/to/images/${product.image}`} alt={product.name} />}
-        </div>
-      ))}
-    </div>
-  </div>
   
 </div>
       </div>
      )}
-   <div className="emptyg"></div>
-  
+      <motion.div
+        className="backdrop fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
+        variants={backdropAnimation}
+        initial="closed"
+        animate={drawerTechBrand ? 'open' : 'closed'}
+        onClick={toggleDrawer} // Close the drawer when the backdrop is clicked
+      />
+      <motion.div
+        className="drawer1 fixed top-0 left-0 w-64 h-full  text-white"
+        style={{zIndex:1000}}
+        variants={drawerAnimation}
+        initial="closed"
+        animate={drawerTechBrand ? 'open' : 'closed'} // Animate based on the state
+      >
+        <div className="drawer-content">
+          <h2 className="flex justify-between text-lg font-semibold bg-[#585782] items-center mt-0 w-full rounded-lg px-2">
+           <button onClick={toggleDrawer}> <MdArrowBack/></button>
+            HollowPurple</h2>
+          <div className="emptyg opacity-0">1</div>
+          {techResponsive.map((txt, index) => (
+            <motion.div
+              key={index}
+              variants={childAnimation}
+              initial="initial"
+              animate="animate" // Apply stagger animation for each brand item
+              className="px-3 mb-3.5"
+            >
+              <div className="flex items-center gap-4">
+              <div className="brandcover2">{txt.tech}</div>
+              <p className="brandcover2 text-md font-light text-[#d6d6dc]">{txt.name}</p>
+              </div>
+            </motion.div>
+          ))}
+          <div className="px-2">
+          <hr  style={{width:'100%',height:'2px',backgroundColor:'#9f9fac',marginTop:'5px',marginBottom:'5px'}}/>
+          </div>
+          {brandsResponsive.map((txt, index) => (
+            <motion.div
+              key={index}
+              variants={childAnimation}
+              initial="initial"
+              animate="animate" // Apply stagger animation for each brand item
+              className="px-3 mt-3.5"
+            >
+              <div className="flex items-center gap-4">
+              <div className="brandcover2">{txt.brand}</div>
+              <p className="brandcover2  text-md font-light text-[#d6d6dc]">{txt.name}</p>
+              </div>
+              
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+   <div className="empty">1</div>
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 

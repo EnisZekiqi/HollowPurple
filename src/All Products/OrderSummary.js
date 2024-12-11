@@ -102,10 +102,12 @@ const OrderSummary = ({ orderDetails, orderTime }) => {
           className="absolute -left-full -translate-x-[80%] -translate-y-1/2 top-[181px] bg-[#242329] p-4 rounded-lg w-60 shadow-lg"
           style={{ border: "1px solid #6f6e9e", zIndex: 100 }}
         >
+          <div className="flex flex-col">
           <h2 className="text-lg font-bold text-[#fbfbfb] mb-2">Order Arrived!</h2>
           <p className="text-sm text-[#d6d6dc] mb-4">
             Your order has arrived. Please check your drawer for details.
           </p>
+          </div>
           <div className="bg-[#6f6e9e] p-3 rounded-lg">
             <h3 className="text-base font-bold text-[#fbfbfb] mb-2">Order Details</h3>
             <p className="text-sm text-[#fbfbfb] mb-1">
@@ -118,7 +120,7 @@ const OrderSummary = ({ orderDetails, orderTime }) => {
               <strong>Price:</strong> {orderDetails.priceQuantity}$
             </p>
             <button
-              className="mt-4 bg-[#9f9fac] text-[#242329] px-3 py-1 rounded-md"
+              className="mt-4 bg-[#fbfbfb] text-[#585782] px-3 py-1 rounded-md"
               onClick={(e) => {
                 e.preventDefault(); // Prevent default link navigation
                 e.stopPropagation(); // Prevent event bubbling
