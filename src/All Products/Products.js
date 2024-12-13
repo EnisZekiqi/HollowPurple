@@ -313,6 +313,7 @@ useEffect(() => {
        handleGoBack={handleGoBack} 
        allProducts={allProducts} 
        seeProduct={seeProduct}
+       chooseTech={chooseTech}
        loadingTime={loadingTime}/>
      ):(
       <div>
@@ -571,9 +572,9 @@ useEffect(() => {
       )}
       </AnimatePresence>
         <div className="empty"></div>
-      <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
+      <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
       {allProducts.map((product) => (
-        <div key={product.id} className="product-card mb-6 px-1 rounded-md bg-[#18181b]">
+        <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
           {product.images && product.images.length > 0 ? (
             <div className="flex w-full items-center justify-center">
               <img width='55px' height='55px' src={product.images[0]} alt={product.name} />
@@ -632,7 +633,7 @@ useEffect(() => {
               initial="initial"
               animate="animate" // Apply stagger animation for each brand item
               className="px-3 mb-3.5"
-              onClick={()=>handleTech(txt)}
+              onClick={()=>handleTech(txt.tech)}
             >
               <div className="flex items-center gap-4">
               <div className="brandcover2">{txt.tech}</div>
@@ -688,7 +689,7 @@ useEffect(() => {
   );
 }
 
-const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime })=>{
+const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime,chooseTech })=>{
 
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -815,6 +816,10 @@ useEffect(() => {
   }
 
 }, []);
+
+const handleTech =(tech)=>{
+  chooseTech(tech)
+}
 
 const [alertCart,setAlertCart]=useState(false)
 const [alertProductId, setAlertProductId] = useState(null);
@@ -1237,7 +1242,9 @@ useEffect(() => {
     <IoIosArrowForward/>
    <a href="/products"><p>Product</p></a>
     <IoIosArrowForward/>
-    <p>{product.type}</p>
+    <Link to='/tech'>
+    <p onClick={()=>handleTech(product.type)}>
+      {product.type}</p></Link>
     <IoIosArrowForward/>
     <p>{product.name}</p>
   </motion.div>

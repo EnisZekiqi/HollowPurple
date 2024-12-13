@@ -322,6 +322,7 @@ useEffect(() => {
        handleGoBack={handleGoBack} 
        allProducts={allProducts} 
        seeProduct={seeProduct}
+       chooseTech={chooseTech}
        loadingTime={loadingTime}/>
      ):(
       <div>
@@ -509,8 +510,8 @@ useEffect(() => {
   )}
        </AnimatePresence>
 </div>
-<p className="md:hidden flex">{selectedTech.name}</p>
-<p className="md:flex hidden">{selectedTech.tech}</p>
+<div className="empty"></div>
+<p className=" text-start pl-8 mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedTech}</p>
 <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
@@ -522,8 +523,18 @@ useEffect(() => {
               ) : (
                 <p className="text-sm text-[#9f9fac]">No image available</p>
               )}
-              <h3 className="font-bold text-md text-[#fbfbfb] mt-2">{product.name}</h3>
-              <p className="font-light text-sm text-[#d6d6dc]">{product.price}$</p>
+               <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
+          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
+            {product.description}
+          </p>
+          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
+          <div className="flex justify-around w-full items-center mt-2 gap-2">
+            <button  onClick={()=>seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
+            <button 
+            onClick={() =>addToFavorites(product)}
+            className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
+              <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></button>
+          </div>
             </div>
           ))
         ) : (
@@ -542,7 +553,7 @@ useEffect(() => {
      );
 }
 
-const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime })=>{
+const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime,chooseTech })=>{
 
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -887,7 +898,9 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
   
   }, []);  // Empty dependency array ensures it runs only once when the component mounts
   
-  
+  const handleTech =(tech)=>{
+    chooseTech(tech)
+  }
   
     return (
      <div>
@@ -1091,7 +1104,9 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
       <IoIosArrowForward/>
      <a href="/products"><p>Product</p></a>
       <IoIosArrowForward/>
-      <p>{product.type}</p>
+      <Link to='/tech'>
+         <p onClick={()=>handleTech(product.type)}>
+      {product.type}</p></Link>
       <IoIosArrowForward/>
       <p>{product.name}</p>
     </motion.div>
