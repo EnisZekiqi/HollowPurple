@@ -122,7 +122,7 @@ function App() {
         />
         <Route
           path="/tech"
-          element={<Tech  selectedTech={selectedTech} />}
+          element={<Tech  selectedTech={selectedTech} chooseTech={chooseTech}/>}
         />
       </Routes>
     </header>

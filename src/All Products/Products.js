@@ -116,8 +116,8 @@ function ProductsPage({chooseTech}) {
       };
     
       const childAnimation = {
-        initial: { opacity: 0 },
-        animate: { opacity: 1, transition: { duration: 0.3 } },
+        initial: { opacity: 0 ,x:-10},
+        animate: { opacity: 1,x:0, staggerChildren: 0.3,transition: { duration: 0.3 } },
       };
 
       const drawerAnimation = {
@@ -181,6 +181,25 @@ const [alertFav,setAlertFav]=useState('')
  //// updating when you remove to favorites 
 
 const [DrawerOpener,setDrawerOpener]=useState(false)
+
+const addToFavorites = (product) => {
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  const isAlreadyFavorite = favorites.some(item => item.id === product.id);
+  
+  if (!isAlreadyFavorite) {
+    favorites.push(product);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    setOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+    }, 3000);
+    setAlertFav('Product added to favorites!');
+  } else {
+    setAlertFav('Product is already in favorites!');
+    setOpen(true)
+  }
+};
+
 
 const removeFavorites =(product)=>{
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -490,7 +509,7 @@ useEffect(() => {
           style={{ height: '60px' }}
           variants={parentAnimation}
           initial="initial"
-          animate="animate"
+          whileInView="animate"
         >
           <button onClick={() => setShowTechBrands('brands')}>
             <MdArrowForwardIos />
@@ -505,8 +524,8 @@ useEffect(() => {
               className="relative px-3"
               variants={childAnimation} 
               initial="initial"
-              animate="animate"
-              onClick={()=>handleTech(txt)}
+              whileInView="animate"
+              onClick={()=>handleTech(txt.tech)}
             >
               <div
                 onMouseLeave={() => setshowUnderTech('')}
@@ -532,7 +551,7 @@ useEffect(() => {
           style={{ height: '60px' }}
           variants={parentAnimation}
           initial="initial"
-          animate="animate"
+          whileInView="animate"
         >
           <button onClick={() => setShowTechBrands('tech')}>
             <MdArrowForwardIos />
@@ -542,24 +561,40 @@ useEffect(() => {
               key={index}
               variants={childAnimation}
               initial="initial"
-              animate="animate" // Apply stagger animation for each brand item
+              whileInView="animate" // Apply stagger animation for each brand item
               className="px-3"
             >
-              <div className="brandcover">{txt.brand}</div>
+              <div className="brandcover cursor-pointer">{txt.brand}</div>
             </motion.div>
           ))}
         </motion.div>
       )}
       </AnimatePresence>
-
-      <div className="product-grid flex flex-col md:flex-row justify-center items-center gap-2">
-        {allProducts.map((product) => (
-          <div key={product.id} className="product-card">
-            <h3>{product.name}</h3>
-            <p>Price: ${product.price}</p>
-            {product.image && <img src={`/path/to/images/${product.image}`} alt={product.name} />}
+        <div className="empty"></div>
+      <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
+      {allProducts.map((product) => (
+        <div key={product.id} className="product-card mb-6 px-1 rounded-md bg-[#18181b]">
+          {product.images && product.images.length > 0 ? (
+            <div className="flex w-full items-center justify-center">
+              <img width='55px' height='55px' src={product.images[0]} alt={product.name} />
+            </div>
+          ) : (
+            <p>No image available</p>
+          )}
+          <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
+          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
+            {product.description}
+          </p>
+          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
+          <div className="flex justify-around w-full items-center mt-2 gap-2">
+            <button  onClick={()=>seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
+            <button 
+            onClick={() =>addToFavorites(product)}
+            className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
+              <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></button>
           </div>
-        ))}
+        </div>
+      ))}
       </div>
     </div>
   
