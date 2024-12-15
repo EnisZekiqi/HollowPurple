@@ -24,60 +24,29 @@ import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
 import { Box, Modal } from '@mui/material';
 
-const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
-
-    const [allProducts, setAllProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [searchResults, setSearchResults] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-  
-    useEffect(() => {
-        // Fetch data from the JSON file
-        fetch('/data/brands/all-products.json')
-          .then(response => response.json())
-          .then(data => {
-            setAllProducts(data); // Save all products
-          })
-          .catch(error => console.error('Error fetching data:', error));
-      }, []); // Fetch data only once
-      
-      useEffect(() => {
-        if (selectedTech && allProducts.length > 0) {
-          const filtered = allProducts.filter(product => product.type === selectedTech);
-          console.log('Filtered Products:', filtered);
-          setFilteredProducts(filtered);
-        }
-      }, [selectedTech, allProducts]);
+const Brand = ({selectedBrand,chooseBrand,chooseTech}) => {
 
 
-      const handleSearch = (event) => {
-        const query = event.target.value.toLowerCase();
-        setSearchQuery(query);
-    
-        // Filter products by name or other properties
-        const results = allProducts.filter(product =>
-          product.name.toLowerCase().includes(query)
-        );
-        setSearchResults(results);
-      };
+    const [brandIcon, setBrandIcon] = useState(null);
 
-      
-      const [showUnderTech,setshowUnderTech]=useState('') /// hover effect over the tech
-      const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
-      const [drawerTechBrand,setDrawerTechBrand]=useState(false)
+    const handleTech =(tech)=>{
+        chooseTech(tech)
+      }
 
+      const handleBrand =(brand)=>{
+        chooseBrand(brand)
+      }
 
-      const brands = [
-        { brand: <SiLogitechg style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Logitech' },
-        { brand: <SiSamsung style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Samsung' },
-        { brand: <SiApple style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Apple' },
-        { brand: <SiLenovo style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Lenovo' },
-        { brand: <SiRazer style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Razer' },
-        { brand: <SiSony style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Sony' },
-        { brand: <SiHp style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Hp' },
-        { brand: <SiAsus style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Asus' },
-      ];
-      
+    const brands = [
+      { brand: <SiLogitechg style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Logitech' },
+      { brand: <SiSamsung style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Samsung' },
+      { brand: <SiApple style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Apple' },
+      { brand: <SiLenovo style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Lenovo' },
+      { brand: <SiRazer style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Razer' },
+      { brand: <SiSony style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Sony' },
+      { brand: <SiHp style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Hp' },
+      { brand: <SiAsus style={{ width: '45px', height: '45px', color: '#d6d6dc' }} />, name: 'Asus' },
+    ];
 
       const tech =[
         {tech:'Pc and Laptops'},
@@ -108,34 +77,226 @@ const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
         {brand:<SiAsus style={{width:'30px',height:'30px',color:'#fbfbfb'}}/>,name:'Asus'},
       ]
 
-      const toggleDrawer = () => {
-        setDrawerTechBrand(!drawerTechBrand);
-      };
-    
-      const handleBrand=(brand)=>{
-        chooseBrand(brand)
+    useEffect(() => {
+      // Find the brand that matches the selectedBrand
+      const selected = brands.find(brand => brand.name === selectedBrand);
+  
+      // Set the brand icon if a match is found
+      if (selected) {
+        setBrandIcon(selected.brand); // `brand` holds the JSX element for the icon
+      } else {
+        setBrandIcon(null); // Reset if no matching brand
       }
+    }, [selectedBrand]); // Re-run when `s
 
 
-      const handleTech =(tech)=>{
-        chooseTech(tech)
-      }
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-      const parentAnimation = {
-        initial: { opacity: 0 },
-        animate: {
-          opacity: 1,
-          staggerChildren: 0.3, // Staggered animation for children
-          transition: { duration: 0.5 },
-        },
-      };
+  useEffect(() => {
+      // Fetch data from the JSON file
+      fetch('/data/brands/all-products.json')
+        .then(response => response.json())
+        .then(data => {
+          setAllProducts(data); // Save all products
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }, []); // Fetch data only once
     
-      const childAnimation = {
+    useEffect(() => {
+      if (selectedBrand && allProducts.length > 0) {
+        const filtered = allProducts.filter(product => product.brand.toLowerCase() === selectedBrand.toLowerCase());
+        console.log('Filtered Products:', filtered);
+        setFilteredProducts(filtered);
+      }
+    }, [selectedBrand, allProducts]);
+
+
+    const handleSearch = (event) => {
+      const query = event.target.value.toLowerCase();
+      setSearchQuery(query);
+  
+      // Filter products by name or other properties
+      const results = allProducts.filter(product =>
+        product.name.toLowerCase().includes(query)
+      );
+      setSearchResults(results);
+    };
+
+    
+    const [showUnderTech,setshowUnderTech]=useState('') /// hover effect over the tech
+    const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
+    const [drawerTechBrand,setDrawerTechBrand]=useState(false)
+
+    const toggleDrawer = () => {
+      setDrawerTechBrand(!drawerTechBrand);
+    };
+
+    const [showProduct,setShowProduct]=useState(null)
+    const [loadingTime,setLoadingTime]=useState(false)
+    
+    const seeProduct =(product)=>{
+      setShowProduct(product)
+      setSearchQuery('')
+      setSearchResults([]); 
+      setDrawerOpener(false)
+      setLoadingTime(true)
+      setTimeout(() => {
+        setLoadingTime(false)
+      }, 4000);
+    }
+    
+    ///go back to searching function /////
+    
+    
+    const handleGoBack =()=>{
+      setShowProduct(null)
+    }
+    
+    const [FavCount,setFavCount]=useState(0)
+    const [fav,setFav]=useState(false)
+    const [alertFav,setAlertFav]=useState('')
+    
+     useEffect(() => {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      setFavCount(storedFavorites.length );
+    }, []);  //// updating when you add to favorites 
+    
+    
+     //// updating when you remove to favorites 
+    
+    const [DrawerOpener,setDrawerOpener]=useState(false)
+    
+    const addToFavorites = (product) => {
+      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      const isAlreadyFavorite = favorites.some(item => item.id === product.id);
+      
+      if (!isAlreadyFavorite) {
+        favorites.push(product);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        setOpen(true)
+        setTimeout(() => {
+          setOpen(false)
+        }, 3000);
+        setAlertFav('Product added to favorites!');
+      } else {
+        setAlertFav('Product is already in favorites!');
+        setOpen(true)
+      }
+    };
+    
+    
+    const removeFavorites =(product)=>{
+      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      const updatedFavorites = favorites.filter(item => item.id !== product.id);
+    
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    
+      setShowProduct(null)
+      setFav(false);  // Example of removing from state if needed
+      setOpen(true)
+      setAlertFav('Product removed from favorites!');
+    
+    }
+    
+    const [open, setOpen] = React.useState(false);
+    
+    const handleClose = (event, reason) => {  //// close the alert 
+      if (reason === 'clickaway') {
+        return;
+      }
+    
+      setOpen(false);
+    };
+    
+    const [cartCount,setCartCount]=useState(0)
+    
+    setTimeout(() => {
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || []
+      setCartCount(storedCart.length)
+    }, []);
+    
+    
+    const action = (
+      <React.Fragment>
+        <IconButton
+          size="small"
+          aria-label="close"
+          color="inherit"
+          onClick={handleClose}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </React.Fragment>
+    );
+
+    const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
+    const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
+    const [orderCheckPrice,setOrderCheckPrice]=useState(0)
+    const [orderCountShow, setOrderCountShow] = useState(false);
+    const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
+    
+    const DismissOrderInfo = (e) => {
+      // Ensure the click is outside the order details
+      if (e.target.classList.contains('backdrop')) {
+        setOrderCheck(false);
+        setOrderCheckInfo(null);
+      }
+    };
+    
+    const DismissOrderCheck =()=>{
+      console.log("DismissOrderCheck triggered");
+      setOrderCheck(false)
+      setOrderCheckInfo(null)
+    }
+    
+    useEffect(() => {
+      // Retrieve 'orderDetails' from localStorage
+      const notifyOrder = localStorage.getItem('orderDetails');
+      
+      if (notifyOrder) {
+        const orderData = JSON.parse(notifyOrder);  // Parse it into a valid object
+        setOrderCheck(true);
+        setOrderCheckInfo(orderData);  // Set order data, including product and user info
+        setOrderCheckPrice(orderData);
+      }
+    
+      // Parse the 'orderDetails' or default to an empty array if it's not found or invalid
+      const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
+      
+      // Make sure it's an array before trying to get its length
+      const count = orderValue.length;
+      console.log('Order count:', count);  // Log to debug
+      
+      setOrderCount(count);  // Update order count directly
+      
+      // Check screen width
+      const screenWidth = window.innerWidth;
+    
+      if (screenWidth >= 764) {
+        // Set the order count visible after a timeout (7 seconds) for larger screens
+        setTimeout(() => {
+          setOrderCountShow(true);  // Show the count after 7 seconds
+        }, 7000);
+      } else {
+        // If the screen width is less than 764px, reset the order check info after 7 seconds
+        setTimeout(() => {
+          setOrderCheck(false);
+          setOrderCheckInfo(null);  // Clear the order check info
+        }, 7000);
+      }
+    
+    }, []);
+
+    const childAnimation = {
         initial: { opacity: 0 ,x:-10},
         animate: { opacity: 1,x:0, staggerChildren: 0.3,transition: { duration: 0.3 } },
       };
 
-      const drawerAnimation = {
+
+    const drawerAnimation = {
         open: {
           x: 0, // Drawer slides in (left to right)
           opacity: 1,
@@ -159,399 +320,252 @@ const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
         },
       };
 
-////selected product on search //////
 
-
-const [showProduct,setShowProduct]=useState(null)
-const [loadingTime,setLoadingTime]=useState(false)
-
-const seeProduct =(product)=>{
-  setShowProduct(product)
-  setSearchQuery('')
-  setSearchResults([]); 
-  setDrawerOpener(false)
-  setLoadingTime(true)
-  setTimeout(() => {
-    setLoadingTime(false)
-  }, 4000);
-}
-
-///go back to searching function /////
-
-
-const handleGoBack =()=>{
-  setShowProduct(null)
-}
-
-const [FavCount,setFavCount]=useState(0)
-const [fav,setFav]=useState(false)
-const [alertFav,setAlertFav]=useState('')
-
- useEffect(() => {
-  const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  setFavCount(storedFavorites.length );
-}, []);  //// updating when you add to favorites 
-
-
- //// updating when you remove to favorites 
-
-const [DrawerOpener,setDrawerOpener]=useState(false)
-
-const addToFavorites = (product) => {
-  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  const isAlreadyFavorite = favorites.some(item => item.id === product.id);
-  
-  if (!isAlreadyFavorite) {
-    favorites.push(product);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    setOpen(true)
-    setTimeout(() => {
-      setOpen(false)
-    }, 3000);
-    setAlertFav('Product added to favorites!');
-  } else {
-    setAlertFav('Product is already in favorites!');
-    setOpen(true)
-  }
-};
-
-
-const removeFavorites =(product)=>{
-  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  const updatedFavorites = favorites.filter(item => item.id !== product.id);
-
-  localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-
-  setShowProduct(null)
-  setFav(false);  // Example of removing from state if needed
-  setOpen(true)
-  setAlertFav('Product removed from favorites!');
-
-}
-
-const [open, setOpen] = React.useState(false);
-
-const handleClose = (event, reason) => {  //// close the alert 
-  if (reason === 'clickaway') {
-    return;
-  }
-
-  setOpen(false);
-};
-
-const [cartCount,setCartCount]=useState(0)
-
-setTimeout(() => {
-  const storedCart = JSON.parse(localStorage.getItem('cart')) || []
-  setCartCount(storedCart.length)
-}, []);
-
-
-const action = (
-  <React.Fragment>
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  </React.Fragment>
-);
-
-
-const [orderCheck,setOrderCheck]=useState(false) //// after ordering the notification on the icon
-const [orderCheckInfo,setOrderCheckInfo]=useState(null) 
-const [orderCheckPrice,setOrderCheckPrice]=useState(0)
-const [orderCountShow, setOrderCountShow] = useState(false);
-const [orderCount,setOrderCount]=useState(0) //// count for the completed order 
-
-const DismissOrderInfo = (e) => {
-  // Ensure the click is outside the order details
-  if (e.target.classList.contains('backdrop')) {
-    setOrderCheck(false);
-    setOrderCheckInfo(null);
-  }
-};
-
-const DismissOrderCheck =()=>{
-  console.log("DismissOrderCheck triggered");
-  setOrderCheck(false)
-  setOrderCheckInfo(null)
-}
-
-useEffect(() => {
-  // Retrieve 'orderDetails' from localStorage
-  const notifyOrder = localStorage.getItem('orderDetails');
-  
-  if (notifyOrder) {
-    const orderData = JSON.parse(notifyOrder);  // Parse it into a valid object
-    setOrderCheck(true);
-    setOrderCheckInfo(orderData);  // Set order data, including product and user info
-    setOrderCheckPrice(orderData);
-  }
-
-  // Parse the 'orderDetails' or default to an empty array if it's not found or invalid
-  const orderValue = JSON.parse(localStorage.getItem('orderDetails')) || [];
-  
-  // Make sure it's an array before trying to get its length
-  const count = orderValue.length;
-  console.log('Order count:', count);  // Log to debug
-  
-  setOrderCount(count);  // Update order count directly
-  
-  // Check screen width
-  const screenWidth = window.innerWidth;
-
-  if (screenWidth >= 764) {
-    // Set the order count visible after a timeout (7 seconds) for larger screens
-    setTimeout(() => {
-      setOrderCountShow(true);  // Show the count after 7 seconds
-    }, 7000);
-  } else {
-    // If the screen width is less than 764px, reset the order check info after 7 seconds
-    setTimeout(() => {
-      setOrderCheck(false);
-      setOrderCheckInfo(null);  // Clear the order check info
-    }, 7000);
-  }
-
-}, []);
 
     return ( 
-        <div>
-            <div className='products h-full' >
-     {showProduct ? (
-      <ProductDetails 
-      product={showProduct}
-       handleGoBack={handleGoBack} 
-       allProducts={allProducts} 
-       seeProduct={seeProduct}
-       chooseTech={chooseTech}
-       loadingTime={loadingTime}/>
-     ):(
-      <div>
-        <div className="navbarfinally" style={{
-    position: 'sticky',
-    top: 0,
-    zIndex: 1000,
-    width: '100%'
-  }}>
-    {/* Full navbar content that shows only when scrolled up */}
-   
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
-        exit={{ opacity: 0, y: -10, transition: { duration: 1 } }}
-        className="flex flex-col px-3 md:px-1.5 py-2 mb-2.5"
-      >
-        <div className="flex justify-between items-center">
-          <div className='flex items-center gap-1'>
-            <div className="flex items-center gap-1">
-            <button   onClick={() => setDrawerTechBrand(!drawerTechBrand)} className='block md:hidden'>
-                <MdMenu/>
-              </button>
-              <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
-              <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
-                <path
-                  d="M7 17L17 7M17 7H8M17 7V16"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-          <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
-          <input
-            value={searchQuery}
-            onChange={handleSearch}
-            className="searchProduct"
-            style={{
-              background: 'transparent',
-              border: '1px solid #6f6e9e',
-              padding: '3px',
-              borderRadius: '5px',
-              transition: 'width 0.3s ease-in-out',
-              width: '50%', // Adjust as needed
-            }}
-            type="text"
-            placeholder='Search Products'
-          />
-        </div>
-          <div className="flex gap-3 items-center cursor-pointer">
-          <Link 
-        to="/order-summary" 
-        state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
-        className="order-info-link"
-      >
-           <div className='relative'>
-           {orderCountShow && (orderCount === 0 ? '' : 
-  <p className="absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
-    !
-  </p>
-)}
-  
-  <div className="flex flex-col">
-    <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-  </div>
-  
-  <div className="absolute">
-    {orderCheck && orderCheckInfo && (
-        <div className='ml-2 mr-4'>
-          <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-14 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
-            <div className="contentorder ">
-              <div className="flex flex-col items-center">
-                <div className="flex items-center gap-2 " style={{width:'280px'}}>
-                  <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
-                  <div className="flex flex-col">
-                    <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
-                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                      <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
-                    </p>
-                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                      <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
-                    </p>
-                    <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                      <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
-                    </p>
-                  </div>
-                </div>
-                <button
-                className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent default link navigation
-                  e.stopPropagation(); // Prevent event bubbling
-                  DismissOrderCheck(); // Close the order check
-                }}
-                style={{ zIndex: 4000 }}
-              >
-                Check Later
-              </button>
-              </div>
-            </div>
-          </div>
-        </div>
-    )}
-  </div>
-</div>
-        </Link>
-            <div className="relative">
-              {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
-              <div onClick={()=>setDrawerOpener(true)}>
-                <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
-              </div>
-            </div>
-            <div className="relative">
-              {cartCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
-              <Link to="/cart">
-                <MdOutlineShoppingCart style={{ width: '25px', height: '25px' }} />
-              </Link>
-            </div>
-          </div>
-        
-        </div>
 
-        {/* Main Search Bar */}
-        <div className="flex md:hidden items-center justify-center w-full mt-2.5">
-          <input
-            value={searchQuery}
-            onChange={handleSearch}
-            className="searchProduct"
-            style={{
-              background: 'transparent',
-              border: '1px solid #6f6e9e',
-              padding: '3px',
-              borderRadius: '5px',
-              transition: 'width 0.3s ease-in-out',
-              width: '100%', // Adjust as needed
-            }}
-            type="text"
-            placeholder='Search Products'
-          />
-        </div>
-      </motion.div>
-  
-
-    {/* Floating search bar that stays when scrolled down */}
-   
-    <AnimatePresence>
-      {searchQuery.trim() !== '' && (
-  <motion.div
-  initial={{opacity:0,y:-10}}
-  animate={{opacity:1,y:0,transiton:{duration:0.5}}}
-  exit={{opacity:0,y:-10,transition:{duration:0.2}}}
-  className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] -mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
-    {searchResults.length > 0 ? (
-      searchResults.map(product => (
-        <div
-         key={product.id}
-         onClick={()=>seeProduct(product)}
-         className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
-         {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-           {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
-
-         <div className="flex flex-col gap-2">
-         <h3 className='font-semibold text-start text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
-         <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
-         </div>
-         
-        </div>
-      ))
-    ) : (
-      <p>No products found.</p>
-    )}
-    </motion.div>
-  )}
-       </AnimatePresence> </div>
-      <div>
-  
+       
       
+          
+         <div>
+         <div className='products h-full' >
+  {showProduct ? (
+   <ProductDetails 
+   product={showProduct}
+    handleGoBack={handleGoBack} 
+    allProducts={allProducts}
+    chooseTech={chooseTech} 
+    seeProduct={seeProduct}
+    loadingTime={loadingTime}/>
+  ):(
+   <div>
+     <div className="navbarfinally" style={{
+ position: 'sticky',
+ top: 0,
+ zIndex: 1000,
+ width: '100%'
+}}>
+ {/* Full navbar content that shows only when scrolled up */}
+
+   <motion.div
+     initial={{ opacity: 0, y: -10 }}
+     animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+     exit={{ opacity: 0, y: -10, transition: { duration: 1 } }}
+     className="flex flex-col px-3 md:px-1.5 py-2 mb-2.5"
+   >
+     <div className="flex justify-between items-center">
+       <div className='flex items-center gap-1'>
+         <div className="flex items-center gap-1">
+         <button   onClick={() => setDrawerTechBrand(!drawerTechBrand)} className='block md:hidden'>
+             <MdMenu/>
+           </button>
+           <h1 onClick={() => console.log('Go back')} className='font-semibold md:font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1>
+           <svg className='logosmall hidden md:block' style={{ width: "30px", height: "30px" }} viewBox="0 0 24 24">
+             <path
+               d="M7 17L17 7M17 7H8M17 7V16"
+               strokeWidth="2"
+               strokeLinecap="round"
+               strokeLinejoin="round"
+             />
+           </svg>
+         </div>
+       </div>
+       <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
+       <input
+         value={searchQuery}
+         onChange={handleSearch}
+         className="searchProduct"
+         style={{
+           background: 'transparent',
+           border: '1px solid #6f6e9e',
+           padding: '3px',
+           borderRadius: '5px',
+           transition: 'width 0.3s ease-in-out',
+           width: '50%', // Adjust as needed
+         }}
+         type="text"
+         placeholder='Search Products'
+       />
+     </div>
+       <div className="flex gap-3 items-center cursor-pointer">
+       <Link 
+     to="/order-summary" 
+     state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
+     className="order-info-link"
+   >
+        <div className='relative'>
+        {orderCountShow && (orderCount === 0 ? '' : 
+<p className="absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold">
+ !
+</p>
+)}
+
+<div className="flex flex-col">
+ <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+</div>
+
+<div className="absolute">
+ {orderCheck && orderCheckInfo && (
+     <div className='ml-2 mr-4'>
+       <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+       <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-14 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+         <div className="contentorder ">
+           <div className="flex flex-col items-center">
+             <div className="flex items-center gap-2 " style={{width:'280px'}}>
+               <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
+               <div className="flex flex-col">
+                 <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
+                 </p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
+                 </p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
+                 </p>
+               </div>
+             </div>
+             <button
+             className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
+             onClick={(e) => {
+               e.preventDefault(); // Prevent default link navigation
+               e.stopPropagation(); // Prevent event bubbling
+               DismissOrderCheck(); // Close the order check
+             }}
+             style={{ zIndex: 4000 }}
+           >
+             Check Later
+           </button>
+           </div>
+         </div>
+       </div>
+     </div>
+ )}
+</div>
+</div>
+     </Link>
+         <div className="relative">
+           {FavCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{FavCount}</p>}
+           <div onClick={()=>setDrawerOpener(true)}>
+             <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+           </div>
+         </div>
+         <div className="relative">
+           {cartCount === 0 ? '' : <p className='absolute ml-4 -mt-2.5 rounded-full bg-[#6f6e9e] text-[#e8e8f0] px-1 py-0.5 w-4 h-fit text-xs font-bold'>{cartCount}</p>}
+           <Link to="/cart">
+             <MdOutlineShoppingCart style={{ width: '25px', height: '25px' }} />
+           </Link>
+         </div>
+       </div>
+     
+     </div>
+
+     {/* Main Search Bar */}
+     <div className="flex md:hidden items-center justify-center w-full mt-2.5">
+       <input
+         value={searchQuery}
+         onChange={handleSearch}
+         className="searchProduct"
+         style={{
+           background: 'transparent',
+           border: '1px solid #6f6e9e',
+           padding: '3px',
+           borderRadius: '5px',
+           transition: 'width 0.3s ease-in-out',
+           width: '100%', // Adjust as needed
+         }}
+         type="text"
+         placeholder='Search Products'
+       />
+     </div>
+   </motion.div>
+
+
+ {/* Floating search bar that stays when scrolled down */}
+
+ <AnimatePresence>
+   {searchQuery.trim() !== '' && (
+<motion.div
+initial={{opacity:0,y:-10}}
+animate={{opacity:1,y:0,transiton:{duration:0.5}}}
+exit={{opacity:0,y:-10,transition:{duration:0.2}}}
+className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-[20%] z-50 overflow-y-auto h-[400px] -mt-2" style={{ border: '1px solid #6f6e9e', padding: '10px' }}>
+ {searchResults.length > 0 ? (
+   searchResults.map(product => (
+     <div
+      key={product.id}
+      onClick={()=>seeProduct(product)}
+      className="product-card flex items-center cursor-pointer pl-4 pt-2.5 gap-2 mb-3.5">
+      {product.brand === 'Sony' && <div className='logoBrand'><SiSony style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Razer' && <div className='logoBrand'><SiRazer style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Hp' && <div className='logoBrand'><SiHp style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Lenovo' && <div className='logoBrand'><SiLenovo style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Asus' && <div className='logoBrand'><SiAsus style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Samsung' && <div className='logoBrand'><SiSamsung style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Apple' && <div className='logoBrand'><SiApple style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+        {product.brand === 'Logitech' && <div className='logoBrand'><SiLogitechg style={{padding:'4px',width:'50px',height:'50px'}}/></div>}
+
+      <div className="flex flex-col gap-2">
+      <h3 className='font-semibold text-start text-md md:text-lg' style={{color:'#fbfbfb'}}>{product.name}</h3>
+      <p className='text-start text-sm md:text-md font-light'style={{color:'#d6d6dc'}}> ${product.price}</p>
+      </div>
+      
+     </div>
+   ))
+ ) : (
+   <p>No products found.</p>
+ )}
+ </motion.div>
+)}
+    </AnimatePresence></div>
+   <div>
+
+  
 </div>
 <div className="empty"></div>
-<p className=" text-start pl-8 mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedTech}</p>
+<div className="flex items-center mb-4 gap-3 md:gap-0 pl-8">
+{brandIcon ? (
+        <div className='rounded-full p-1' style={{border:'1px solid #585782'}}>{brandIcon}</div>
+      ) : (
+        <p>No brand icon available</p>
+      )}
+<p className="text-start mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedBrand ? selectedBrand : 'No brand selected'}</p>
+</div>
+
 <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(product => (
-            <div key={product.id} className="product-card bg-[#1e1e2f] p-4 rounded-md shadow-md">
-              {product.images && product.images.length > 0 ? (
-                <div className="flex w-full items-center justify-center">
-                  <img width="55px" height="55px" src={product.images[0]} alt={product.name} />
-                </div>
-              ) : (
-                <p className="text-sm text-[#9f9fac]">No image available</p>
-              )}
-               <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
-          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
-            {product.description}
-          </p>
-          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
-          <div className="flex justify-around w-full items-center mt-2 gap-2">
-            <button  onClick={()=>seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
-            <button 
-            onClick={() =>addToFavorites(product)}
-            className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
-              <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></button>
-          </div>
-            </div>
-          ))
-        ) : (
-          <p>No products found for this category.</p>
-        )}
-      </div>
-      </div>
-     
+     {filteredProducts.length > 0 ? (
+       filteredProducts.map(product => (
+         <div key={product.id} className="product-card bg-[#1e1e2f] p-4 rounded-md shadow-md">
+           {product.images && product.images.length > 0 ? (
+             <div className="flex w-full items-center justify-center">
+               <img width="55px" height="55px" src={product.images[0]} alt={product.name} />
+             </div>
+           ) : (
+             <p className="text-sm text-[#9f9fac]">No image available</p>
+           )}
+            <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
+       <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
+         {product.description}
+       </p>
+       <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
+       <div className="flex justify-around w-full items-center mt-2 gap-2">
+         <button  onClick={()=>seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
+         <button 
+         onClick={() =>addToFavorites(product)}
+         className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
+           <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></button>
+       </div>
+         </div>
+       ))
+     ) : (
+       <p>No products found for this category.</p>
      )}
-    
-    {drawerTechBrand && 
+   </div>
+   </div>
+  
+  )}
+ {drawerTechBrand && 
       <motion.div
       className="backdrop fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
       variants={backdropAnimation}
@@ -613,13 +627,14 @@ useEffect(() => {
           ))}
         </div>
       </motion.div>
-   <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
-    </div>
-    
-        </div>
+  
+<FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+ </div>
+ 
+     </div>
      );
 }
-
+ 
 const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTime,chooseTech })=>{
 
     const [searchResults, setSearchResults] = useState([]);
@@ -1126,7 +1141,9 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
   
       {/* Floating search bar that stays when scrolled down */}
      
-      <AnimatePresence>
+    </div>
+       </AnimatePresence>
+       <AnimatePresence>
        {searchQuery.trim() !== '' && (
     <motion.div
     initial={{opacity:0,y:-10}}
@@ -1160,9 +1177,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
       )}
     </motion.div>
   )}
-       </AnimatePresence> </div>
        </AnimatePresence>
-       
     <motion.div
      initial={{opacity:0,y:-5}}
      animate={{opacity:1,y:0,transition:{duration:0.5}}}
@@ -1377,7 +1392,6 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
      </div>
     );
   }
- 
   const FavoriteDrawer = ({ DrawerIsOpen, onClose,removeFavorites,seeProduct }) => {
     const [favorites, setFavorites] = useState([]);
   
@@ -1499,379 +1513,378 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
     </AnimatePresence>
     );
   };
-
   const TheOrderDrawer = ({ OrderDrawer, onClose,orderProduct,productValue, productStock,
-   handleStockUpdate,orderCheck,setOrderCheck }) => {
- 
- 
-
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: 'rgba( 1, 1, 3, 0.87 )',
-    border: '2px solid #585782',
-    boxShadow: 24,
-    p: 2,
-    borderRadius:'10px'
-  };
-
-
-const optionsCity = [
-  { city: 'Vushtrri' },
-  { city: 'Prishtina' },
-  { city: 'Mitrovica' },
-  { city: 'Podujeva' },
-  { city: 'Gjilan' },
-  { city: 'Prizren' },
-  { city: 'Obiliq' },
-  { city: 'Gjakove' },
-  { city: 'Drenas' },
-];
-
-const [citySelect,setCitySelect]=useState('')
-
-const handleCityChange =(e)=>{
-  setCitySelect(e.target.value)
-}
-
-
-
-const [transport,setTransport]=useState('standard')
-
-const [payment,setPayment]=useState('cash')
-
-
-//// input functions //// /
-
-const [Name,setName]=useState('')
-const [Surname,setSurname]=useState('')
-const [Phone,setPhone]=useState('')
-const [Email,setEmail]=useState('')
-const [Adress,setAdress]=useState('')
-const [priceQuantity,setPriceQuantity]=useState(0)
-const [errorBuy,setErrorBuy]=useState('')
-
-const handleNameChange =(e)=>{
-  setName(e.target.value)
-}
-const handleSurnameChange =(e)=>{
-  setSurname(e.target.value)
-}
-const handlePhoneChange =(e)=>{
-  setPhone(e.target.value)
-}
-const handleEmailChange =(e)=>{
-  setEmail(e.target.value)
-}
-const handleAdressChange =(e)=>{
-  setAdress(e.target.value)
-}
-
-useEffect(() => {
-  const productPrice = productValue * orderProduct?.price
-    if (productPrice) {
-      setPriceQuantity(productPrice)
-    }
-
-
-}, [productValue,orderProduct]);
- 
-
-
-const navigate = useNavigate();
-
-const submitOrder = () => {
-  if (
-    !Name.trim() || 
-    !Surname.trim() || 
-    !Phone.trim() || 
-    !Email.trim() || 
-    !Adress.trim() || 
-    !citySelect.trim()
-  ) {
-    setErrorBuy('Please submit all the fields');
-    setTimeout(() => {
-      setErrorBuy('');
-    }, 3000);
-    return;
-  }
-
-  if (productValue > productStock) {
-    setErrorBuy('Insufficient stock for this order');
-    setTimeout(() => setErrorBuy(''), 3000);
-    return;
-  }
-
-  const updatedStock = productStock - productValue;
-  handleStockUpdate(updatedStock);
-
-  const orderDetails = {
-    Name,
-    Surname,
-    Phone,
-    Email,
-    Adress,
-    citySelect,
-    productValue,
-    productName: orderProduct.name,
-    productImage: orderProduct.images[0], // first image
-    priceQuantity,
-  };
-
-  localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+    handleStockUpdate,orderCheck,setOrderCheck }) => {
   
-  // Save the order time as the current time
-  const orderTime = new Date().toLocaleString();
-  localStorage.setItem('orderTime', orderTime);
-
-  setErrorBuy('Order submitted successfully');
-  setTimeout(() => setErrorBuy(''), 3000);
-
-  // Reset the form
-  setName('');
-  setSurname('');
-  setPhone('');
-  setEmail('');
-  setAdress('');
-  setCitySelect('');
-  setTransport('');
-  setPayment('');
-  setOrderCheck();
-
-  // Navigate to the Order Summary page after submission
-};
-
-
-
-
-  return (
-  <AnimatePresence>
-      {OrderDrawer && (
-    <>
-      <motion.div
-       initial={{ opacity:0 }}  // Start with width 0 and off-screen
-       animate={{ opacity:1 }}  // Expand width and move into view
-       exit={{ opacity:0}}  // Contract width and move off-screen
-       transition={{ type: 'spring', stiffness: 300, damping: 30 }} 
-      onClick={onClose} 
-      className="backdrop" 
-      style={{
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        right: 0, 
-        bottom: 0, 
-        backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-        zIndex: 2000, 
-      }} 
-    />
+  
+ 
+ 
+   const style = {
+     position: 'absolute',
+     top: '50%',
+     left: '50%',
+     transform: 'translate(-50%, -50%)',
+     width: 500,
+     bgcolor: 'rgba( 1, 1, 3, 0.87 )',
+     border: '2px solid #585782',
+     boxShadow: 24,
+     p: 2,
+     borderRadius:'10px'
+   };
+ 
+ 
+ const optionsCity = [
+   { city: 'Vushtrri' },
+   { city: 'Prishtina' },
+   { city: 'Mitrovica' },
+   { city: 'Podujeva' },
+   { city: 'Gjilan' },
+   { city: 'Prizren' },
+   { city: 'Obiliq' },
+   { city: 'Gjakove' },
+   { city: 'Drenas' },
+ ];
+ 
+ const [citySelect,setCitySelect]=useState('')
+ 
+ const handleCityChange =(e)=>{
+   setCitySelect(e.target.value)
+ }
+ 
+ 
+ 
+ const [transport,setTransport]=useState('standard')
+ 
+ const [payment,setPayment]=useState('cash')
+ 
+ 
+ //// input functions //// /
+ 
+ const [Name,setName]=useState('')
+ const [Surname,setSurname]=useState('')
+ const [Phone,setPhone]=useState('')
+ const [Email,setEmail]=useState('')
+ const [Adress,setAdress]=useState('')
+ const [priceQuantity,setPriceQuantity]=useState(0)
+ const [errorBuy,setErrorBuy]=useState('')
+ 
+ const handleNameChange =(e)=>{
+   setName(e.target.value)
+ }
+ const handleSurnameChange =(e)=>{
+   setSurname(e.target.value)
+ }
+ const handlePhoneChange =(e)=>{
+   setPhone(e.target.value)
+ }
+ const handleEmailChange =(e)=>{
+   setEmail(e.target.value)
+ }
+ const handleAdressChange =(e)=>{
+   setAdress(e.target.value)
+ }
+ 
+ useEffect(() => {
+   const productPrice = productValue * orderProduct?.price
+     if (productPrice) {
+       setPriceQuantity(productPrice)
+     }
+ 
+ 
+ }, [productValue,orderProduct]);
+  
+ 
+ 
+ const navigate = useNavigate();
+ 
+ const submitOrder = () => {
+   if (
+     !Name.trim() || 
+     !Surname.trim() || 
+     !Phone.trim() || 
+     !Email.trim() || 
+     !Adress.trim() || 
+     !citySelect.trim()
+   ) {
+     setErrorBuy('Please submit all the fields');
+     setTimeout(() => {
+       setErrorBuy('');
+     }, 3000);
+     return;
+   }
+ 
+   if (productValue > productStock) {
+     setErrorBuy('Insufficient stock for this order');
+     setTimeout(() => setErrorBuy(''), 3000);
+     return;
+   }
+ 
+   const updatedStock = productStock - productValue;
+   handleStockUpdate(updatedStock);
+ 
+   const orderDetails = {
+     Name,
+     Surname,
+     Phone,
+     Email,
+     Adress,
+     citySelect,
+     productValue,
+     productName: orderProduct.name,
+     productImage: orderProduct.images[0], // first image
+     priceQuantity,
+   };
+ 
+   localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
    
-    <div>
-          <Modal
-      open={OrderDrawer}
-      onClose={onClose}
+   // Save the order time as the current time
+   const orderTime = new Date().toLocaleString();
+   localStorage.setItem('orderTime', orderTime);
+ 
+   setErrorBuy('Order submitted successfully');
+   setTimeout(() => setErrorBuy(''), 3000);
+ 
+   // Reset the form
+   setName('');
+   setSurname('');
+   setPhone('');
+   setEmail('');
+   setAdress('');
+   setCitySelect('');
+   setTransport('');
+   setPayment('');
+   setOrderCheck();
+ 
+   // Navigate to the Order Summary page after submission
+ };
+ 
+ 
+ 
+ 
+   return (
+   <AnimatePresence>
+       {OrderDrawer && (
+     <>
+       <motion.div
+        initial={{ opacity:0 }}  // Start with width 0 and off-screen
+        animate={{ opacity:1 }}  // Expand width and move into view
+        exit={{ opacity:0}}  // Contract width and move off-screen
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }} 
+       onClick={onClose} 
+       className="backdrop" 
+       style={{
+         position: 'fixed', 
+         top: 0, 
+         left: 0, 
+         right: 0, 
+         bottom: 0, 
+         backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+         zIndex: 2000, 
+       }} 
+     />
+    
+     <div>
+           <Modal
+       open={OrderDrawer}
+       onClose={onClose}
+      >
+     <Box
+     sx={style}
      >
-    <Box
-    sx={style}
-    >
- <div  className="drawer2 flex flex-col justify-start overflow-y-auto px-4 py-2 h-[550px]"
-      style={{
-        position: '', // Use fixed to center on screen
+  <div  className="drawer2 flex flex-col justify-start overflow-y-auto px-4 py-2 h-[550px]"
+       style={{
+         position: '', // Use fixed to center on screen
+         
+         borderRadius: '10px', // Optional: Add rounded corners
+         zIndex: 3000,
+         overflow: 'auto', // Hide overflow if content exceeds
+       }}>
+        <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+        <h3 className='text-lg md:text-xl font-semibold text-[#fbfbfb] mt-6'>Order</h3>
+           <div className="s">
+           <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px',zIndex:3001 }}>
+           <MdOutlineClose style={{width:'20px',height:'20px',color:'#fbfbfb'}}/></button>
+           </div>
+           </div> 
         
-        borderRadius: '10px', // Optional: Add rounded corners
-        zIndex: 3000,
-        overflow: 'auto', // Hide overflow if content exceeds
-      }}>
-       <div className=" flex items-center justify-between w-[100%] pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
-       <h3 className='text-lg md:text-xl font-semibold text-[#fbfbfb] mt-6'>Order</h3>
-          <div className="s">
-          <button className=" w-fit" onClick={onClose} style={{ marginTop: '10px',marginLeft:'10px',zIndex:3001 }}>
-          <MdOutlineClose style={{width:'20px',height:'20px',color:'#fbfbfb'}}/></button>
-          </div>
-          </div> 
-       
-        <div>
-      <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
-      <img width="50px" src={orderProduct.images[0]} alt="" />
-     <div className="flex flex-col items-start gap-1">
-     <p className='text-[#fbfbfb]'> {orderProduct?.name}</p>
-     <div className="flex gap-6">
-       <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
-     <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
-     </div>
+         <div>
+       <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+       <img width="50px" src={orderProduct.images[0]} alt="" />
+      <div className="flex flex-col items-start gap-1">
+      <p className='text-[#fbfbfb]'> {orderProduct?.name}</p>
+      <div className="flex gap-6">
+        <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
+      <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
       </div>
-      <div className="flex justify-between items-center gap-4 mt-6">
-      <input 
-        value={Name} 
-        onChange={handleNameChange} 
-        maxLength={10}  // Limit to 10 characters
-        className="rounded-md p-1 w-full" 
-        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
-        type="text" 
-        placeholder="Name" 
-      />
-      <input 
-        value={Surname} 
-        onChange={handleSurnameChange} 
-        maxLength={10}  // Limit to 10 characters
-        className="rounded-md p-1 w-full" 
-        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
-        type="text" 
-        placeholder="Surname" 
-      />
-      </div>
-      <div className="flex justify-between items-center gap-4 mt-8">
-      <input 
-        value={Phone} 
-        onChange={handlePhoneChange} 
-        className="rounded-md p-1 w-full" 
-        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
-        type="tel" // Phone type for numeric input
-        placeholder="Phone Number" 
-        pattern="\d*" // Restrict to only numbers (optional: use onInput to filter manually)
-      />
-      <input 
-        value={Email} 
-        onChange={handleEmailChange} 
-        className="rounded-md p-1 w-full" 
-        style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
-        type="email" // Ensures valid email format
-        placeholder="Email" 
-        required 
-      />
-      </div>
-      <div className="flex justify-between items-center gap-4 mt-8">
-      <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />
-      <select
-      className="rounded-md p-1 w-full"
-      name="City"
-      id="city-select"
-      aria-label='City'
-      style={{ backgroundColor: 'transparent', border: '1px solid #585782', color: "#9f9fac" }}
-      value={citySelect} // Bind value to the selected city
-      onChange={handleCityChange} // Handle city selection change
-    >
-      <option value=""style={{backgroundColor:'#18181b',color:"#d6d6dc"}}>Select a City</option>
-      {optionsCity.map((option, index) => (
-        <option style={{backgroundColor:'#18181b',color:"#d6d6dc"}} key={index} value={option.city}>
-          {option.city}
-        </option>
-      ))}
-    </select>
-      </div>
-      <div className="flex flex-col mt-8">
-        <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Transport</h1>
-        <button className='text-start mt-2 mb-2 rounded-md pl-1 py-2 flex items-center gap-1' 
-        onClick={()=>setTransport('standard')}
-        style={{color:transport === 'standard' ? '#fbfbfb':'#d6d6dc',border:transport ==='standard' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-          >{transport === 'standard' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Standard - Transport Free</button>
-        <button className='text-start mt-2 rounded-md pl-1 py-2 flex items-center gap-1' onClick={()=>setTransport('office')}
-           style={{color:transport ==='office' ? '#fbfbfb':'#d6d6dc',border:transport ==='office' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-          >{transport === 'office' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Take in our Office - Free</button>
-      </div>
-      <div className="flex flex-col mt-8">
-      <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
-      <div className="flex items-center justify-between gap-2">
-       
-        <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
-        onClick={()=>setPayment('cash')}
-        style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-          >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
-        <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
-         onClick={()=>setPayment('online')}
-           style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-          >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
-           <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
-         onClick={()=>setPayment('bank')}
-           style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
-          >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
-      </div>
-      </div>
-      {errorBuy === '' ?  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>By filling all the forms the order will be more accurate and more faster to you , please fill them with caution</p>
-      :  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>{errorBuy}</p>  } 
-       <AnimatePresence>
-      {errorBuy === 'Order submitted successfully' ? (
-        <motion.div
-          initial={{ clipPath: 'circle(0% at 50% 50%)' }}
-          animate={{ clipPath: 'circle(100% at 50% 50%)' }}
-          exit={{ clipPath: 'circle(0% at 50% 50%)' }}
-          transition={{
-            duration: 0.8,
-            ease: 'easeInOut',
-          }}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: 'rgba(0, 0, 0, 0.5)', // backdrop dark overlay
-            backdropFilter: 'blur(10px)', // blur effect
-            zIndex: 9999,
-            height:'100vh' // ensure it sits on top of other content
-          }}
-        >
-          <motion.svg
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            width="100px" // Adjust size as needed
-            height="100px"
-          >
-            <motion.path
-              d="M5.5 12.5L10.167 17L19.5 8"
-              stroke="#6f6e9e"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              exit={{ pathLength: 0 }}
-              transition={{
-                duration: 1.5, // duration of path drawing
-                ease: 'easeInOut',
-              }}
-            />
-          </motion.svg>
-        </motion.div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.4,
-            ease: 'easeInOut',
-          }}
-          style={{
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          {errorBuy}
-        </motion.div>
-      )}
-    </AnimatePresence>
-     
-      <button onClick={submitOrder} className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
-    </div>
-      </div>
-    </Box>
-     </Modal>
-    </div>
-   
+       </div>
+       <div className="flex justify-between items-center gap-4 mt-6">
+       <input 
+         value={Name} 
+         onChange={handleNameChange} 
+         maxLength={10}  // Limit to 10 characters
+         className="rounded-md p-1 w-full" 
+         style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+         type="text" 
+         placeholder="Name" 
+       />
+       <input 
+         value={Surname} 
+         onChange={handleSurnameChange} 
+         maxLength={10}  // Limit to 10 characters
+         className="rounded-md p-1 w-full" 
+         style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+         type="text" 
+         placeholder="Surname" 
+       />
+       </div>
+       <div className="flex justify-between items-center gap-4 mt-8">
+       <input 
+         value={Phone} 
+         onChange={handlePhoneChange} 
+         className="rounded-md p-1 w-full" 
+         style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+         type="tel" // Phone type for numeric input
+         placeholder="Phone Number" 
+         pattern="\d*" // Restrict to only numbers (optional: use onInput to filter manually)
+       />
+       <input 
+         value={Email} 
+         onChange={handleEmailChange} 
+         className="rounded-md p-1 w-full" 
+         style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} 
+         type="email" // Ensures valid email format
+         placeholder="Email" 
+         required 
+       />
+       </div>
+       <div className="flex justify-between items-center gap-4 mt-8">
+       <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />
+       <select
+       className="rounded-md p-1 w-full"
+       name="City"
+       id="city-select"
+       aria-label='City'
+       style={{ backgroundColor: 'transparent', border: '1px solid #585782', color: "#9f9fac" }}
+       value={citySelect} // Bind value to the selected city
+       onChange={handleCityChange} // Handle city selection change
+     >
+       <option value=""style={{backgroundColor:'#18181b',color:"#d6d6dc"}}>Select a City</option>
+       {optionsCity.map((option, index) => (
+         <option style={{backgroundColor:'#18181b',color:"#d6d6dc"}} key={index} value={option.city}>
+           {option.city}
+         </option>
+       ))}
+     </select>
+       </div>
+       <div className="flex flex-col mt-8">
+         <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Transport</h1>
+         <button className='text-start mt-2 mb-2 rounded-md pl-1 py-2 flex items-center gap-1' 
+         onClick={()=>setTransport('standard')}
+         style={{color:transport === 'standard' ? '#fbfbfb':'#d6d6dc',border:transport ==='standard' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+           >{transport === 'standard' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Standard - Transport Free</button>
+         <button className='text-start mt-2 rounded-md pl-1 py-2 flex items-center gap-1' onClick={()=>setTransport('office')}
+            style={{color:transport ==='office' ? '#fbfbfb':'#d6d6dc',border:transport ==='office' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+           >{transport === 'office' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Take in our Office - Free</button>
+       </div>
+       <div className="flex flex-col mt-8">
+       <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
+       <div className="flex items-center justify-between gap-2">
+        
+         <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
+         onClick={()=>setPayment('cash')}
+         style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+           >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
+         <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+          onClick={()=>setPayment('online')}
+            style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+           >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
+            <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+          onClick={()=>setPayment('bank')}
+            style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
+           >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
+       </div>
+       </div>
+       {errorBuy === '' ?  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>By filling all the forms the order will be more accurate and more faster to you , please fill them with caution</p>
+       :  <p className='text-xs font-light text-[#9f9fac] -mb-3 mt-4'>{errorBuy}</p>  } 
+        <AnimatePresence>
+       {errorBuy === 'Order submitted successfully' ? (
+         <motion.div
+           initial={{ clipPath: 'circle(0% at 50% 50%)' }}
+           animate={{ clipPath: 'circle(100% at 50% 50%)' }}
+           exit={{ clipPath: 'circle(0% at 50% 50%)' }}
+           transition={{
+             duration: 0.8,
+             ease: 'easeInOut',
+           }}
+           style={{
+             position: 'fixed',
+             top: 0,
+             left: 0,
+             right: 0,
+             bottom: 0,
+             display: 'flex',
+             justifyContent: 'center',
+             alignItems: 'center',
+             background: 'rgba(0, 0, 0, 0.5)', // backdrop dark overlay
+             backdropFilter: 'blur(10px)', // blur effect
+             zIndex: 9999,
+             height:'100vh' // ensure it sits on top of other content
+           }}
+         >
+           <motion.svg
+             viewBox="0 -0.5 25 25"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg"
+             width="100px" // Adjust size as needed
+             height="100px"
+           >
+             <motion.path
+               d="M5.5 12.5L10.167 17L19.5 8"
+               stroke="#6f6e9e"
+               strokeWidth="1.5"
+               strokeLinecap="round"
+               strokeLinejoin="round"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: 1 }}
+               exit={{ pathLength: 0 }}
+               transition={{
+                 duration: 1.5, // duration of path drawing
+                 ease: 'easeInOut',
+               }}
+             />
+           </motion.svg>
+         </motion.div>
+       ) : (
+         <motion.div
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           exit={{ opacity: 0 }}
+           transition={{
+             duration: 0.4,
+             ease: 'easeInOut',
+           }}
+           style={{
+             position: 'relative',
+             zIndex: 1,
+           }}
+         >
+           {errorBuy}
+         </motion.div>
+       )}
+     </AnimatePresence>
       
-      </>
-    )}
-  </AnimatePresence>
-  );
-};
+       <button onClick={submitOrder} className='rounded-md text-lg font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full mt-6 p-1'>Order Now</button>
+     </div>
+       </div>
+     </Box>
+      </Modal>
+     </div>
+    
+       
+       </>
+     )}
+   </AnimatePresence>
+   );
+ };
 
-export default Tech;
+export default Brand;

@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Order from './All Products/Order';
 import OrderSummary from './All Products/OrderSummary';
 import Tech from './All Products/Tech';
+import Brand from './All Products/Brand';
 
 function App() {
 
@@ -70,10 +71,17 @@ function App() {
     // You can navigate or show a modal with detailed product information.
   };
   
-  const [selectedTech,setSelectedTech]=useState(null)
+  const [selectedTech,setSelectedTech]=useState(null) //// state and function for choosing the tech of the product
 
   const chooseTech =(tech)=>{
     setSelectedTech(tech)
+  }
+
+  const [selectedBrand,setSelectedBrand]=useState(null) //// state and function for choosing the brand of the product
+
+
+  const chooseBrand =(brand)=>{
+    setSelectedBrand(brand)
   }
 
   return (
@@ -107,7 +115,12 @@ function App() {
           }
         />
         {/* Products page route */}
-        <Route path="/products" element={<ProductsPage chooseTech={chooseTech}  selectedProduct={selectedProduct}/>} />
+        <Route path="/products" element={<ProductsPage 
+        chooseTech={chooseTech} 
+         selectedProduct={selectedProduct}
+         chooseBrand={chooseBrand}
+         selectedBrand={selectedBrand}
+         />} />
         <Route
               path="/cart"
               element={<Cart  seeProduct={seeProduct}/>}
@@ -122,8 +135,12 @@ function App() {
         />
         <Route
           path="/tech"
-          element={<Tech  selectedTech={selectedTech} chooseTech={chooseTech}/>}
+          element={<Tech  selectedTech={selectedTech} chooseBrand={chooseBrand} chooseTech={chooseTech}/>}
         />
+         <Route
+          path="/brand"
+          element={<Brand selectedBrand={selectedBrand} chooseBrand={chooseBrand} chooseTech={chooseTech}/>}
+        /> 
       </Routes>
     </header>
   </div>

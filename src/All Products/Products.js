@@ -25,10 +25,11 @@ import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
 import { Box, Modal } from '@mui/material';
 
-function ProductsPage({chooseTech}) {
+function ProductsPage({chooseTech,chooseBrand}) {
 
  
     const [allProducts, setAllProducts] = useState([]);
+    const [shownProducts,setShownProducts]=useState(20)
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
   
@@ -52,18 +53,29 @@ function ProductsPage({chooseTech}) {
         setSearchResults(results);
       };
 
+      const showMoreProducts =()=>{
+        setShownProducts(prevShown => prevShown + 20 )
+      }
+    
+      const filteredProducts = allProducts.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
       
+      const productsToShow = filteredProducts.slice(0, shownProducts);
+
+    
 
       const brands = [
-        {brand:<SiLogitechg style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiSamsung style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiApple style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiLenovo style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiRazer style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiSony style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiHp style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-        {brand:<SiAsus style={{width:'35px',height:'35px',color:'#d6d6dc'}}/>},
-      ]
+        { brand: <SiLogitechg style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Logitech' },
+        { brand: <SiSamsung style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Samsung' },
+        { brand: <SiApple style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Apple' },
+        { brand: <SiLenovo style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Lenovo' },
+        { brand: <SiRazer style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Razer' },
+        { brand: <SiSony style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Sony' },
+        { brand: <SiHp style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Hp' },
+        { brand: <SiAsus style={{ width: '35px', height: '35px', color: '#d6d6dc' }} />, name: 'Asus' },
+      ];
+      
 
       const tech =[
         {tech:'Pc and Laptops'},
@@ -104,6 +116,10 @@ function ProductsPage({chooseTech}) {
     
       const handleTech =(tech)=>{
         chooseTech(tech)
+      }
+
+      const handleBrand=(brand)=>{
+        chooseBrand(brand)
       }
 
       const parentAnimation = {
@@ -462,10 +478,8 @@ useEffect(() => {
 
     {/* Floating search bar that stays when scrolled down */}
    
-  </div>
-      <div>
   
-      <AnimatePresence>
+    <AnimatePresence>
       {searchQuery.trim() !== '' && (
   <motion.div
   initial={{opacity:0,y:-10}}
@@ -500,6 +514,9 @@ useEffect(() => {
     </motion.div>
   )}
        </AnimatePresence>
+        </div>
+      <div>
+  
 
   {/* Always show brands and all products */}
   <div className="backdrop">
@@ -558,45 +575,60 @@ useEffect(() => {
             <MdArrowForwardIos />
           </button>
           {brands.map((txt, index) => (
+            <Link to='/brand'>
             <motion.div
               key={index}
               variants={childAnimation}
               initial="initial"
               whileInView="animate" // Apply stagger animation for each brand item
               className="px-3"
+              onClick={()=>handleBrand(txt.name)}
             >
               <div className="brandcover cursor-pointer">{txt.brand}</div>
             </motion.div>
+            </Link>
           ))}
         </motion.div>
       )}
       </AnimatePresence>
         <div className="empty"></div>
+        <div>
       <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
-      {allProducts.map((product) => (
-        <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
-          {product.images && product.images.length > 0 ? (
-            <div className="flex w-full items-center justify-center">
-              <img width='55px' height='55px' src={product.images[0]} alt={product.name} />
+        {productsToShow.map((product) => (
+          <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
+            {product.images && product.images.length > 0 ? (
+              <div className="flex w-full items-center justify-center">
+                <img width='55px' height='55px' src={product.images[0]} alt={product.name} />
+              </div>
+            ) : (
+              <p>No image available</p>
+            )}
+            <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
+            <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
+              {product.description}
+            </p>
+            <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
+            <div className="flex justify-around w-full items-center mt-2 gap-2">
+              <button onClick={() => seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
+              <button 
+                onClick={() => addToFavorites(product)}
+                className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
+                <MdFavoriteBorder style={{width:'25px',height:'25px'}} />
+              </button>
             </div>
-          ) : (
-            <p>No image available</p>
-          )}
-          <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
-          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
-            {product.description}
-          </p>
-          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
-          <div className="flex justify-around w-full items-center mt-2 gap-2">
-            <button  onClick={()=>seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
-            <button 
-            onClick={() =>addToFavorites(product)}
-            className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
-              <MdFavoriteBorder style={{width:'25px',height:'25px'}}/></button>
           </div>
-        </div>
-      ))}
+        ))}
       </div>
+
+      {filteredProducts.length > shownProducts && (
+        <button
+          onClick={showMoreProducts}
+          className="mt-4 text-[#6f6e9e] font-semibold px-4 py-2 rounded-md"
+        >
+          Show More
+        </button>
+      )}
+    </div>
     </div>
   
 </div>
@@ -633,7 +665,7 @@ useEffect(() => {
               initial="initial"
               animate="animate" // Apply stagger animation for each brand item
               className="px-3 mb-3.5"
-              onClick={()=>handleTech(txt.tech)}
+              onClick={()=>handleTech(txt.name)}
             >
               <div className="flex items-center gap-4">
               <div className="brandcover2">{txt.tech}</div>
@@ -645,12 +677,14 @@ useEffect(() => {
           <hr  style={{width:'100%',height:'2px',backgroundColor:'#9f9fac',marginTop:'5px',marginBottom:'5px'}}/>
           </div>
           {brandsResponsive.map((txt, index) => (
+           <Link to='/brand'>
             <motion.div
               key={index}
               variants={childAnimation}
               initial="initial"
               animate="animate" // Apply stagger animation for each brand item
               className="px-3 mt-3.5"
+              onClick={()=>handleBrand(txt.name)}
             >
               <div className="flex items-center gap-4">
               <div className="brandcover2">{txt.brand}</div>
@@ -658,10 +692,11 @@ useEffect(() => {
               </div>
               
             </motion.div>
+           </Link>
           ))}
         </div>
       </motion.div>
-   <div className="empty">1</div>
+
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
     {open && 
@@ -1197,9 +1232,7 @@ useEffect(() => {
 
     {/* Floating search bar that stays when scrolled down */}
    
-  </div>
-     </AnimatePresence>
-     <AnimatePresence>
+    <AnimatePresence>
      {searchQuery.trim() !== '' && (
   <motion.div
   initial={{opacity:0,y:-10}}
@@ -1233,7 +1266,9 @@ useEffect(() => {
     )}
   </motion.div>
 )}
+     </AnimatePresence> </div>
      </AnimatePresence>
+   
   <motion.div
    initial={{opacity:0,y:-5}}
    animate={{opacity:1,y:0,transition:{duration:0.5}}}

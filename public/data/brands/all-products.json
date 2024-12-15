@@ -223,6 +223,95 @@
         "price": 100,
         "description": "High-quality running shoes.",
         "details": "Additional details about the product."
+      },
+      {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      }, {
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },{
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },{
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },{
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
+      },{
+        "id": 14,
+        "brand": "Nike",
+        "name": "Running Shoes",
+        "stock": 50,
+        "price": 100,
+        "description": "High-quality running shoes.",
+        "details": "Additional details about the product."
       }
 
   ]

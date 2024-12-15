@@ -542,7 +542,7 @@ height: 30px;
   aspect-ratio: 16 /9;
 }
 .search-results {
-  background: rgba(24, 24, 27, 0.90);
+  background: rgba(24, 24, 27, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
