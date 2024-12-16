@@ -4,7 +4,7 @@ import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,MdOutlineDone ,
-  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, 
+  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, MdClose ,MdKeyboardArrowUp ,
   MdArrowBack
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
@@ -52,6 +52,11 @@ function ProductsPage({chooseTech,chooseBrand}) {
         );
         setSearchResults(results);
       };
+
+
+      const handleClear = ()=>{
+        setSearchQuery('')
+      }
 
       const showMoreProducts =()=>{
         setShownProducts(prevShown => prevShown + 20 )
@@ -108,7 +113,39 @@ function ProductsPage({chooseTech,chooseBrand}) {
 
       const [showUnderTech,setshowUnderTech]=useState('') /// hover effect over the tech
       const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
-      const [drawerTechBrand,setDrawerTechBrand]=useState(false)
+      const [drawerTechBrand,setDrawerTechBrand]=useState(false) ///// drawer in smaller screen for tech and brand
+      const [scrollTop,setScrollTop]=useState(false)
+
+      useEffect(() => {
+        
+            if (drawerTechBrand) {
+              document.body.style.overflow = 'hidden';
+              window.scrollTo(0, 0);
+            } else {
+              document.body.style.overflow = 'auto';
+            }
+          }, [drawerTechBrand]);
+          
+          useEffect(() => {
+            const handleScroll = () => {
+              // If the scroll position is greater than 100px, show the button
+              if (window.scrollY > 100) {
+                setScrollTop(true);
+              } else {
+                setScrollTop(false);
+              }
+            };
+        
+            // Listen for scroll events
+            window.addEventListener('scroll', handleScroll);
+        
+            // Cleanup the event listener when the component is unmounted
+            return () => window.removeEventListener('scroll', handleScroll);
+          }, []);
+
+          const handleScrollToTop = () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          };
 
       const toggleDrawer = () => {
         setDrawerTechBrand(!drawerTechBrand);
@@ -365,21 +402,42 @@ useEffect(() => {
             </div>
           </div>
           <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
-          <input
-            value={searchQuery}
-            onChange={handleSearch}
-            className="searchProduct"
-            style={{
-              background: 'transparent',
-              border: '1px solid #6f6e9e',
-              padding: '3px',
-              borderRadius: '5px',
-              transition: 'width 0.3s ease-in-out',
-              width: '50%', // Adjust as needed
-            }}
-            type="text"
-            placeholder='Search Products'
-          />
+          <div style={{ position: 'relative', width: '50%' }}>
+            <input
+              value={searchQuery}
+              onChange={handleSearch}
+              className="searchProduct"
+              style={{
+                background: 'transparent',
+                border: '1px solid #6f6e9e',
+                padding: '3px',
+                borderRadius: '5px',
+                transition: 'width 0.3s ease-in-out',
+                width: '100%',
+              }}
+              type="text"
+              placeholder="Search Products"
+            />
+            {/* Clear Button (X) */}
+            {searchQuery && (
+              <button
+                onClick={handleClear}
+                style={{
+                  position: 'absolute',
+                  right: '5px', // Position the button on the right side
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  color: '#d6d6dc',
+                }}
+              >
+                <MdClose/>
+              </button>
+            )}
+          </div>
         </div>
           <div className="flex gap-3 items-center cursor-pointer">
           <Link 
@@ -457,7 +515,8 @@ useEffect(() => {
 
         {/* Main Search Bar */}
         <div className="flex md:hidden items-center justify-center w-full mt-2.5">
-          <input
+        <div style={{ position: 'relative', width: '100%' }}>
+        <input
             value={searchQuery}
             onChange={handleSearch}
             className="searchProduct"
@@ -472,6 +531,25 @@ useEffect(() => {
             type="text"
             placeholder='Search Products'
           />
+          {searchQuery && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            right: '5px', // Position the button on the right side
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: '#d6d6dc',
+          }}
+        >
+          <MdClose/>
+        </button>
+      )}
+        </div>
         </div>
       </motion.div>
   
@@ -720,6 +798,30 @@ useEffect(() => {
     action={action}
   />
     }
+      <AnimatePresence>
+      {scrollTop && (
+        <motion.button
+        initial={{opacity:0}}
+        animate={{opacity:1,transition:{duration:0.5}}}
+        exit={{opacity:0}}
+          onClick={handleScrollToTop}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#585782',
+            color: 'fbfbfb',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '16px',
+          }}
+        >
+         <MdKeyboardArrowUp style={{width:'25px',height:'25px'}}/>
+        </motion.button>
+      )}
+      </AnimatePresence>
   </div>
   );
 }

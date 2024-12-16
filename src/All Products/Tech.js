@@ -3,7 +3,7 @@ import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,MdOutlineDone ,
-  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, 
+  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, MdClose,
   MdArrowBack
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
@@ -49,6 +49,10 @@ const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
         }
       }, [selectedTech, allProducts]);
 
+
+      const handleClear =()=>{
+        setSearchQuery('')
+      }
 
       const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
@@ -364,21 +368,42 @@ useEffect(() => {
             </div>
           </div>
           <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
-          <input
-            value={searchQuery}
-            onChange={handleSearch}
-            className="searchProduct"
-            style={{
-              background: 'transparent',
-              border: '1px solid #6f6e9e',
-              padding: '3px',
-              borderRadius: '5px',
-              transition: 'width 0.3s ease-in-out',
-              width: '50%', // Adjust as needed
-            }}
-            type="text"
-            placeholder='Search Products'
-          />
+          <div style={{ position: 'relative', width: '50%' }}>
+      <input
+        value={searchQuery}
+        onChange={handleSearch}
+        className="searchProduct"
+        style={{
+          background: 'transparent',
+          border: '1px solid #6f6e9e',
+          padding: '3px',
+          borderRadius: '5px',
+          transition: 'width 0.3s ease-in-out',
+          width: '100%',
+        }}
+        type="text"
+        placeholder="Search Products"
+      />
+      {/* Clear Button (X) */}
+      {searchQuery && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            right: '5px', // Position the button on the right side
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: '#d6d6dc',
+          }}
+        >
+          <MdClose/>
+        </button>
+      )}
+    </div>
         </div>
           <div className="flex gap-3 items-center cursor-pointer">
           <Link 
@@ -456,7 +481,8 @@ useEffect(() => {
 
         {/* Main Search Bar */}
         <div className="flex md:hidden items-center justify-center w-full mt-2.5">
-          <input
+        <div style={{ position: 'relative', width: '100%' }}>
+        <input
             value={searchQuery}
             onChange={handleSearch}
             className="searchProduct"
@@ -471,6 +497,25 @@ useEffect(() => {
             type="text"
             placeholder='Search Products'
           />
+           {searchQuery && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            right: '5px', // Position the button on the right side
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: '#d6d6dc',
+          }}
+        >
+          <MdClose/>
+        </button>
+      )}
+        </div>
         </div>
       </motion.div>
   
@@ -517,11 +562,17 @@ useEffect(() => {
       
 </div>
 <div className="empty"></div>
-<p className=" text-start pl-8 mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedTech}</p>
-<div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
+<motion.p 
+initial={{opacity:0,y:-10}}
+animate={{opacity:1,y:0,transition:{duration:0.5,delay:0}}}
+className=" text-start pl-8 mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedTech}</motion.p>
+<motion.div
+initial={{opacity:0,y:-15}}
+animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
+className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
-            <div key={product.id} className="product-card bg-[#1e1e2f] p-4 rounded-md shadow-md">
+            <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
               {product.images && product.images.length > 0 ? (
                 <div className="flex w-full items-center justify-center">
                   <img width="55px" height="55px" src={product.images[0]} alt={product.name} />
@@ -546,7 +597,7 @@ useEffect(() => {
         ) : (
           <p>No products found for this category.</p>
         )}
-      </div>
+      </motion.div>
       </div>
      
      )}
@@ -614,6 +665,8 @@ useEffect(() => {
         </div>
       </motion.div>
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+    <div className="empty"></div>
+    <div className="empty"></div>
     </div>
     
         </div>

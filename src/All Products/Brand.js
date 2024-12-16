@@ -3,7 +3,7 @@ import { MdOutlineAccountCircle  ,MdOutlineNotifications ,MdOutlineShoppingCart 
   ,MdOutlineLocalShipping , MdFavoriteBorder ,MdOutlineKeyboardArrowDown 
   ,MdInfoOutline ,MdEuro,MdCreditCard, MdOutlinePayments ,
   MdOutlineVerified ,MdFavorite,MdArrowBackIos,MdDeleteOutline,MdOutlineHome,MdOutlineClose,MdOutlineDone ,
-  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, 
+  MdOutlineCircle ,MdCircle ,MdOutlineDeliveryDining ,MdArrowForwardIos, MdClose,
   MdArrowBack
 } from "react-icons/md"
 import { useState,useEffect } from 'react';
@@ -126,6 +126,10 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech}) => {
     };
 
     
+    const handleClear =()=>{
+      setSearchQuery('')
+    }
+
     const [showUnderTech,setshowUnderTech]=useState('') /// hover effect over the tech
     const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
     const [drawerTechBrand,setDrawerTechBrand]=useState(false)
@@ -371,21 +375,42 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech}) => {
          </div>
        </div>
        <div className="hidden  md:flex items-center justify-center w-full mt-2.5">
-       <input
-         value={searchQuery}
-         onChange={handleSearch}
-         className="searchProduct"
-         style={{
-           background: 'transparent',
-           border: '1px solid #6f6e9e',
-           padding: '3px',
-           borderRadius: '5px',
-           transition: 'width 0.3s ease-in-out',
-           width: '50%', // Adjust as needed
-         }}
-         type="text"
-         placeholder='Search Products'
-       />
+       <div style={{ position: 'relative', width: '50%' }}>
+      <input
+        value={searchQuery}
+        onChange={handleSearch}
+        className="searchProduct"
+        style={{
+          background: 'transparent',
+          border: '1px solid #6f6e9e',
+          padding: '3px',
+          borderRadius: '5px',
+          transition: 'width 0.3s ease-in-out',
+          width: '100%',
+        }}
+        type="text"
+        placeholder="Search Products"
+      />
+      {/* Clear Button (X) */}
+      {searchQuery && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            right: '5px', // Position the button on the right side
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: '#d6d6dc',
+          }}
+        >
+          <MdClose/>
+        </button>
+      )}
+    </div>
      </div>
        <div className="flex gap-3 items-center cursor-pointer">
        <Link 
@@ -463,7 +488,8 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech}) => {
 
      {/* Main Search Bar */}
      <div className="flex md:hidden items-center justify-center w-full mt-2.5">
-       <input
+     <div style={{ position: 'relative', width: '100%' }}>
+     <input
          value={searchQuery}
          onChange={handleSearch}
          className="searchProduct"
@@ -478,6 +504,25 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech}) => {
          type="text"
          placeholder='Search Products'
        />
+         {searchQuery && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            right: '5px', // Position the button on the right side
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: '#d6d6dc',
+          }}
+        >
+          <MdClose/>
+        </button>
+      )}
+     </div>
      </div>
    </motion.div>
 
@@ -524,19 +569,25 @@ className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-
   
 </div>
 <div className="empty"></div>
-<div className="flex items-center mb-4 gap-3 md:gap-0 pl-8">
+<motion.div
+  initial={{opacity:0,y:-10}}
+  animate={{opacity:1,y:0,transition:{duration:0.5,delay:0}}}
+className="flex items-center mb-4 gap-3 pl-8">
 {brandIcon ? (
         <div className='rounded-full p-1' style={{border:'1px solid #585782'}}>{brandIcon}</div>
       ) : (
         <p>No brand icon available</p>
       )}
 <p className="text-start mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selectedBrand ? selectedBrand : 'No brand selected'}</p>
-</div>
+</motion.div>
 
-<div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
+<motion.div
+ initial={{opacity:0,y:-15}}
+ animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
+className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
      {filteredProducts.length > 0 ? (
        filteredProducts.map(product => (
-         <div key={product.id} className="product-card bg-[#1e1e2f] p-4 rounded-md shadow-md">
+         <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
            {product.images && product.images.length > 0 ? (
              <div className="flex w-full items-center justify-center">
                <img width="55px" height="55px" src={product.images[0]} alt={product.name} />
@@ -561,7 +612,7 @@ className="search-results absolute  left-[0%] right-[3%] md:left-[25%] md:right-
      ) : (
        <p>No products found for this category.</p>
      )}
-   </div>
+   </motion.div>
    </div>
   
   )}
