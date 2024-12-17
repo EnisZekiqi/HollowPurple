@@ -264,6 +264,7 @@ const removeFavorites =(product)=>{
   setFav(false);  // Example of removing from state if needed
   setOpen(true)
   setAlertFav('Product removed from favorites!');
+  setScrollTop(false)
 
 }
 
@@ -671,32 +672,43 @@ useEffect(() => {
       </AnimatePresence>
         <div className="empty"></div>
         <div>
-      <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
-        {productsToShow.map((product) => (
-          <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
-            {product.images && product.images.length > 0 ? (
-              <div className="flex w-full items-center justify-center">
-                <img width='55px' height='55px' src={product.images[0]} alt={product.name} />
-              </div>
-            ) : (
-              <p>No image available</p>
-            )}
-            <h3 className='font-bold text-md text-[#fbfbfb] mt-2'>{product.name}</h3>
-            <p className="font-light text-xs text-[#9f9fac] line-clamp-2 test-start">
-              {product.description}
-            </p>
-            <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>{product.price}$</p>
-            <div className="flex justify-around w-full items-center mt-2 gap-2">
-              <button onClick={() => seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{border:'1px solid #6f6e9e'}}>More Details</button>
-              <button 
-                onClick={() => addToFavorites(product)}
-                className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
-                <MdFavoriteBorder style={{width:'25px',height:'25px'}} />
-              </button>
+        <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
+      {productsToShow.map((product) => (
+        <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94] h-[300px] flex flex-col justify-between">
+          {/* Image section */}
+          {product.images && product.images.length > 0 ? (
+            <div className="flex w-full items-center justify-center mb-3">
+              <img width='70px' height='70px' style={{ objectFit: 'contain' }} src={product.images[0]} alt={product.name} />
             </div>
+          ) : (
+            <p className="text-center">No image available</p>
+          )}
+
+          {/* Product name */}
+          <h3 className='font-bold text-md text-[#fbfbfb] mt-2 text-center'>{product.name}</h3>
+
+          {/* Product description */}
+          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 text-start  mt-1 ">
+            {product.description}
+          </p>
+
+          {/* Product price */}
+          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>
+            {product.price}$
+          </p>
+
+          {/* Buttons */}
+          <div className="flex justify-around w-full items-center mt-2 gap-2">
+            <button onClick={() => seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{ border: '1px solid #6f6e9e' }}>
+              More Details
+            </button>
+            <button onClick={() => addToFavorites(product)} className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
+              <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+            </button>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+</div>
 
       {filteredProducts.length > shownProducts && (
         <button
@@ -777,27 +789,6 @@ useEffect(() => {
 
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
     </div>
-    {open && 
-    <Snackbar
-    open={open}
-    autoHideDuration={6000}
-    onClose={handleClose}
-    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-    ContentProps={{
-      style: {
-        backgroundColor: '#585782',
-        color: '#e8e8f0',
-        position: 'fixed', // Change to fixed
-        bottom: 20,        // Adjust as needed
-        left: '15%',       // Center it horizontally
-        transform: 'translateX(-50%)', // Center it based on its width
-        zIndex: 1000,     // Ensure it's above other content
-      },
-    }}
-    message={alertFav} 
-    action={action}
-  />
-    }
       <AnimatePresence>
       {scrollTop && (
         <motion.button
@@ -1577,7 +1568,12 @@ useEffect(() => {
      orderCheck={orderCheck}
      setOrderCheck={()=>setOrderCheck(true)}
       onClose={()=>setOrderDrawer(false)}/>
-  <FavoriteDrawer seeProduct={seeProduct} setDrawerOpener={setDrawerOpener} DrawerIsOpen={DrawerOpener}  removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+  <FavoriteDrawer 
+  seeProduct={seeProduct} 
+  setDrawerOpener={setDrawerOpener}
+   DrawerIsOpen={DrawerOpener} 
+    removeFavorites={removeFavorites} 
+    onClose={()=>setDrawerOpener(false)} />
   <div className="empty"></div>
   <div className="empty"></div>
   </motion.div>

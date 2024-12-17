@@ -43,9 +43,9 @@
           "deliveryKosovo":"3 day in Kosovo",
           "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
           "images": [
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731530295/sony_headphones1-removebg-preview_futrj5.png",
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731872664/sony_headphones1-removebg-preview_1_efmipp.png",
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731872715/sony_headphones1-removebg-preview_2_pxia8w.png"
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734472772/sonymdr-removebg-preview_mttcjy.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734472826/sonymdr2-removebg-preview_l6pbhh.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734472826/sonymdr2-removebg-preview_l6pbhh.png"
           ]
       },
       {
@@ -54,7 +54,7 @@
         "name": "Headphones Sony MRD7506",
         "stock": 7,
         "price": 127,
-        "description": "Sony MDR7506 headphones/headset Wired Head-band Stage/Studio Black",
+        "description": "Sony MDR7506 headphones/headset Wired Head-band Stage/Studio Black with great desing and great texture",
         "details": [
             {
                 "Warranty":1,
@@ -67,9 +67,9 @@
           "deliveryKosovo":"3 day in Kosovo",
           "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
           "images": [
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731530295/sony_headphones1-removebg-preview_futrj5.png",
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731872664/sony_headphones1-removebg-preview_1_efmipp.png",
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1731872715/sony_headphones1-removebg-preview_2_pxia8w.png"
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734474904/sonymdrzx-removebg-preview_vzc6as.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734475002/sonymdrzx2-removebg-preview_jeclh7.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734475109/sonymdrzx3-removebg-preview_qmpuxu.png"
           ]
       },
       {
@@ -85,6 +85,14 @@
                 "Battery":"3000 mAh",
                 "Wireless Type":"Wireless"
             }
+          ],
+          "type":"Controller",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734475904/controller-removebg-preview_jlqup3.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734475943/controller2_vmwuhq.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734476041/controller3-removebg-preview_ajrxja.png"
           ]
       },
       {
@@ -102,6 +110,14 @@
                 "Wireless Type":"Bluetooth v5.3",
                 "Case Battery":"800 mAh"
             }
+          ],
+           "type":"Headphones",
+           "deliveryKosovo":"3 day in Kosovo",
+           "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+           "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734476300/earphones-removebg-preview_h9iglq.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734476344/earphones2-removebg-preview_io7nwa.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734476366/earphones3-removebg-preview_zvnoyi.png"
           ]
       },
       {

@@ -84,6 +84,12 @@ function App() {
     setSelectedBrand(brand)
   }
 
+
+  const [loadingTech,setLoadingTech]=useState(true)
+
+
+  const [loadingBrand,setLoadingBrand]=useState(true)
+
   return (
     <Router>
   <div className="App">
@@ -135,11 +141,23 @@ function App() {
         />
         <Route
           path="/tech"
-          element={<Tech  selectedTech={selectedTech} chooseBrand={chooseBrand} chooseTech={chooseTech}/>}
+          element={<Tech  
+            selectedTech={selectedTech} 
+            chooseBrand={chooseBrand} 
+            chooseTech={chooseTech}
+            loadingTech={loadingTech}
+            setLoadingTech={setLoadingTech}
+            />}
         />
          <Route
           path="/brand"
-          element={<Brand selectedBrand={selectedBrand} chooseBrand={chooseBrand} chooseTech={chooseTech}/>}
+          element={<Brand 
+            selectedBrand={selectedBrand} 
+            chooseBrand={chooseBrand} 
+            chooseTech={chooseTech}
+            loadingBrand={loadingBrand}
+            setLoadingBrand={setLoadingBrand}
+            />}
         /> 
       </Routes>
     </header>

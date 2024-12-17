@@ -24,7 +24,7 @@ import Cart from './Cart'
 import { ChangeHistoryTwoTone } from '@mui/icons-material';
 import { Box, Modal } from '@mui/material';
 
-const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
+const Tech = ({selectedTech,chooseTech,chooseBrand,loadingTech,setLoadingTech}) => {
 
     const [allProducts, setAllProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -46,6 +46,7 @@ const Tech = ({selectedTech,chooseTech,chooseBrand}) => {
           const filtered = allProducts.filter(product => product.type === selectedTech);
           console.log('Filtered Products:', filtered);
           setFilteredProducts(filtered);
+          setLoadingTech(false)
         }
       }, [selectedTech, allProducts]);
 
@@ -325,6 +326,12 @@ useEffect(() => {
 
     return ( 
         <div>
+          {loadingTech === true ? <div className='h-screen flex items-center justify-center bg-gray-900 bg-opacity-60 backdrop-blur-md'
+    style={{ backgroundColor: 'rgba(1, 1, 3,0.7)' }}
+    >
+      <div className="loader"></div>
+      <div className="empty"></div>
+    </div> :
             <div className='products h-full' >
      {showProduct ? (
       <ProductDetails 
@@ -569,13 +576,13 @@ className=" text-start pl-8 mt-4 font-bold text-3xl text-[#fbfbf] mb-4">{selecte
 <motion.div
 initial={{opacity:0,y:-15}}
 animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
-className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center">
+className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
-            <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94]">
+            <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94] h-[300px] flex flex-col justify-between">
               {product.images && product.images.length > 0 ? (
                 <div className="flex w-full items-center justify-center">
-                  <img width="55px" height="55px" src={product.images[0]} alt={product.name} />
+                  <img width="70px" height="70px" src={product.images[0]} alt={product.name} />
                 </div>
               ) : (
                 <p className="text-sm text-[#9f9fac]">No image available</p>
@@ -668,7 +675,7 @@ className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-cent
     <div className="empty"></div>
     <div className="empty"></div>
     </div>
-    
+}
         </div>
      );
 }
