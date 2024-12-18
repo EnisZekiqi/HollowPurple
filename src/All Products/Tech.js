@@ -581,8 +581,8 @@ className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-cent
           filteredProducts.map(product => (
             <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94] h-[300px] flex flex-col justify-between">
               {product.images && product.images.length > 0 ? (
-                <div className="flex w-full items-center justify-center">
-                  <img width="70px" height="70px" src={product.images[0]} alt={product.name} />
+                <div className="flex w-full items-center justify-center h-[105px]">
+                  <img className="w-[100px] h-[100px] object-contain max-w-full max-h-full" src={product.images[0]} alt={product.name} />
                 </div>
               ) : (
                 <p className="text-sm text-[#9f9fac]">No image available</p>

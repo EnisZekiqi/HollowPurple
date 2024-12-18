@@ -91,7 +91,7 @@
           "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
           "images": [
             "https://res.cloudinary.com/datm8nslc/image/upload/v1734475904/controller-removebg-preview_jlqup3.png",
-            "https://res.cloudinary.com/datm8nslc/image/upload/v1734475943/controller2_vmwuhq.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734476634/controller2_vmwuhq.png",
             "https://res.cloudinary.com/datm8nslc/image/upload/v1734476041/controller3-removebg-preview_ajrxja.png"
           ]
       },
@@ -135,6 +135,14 @@
                 "Video":"4K 60 FPS",
                 "Charging":"USB-C"
             }
+          ] ,
+          "type":"Camera",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560218/sonycamera-removebg-preview_wzkemq.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560223/sonycamera2-removebg-preview_mqlmfx.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560269/sonycamera3-removebg-preview_dmg5ye.png"
           ]
       },
       {
@@ -157,6 +165,14 @@
                 "Battery":"5000 mAh",
                 "Screen size [inches]":"6.5"
             }
+          ],
+          "type":"Phones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560369/sonyxperia1-removebg-preview_k5hoko.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560378/sonyxperia2-removebg-preview_vy2tvh.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560477/sonyxperia3-removebg-preview_z8polp.png"
           ]
       },
       {
@@ -176,6 +192,14 @@
                 "Energy Consumption [W]":"35",
                 "Diagonal of Screen":"24.5, 24.5"
             }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"4 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560628/benq-removebg-preview_enutfj.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560679/benq2-removebg-preview_dsiw23.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560684/benq3-removebg-preview_l7egai.png"
           ]
       },
       {
@@ -192,6 +216,14 @@
                 "Production":"China",
                 "Design dimensions [inches]":"300, 300"
             }
+          ],
+          "type":"Projector",
+          "deliveryKosovo":"2 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560740/benqprojector-removebg-preview_pwqk4n.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560824/benqprojector2-removebg-preview_j6jy0f.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734560860/benqprojector3-removebg-preview_lugjfr.png"
           ]
       },
       {
@@ -211,6 +243,14 @@
                 "Weight":"74g",
                 "Technology":"USB-A"
             }
+          ],
+          "type":"Mouse",
+          "deliveryKosovo":"2 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734561758/zowie-removebg-preview_fhouzb.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734561763/zowie2-removebg-preview_w83pbl.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734561806/zowie3-removebg-preview_kmojw3.png"
           ]
       },
       {

@@ -66,7 +66,8 @@ function ProductsPage({chooseTech,chooseBrand}) {
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       
-      const productsToShow = filteredProducts.slice(0, shownProducts);
+      const productsToShow = searchQuery.trim() !== '' ? searchResults : filteredProducts;
+
 
     
 
@@ -673,41 +674,37 @@ useEffect(() => {
         <div className="empty"></div>
         <div>
         <div className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center px-1.5">
-      {productsToShow.map((product) => (
-        <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94] h-[300px] flex flex-col justify-between">
-          {/* Image section */}
-          {product.images && product.images.length > 0 ? (
-            <div className="flex w-full items-center justify-center mb-3">
-              <img width='70px' height='70px' style={{ objectFit: 'contain' }} src={product.images[0]} alt={product.name} />
-            </div>
-          ) : (
-            <p className="text-center">No image available</p>
-          )}
+        {productsToShow.map((product) => (
+  <div key={product.id} className="product-card mb-6 px-1 py-2.5 rounded-md bg-[#18181b94] h-[310px] flex flex-col justify-between">
+    {/* Image section */}
+    {product.images && product.images.length > 0 ? (
+      <div className="flex w-full items-center justify-center mb-3 h-[105px] ">
+        <img className="w-[100px] h-[100px] object-contain max-w-full max-h-full" style={{ objectFit: 'contain' }} src={product.images[0]} alt={product.name} />
+      </div>
+    ) : (
+      <p className="text-center">No image available</p>
+    )}
+    
+    {/* Product name */}
+    <h3 className="font-bold text-md text-[#fbfbfb] mt-2 text-center">{product.name}</h3>
 
-          {/* Product name */}
-          <h3 className='font-bold text-md text-[#fbfbfb] mt-2 text-center'>{product.name}</h3>
+    {/* Product description */}
+    <p className="font-light text-xs text-[#9f9fac] line-clamp-2 text-start mt-1">{product.description}</p>
 
-          {/* Product description */}
-          <p className="font-light text-xs text-[#9f9fac] line-clamp-2 text-start  mt-1 ">
-            {product.description}
-          </p>
+    {/* Product price */}
+    <p className="font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2">{product.price}$</p>
 
-          {/* Product price */}
-          <p className='font-semibold text-md text-[#d6d6dc] text-start pl-1.5 mt-2'>
-            {product.price}$
-          </p>
-
-          {/* Buttons */}
-          <div className="flex justify-around w-full items-center mt-2 gap-2">
-            <button onClick={() => seeProduct(product)} className='text-[#fbfbfb] rounded-md bg-transparent p-1 w-full' style={{ border: '1px solid #6f6e9e' }}>
-              More Details
-            </button>
-            <button onClick={() => addToFavorites(product)} className='bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md'>
-              <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
-            </button>
-          </div>
-        </div>
-      ))}
+    {/* Buttons */}
+    <div className="flex justify-around w-full items-center mt-2 gap-2">
+      <button onClick={() => seeProduct(product)} className="text-[#fbfbfb] rounded-md bg-transparent p-1 w-full" style={{ border: '1px solid #6f6e9e' }}>
+        More Details
+      </button>
+      <button onClick={() => addToFavorites(product)} className="bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md">
+        <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+      </button>
+    </div>
+  </div>
+))}
 </div>
 
       {filteredProducts.length > shownProducts && (
