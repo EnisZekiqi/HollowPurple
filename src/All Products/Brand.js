@@ -60,7 +60,7 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
 
       const techResponsive =[
         {tech:<MdMonitor style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Monitor'},
-        {tech:<MdLaptop style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Laptop'},
+        {tech:<MdLaptop style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Pc and Laptops'},
         {tech:<MdOutlinePhoneIphone style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Phones'},
         {tech:<MdHeadphones style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Headphones'},
         {tech:<MdCameraAlt style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Camera'},
@@ -336,7 +336,7 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
       <div className="loader"></div>
       <div className="empty"></div>
     </div> :
-         <div className='products h-full' >
+         <div className='products h-full md:h-screen' >
   {showProduct ? (
    <ProductDetails 
    product={showProduct}

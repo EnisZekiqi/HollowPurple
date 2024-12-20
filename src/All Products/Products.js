@@ -28,16 +28,18 @@ import { Box, Modal } from '@mui/material';
 function ProductsPage({chooseTech,chooseBrand}) {
 
  
-    const [allProducts, setAllProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]); 
     const [shownProducts,setShownProducts]=useState(20)
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [loadingGeneral,setLoadingGeneral]=useState(true)
   
     useEffect(() => {
         fetch('/data/brands/all-products.json')
           .then(response => response.json())
           .then(data => {
             setAllProducts(data);
+            setLoadingGeneral(false)
           })
           .catch(error => console.error('Error fetching data:', error));
       }, []);
@@ -95,7 +97,7 @@ function ProductsPage({chooseTech,chooseBrand}) {
 
       const techResponsive =[
         {tech:<MdMonitor style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Monitor'},
-        {tech:<MdLaptop style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Laptop'},
+        {tech:<MdLaptop style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Pc and Laptops'},
         {tech:<MdOutlinePhoneIphone style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Phones'},
         {tech:<MdHeadphones style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Headphones'},
         {tech:<MdCameraAlt style={{color:'#fbfbfb',width:'25px',height:'25px'}}/>,name:'Camera'},
@@ -361,6 +363,12 @@ useEffect(() => {
 
   return (
   <div>
+     {loadingGeneral === true ? <div className='h-screen flex items-center justify-center bg-gray-900 bg-opacity-60 backdrop-blur-md'
+    style={{ backgroundColor: 'rgba(1, 1, 3,0.7)' }}
+    >
+      <div className="loader"></div>
+      <div className="empty"></div>
+    </div> :
       <div className='products h-full' >
      {showProduct ? (
       <ProductDetails 
@@ -785,7 +793,7 @@ useEffect(() => {
       </motion.div>
 
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
-    </div>
+    </div>}
       <AnimatePresence>
       {scrollTop && (
         <motion.button

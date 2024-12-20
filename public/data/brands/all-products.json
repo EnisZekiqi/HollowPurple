@@ -255,119 +255,391 @@
       },
       {
         "id": 12,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "brand": "Benq",
+        "name": "Monitor BenQ ZOWIE XL2540K, 24.5 Full HD",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 395,
+        "description": "The new base is designed to take up less space while maintaining the same stability. This gives players more room to move and gives them the flexibility to make adjustments and play comfortably.",
+        "details": [
+            {
+                "Warranty":3,
+                "Reaction Time [ms]":1,
+                "Weight":"334g",
+                "Technology":"USB-A",
+                "Format":"16:9",
+                "Resolution":"1920 x 1080 (Full HD)",
+                "Refresh Rate":"240 Hz"
+            }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"2 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734722918/benqxl-removebg-preview_wq2vhf.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734722955/benqxl2-removebg-preview_p1xqhr.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734722976/benqxl3-removebg-preview_mqplml.png"
+          ]
       },
       {
         "id": 13,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "brand": "Benq",
+        "name": "Projector BenQ W1800",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 1270,
+        "description": "The BenQ W1800 projector is a whole new way for your family to immerse themselves in big-screen entertainment, bringing a projection room atmosphere to your living room.",
+        "details": [
+            {
+                "Warranty":5,
+                "Weight":"474g",
+                "Technology":"USB-A",
+                "Format":"16:9",
+                "Resolution":"1920 x 1080 (4K)"
+            }
+          ],
+          "type":"Projector",
+          "deliveryKosovo":"1 day in Kosovo",
+          "deliveryBallkan":"4 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723220/benqprojectorx-removebg-preview_zs4kqv.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723259/benqprojectorx2-removebg-preview_o0g7gd.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723292/benqprojectorx3-removebg-preview_mgkpje.png"
+          ]
       },
       {
         "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "brand": "Asus",
+        "name": "Laptop ASUS Vivobook 15 (X1504)",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 349,
+        "description": "The numeric keypad may have some foreign symbols. Meanwhile, the operating system is in a trial version or is not installed at all. The description is being processed, in the meantime you can view the technical specifications, or contact us in chat, email and messenger for further details.",
+        "details": [
+            {
+                "Warranty":1,
+                "Weight":"474g",
+                "USB 3.2":"2",
+                "Memory Type":"DDR4",
+                "Resolution":"1920 x 1080",
+                "Operativ System":"Windows 11 Home",
+                "HDMI":"1"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"1 day in Kosovo",
+          "deliveryBallkan":"4 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723672/AsusLaptop-removebg-preview_dsgq86.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723706/AsusLaptop2-removebg-preview_djrqng.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723791/AsusLaptop3-removebg-preview_x3jb4o.png"
+          ]
       },
       {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "id": 15,
+        "brand": "Asus",
+        "name": "Monitor ASUS VY249HGE",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
-      }, {
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
-        "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 149,
+        "description": "The description is being processed, in the meantime you can view the technical specifications, or contact us via chat, email and messenger for further details. Thank you for your understanding.",
+        "details": [
+            {
+                "Warranty":1,
+                "Weight":"3kg",
+                "Resolution":"1920 x 1080",
+                "Consume [kWh/1000h]":"15",
+                "HDMI":"1",
+                 "Refresh Rate":"144 Hz"
+            }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"1 day in Kosovo",
+          "deliveryBallkan":"4 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734723995/asusmonitor-removebg-preview_g4z8ye.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724097/asusmonitor-removebg-preview_2_j8ppxg.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724057/asusmonitor-removebg-preview_1_fbu6kl.png"
+            
+          ]
       },{
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "id": 16,
+        "brand": "Asus",
+        "name": "Laptop ASUS ROG Strix",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 1999,
+        "description": "Discover unimaginable power with the ASUS ROG Strix Laptop! With a stunning 16 display and Intel i7-13650HX processor, this laptop is designed for gamers and content creation professionals.",
+        "details": [
+            {
+                "Warranty":5,
+                "Procesor":"Intel i7",
+                "Operativ System":"Windows 11 Home",
+                "Operativ Power":"64 Bit",
+                "Resolution":"1920 x 1080",
+                "Memory Type":"SSD",
+                "HDMI":"1",
+                 "Refresh Rate":"164 Hz",
+                 "Audio System":"Dolby Atmos",
+                 "GPU":"NVIDIA"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"1 day in Kosovo",
+          "deliveryBallkan":"4 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724549/AsusLaptop-removebg-preview_1_cm9wt8.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724590/AsusLaptop-removebg-preview_2_o3nhia.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724634/AsusLaptop-removebg-preview_3_scyv2f.png"
+            
+          ]
+      }, {
+        "id": 17,
+        "brand": "Asus",
+        "name": "Mouse ASUS ROG KERIS WIRELESS",
+        "stock": 50,
+        "price": 43,
+        "description": "The ROG Keris Wireless AimPoint mouse weighs just 75 grams, and features the ROG AimPoint optical sensor with a sensitivity of up to 36,000 dpi. This mouse has tri-mode connectivity: it can connect with 2.4 GHz RF for fast performance.",
+        "details": [
+            {
+                "Warranty":1,
+                "Reaction Time [ms]":1,
+                "Maximum sensitivity [DPI]":"3200",
+                "Wheel":"Mechanical"
+            }
+          ],
+          "type":"Mouse",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724841/asusmouse-removebg-preview_vxjo5m.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724880/asusmouse-removebg-preview_1_fp23uh.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734724912/asusmouse-removebg-preview_2_c35snf.png"
+            
+          ]
+      },  {
+        "id": 18,
+        "brand": "Asus",
+        "name": "Monitor ASUS VA24EQSB",
+        "stock": 50,
+        "price": 164,
+        "description": "The ASUS VA24EQSB is a 23.8 Full HD (1920 x 1080) monitor featuring an IPS panel with 178° wide viewing angles and LED backlighting. Its 75 Hz refresh rate with Adaptive-Sync compatibility.",
+        "details": [
+            {
+                "Warranty":1,
+                "Reaction Time [ms]":3,
+                "HDMI":"1",
+                 "Refresh Rate":"75 Hz"
+            }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725158/asusmonitor-removebg-preview_3_qdhwpi.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725202/asusmonitor-removebg-preview_4_tvali9.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725237/asusmonitor-removebg-preview_5_kygi8f.png"
+            
+          ]
+      }, {
+        "id": 19,
+        "brand": "Hp",
+        "name": "Laptop HP EliteBook 860 G10 16",
+        "stock": 50,
+        "price": 999,
+        "description": "The numeric keypad has some Czech symbols. The description is being processed, in the meantime you can view the technical specifications, or contact us via chat, email and messenger for further details. Thank you for your understanding.",
+        "details": [
+            {
+                "Warranty":1,
+                "Color":"Black",
+                "HDMI":"1",
+                 "VGA":"1"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725470/hplaptop-removebg-preview_mfxgkt.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725549/hplaptop-removebg-preview_1_ggkxiv.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734725567/hplaptop-removebg-preview_2_nhhdes.png"
+            
+          ]
+      }, {
+        "id": 20,
+        "brand": "Hp",
+        "name": "Maus HP Ceramic White Z3700",
+        "stock": 50,
+        "price": 19,
+        "description": "HP Mouse Ceramic White Z3700, Wireless, International English.",
+        "details": [
+            {
+                "Warranty":1,
+                "Type":"Wireless",
+                "Other Buttons":"No"
+            }
+          ],
+          "type":"Mouse",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734726113/hpmouse-removebg-preview_ypabk8.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734726134/hpmouse-removebg-preview_1_p8xrlk.png"
+            
+          ]
+      },  {
+        "id": 21,
+        "brand": "Hp",
+        "name": "HP PC AIO 24-cb1337nh, 23.8",
+        "stock": 50,
+        "price": 879,
+        "description": "All in one personal computer with Windows 11 and monitor and keyboard included in the package",
+        "details": [
+            {
+                "Warranty":4,
+                "Display Type":"Touch Screen",
+                "RAM Capacity":"16GB DDR4",
+                "Accesssory":"Keyboard,Mouse",
+                "Procesor":"Intel i7"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734726709/hppc-removebg-preview_ycszuu.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734726742/hppc-removebg-preview_1_eqkaod.png"
+            
+          ]
       },{
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "id": 22,
+        "brand": "Apple",
+        "name": "Apple iPhone 16 Pro Max, 256GB",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 1579,
+        "description": "The iPhone 16 Pro Max represents the pinnacle of Apple's flagship lineup, offering top-notch performance and a large 6.9 Super Retina XDR OLED display. With a resolution of 2868 × 1320 and support for HDR10+, the display is perfect for watching high-definition content, gaming, or general multitasking.",
+        "details": [
+            {
+                "Warranty":4,
+                "Bluetooth":"5.3",
+                "Operativ System":"iOS",
+                "Refresh Rate":"120Hz",
+                "Chipset":"Apple A18 Bionic",
+                "Display":"OLED Super Retina XDR" ,
+                "Brightness [nit]":"2000",
+                "Cameras":"48Mp + 48Mp + 12Mp",
+                "Charging":"USB-C"
+            }
+          ],
+          "type":"Phones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734727188/iphone16-removebg-preview_zbrlxl.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734727290/iphone16-removebg-preview_2_x2jzqi.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734727255/iphone16-removebg-preview_1_qzf5fr.png"
+            
+          ]
       },{
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "id": 23,
+        "brand": "Apple",
+        "name": "Apple MacBook Air 13.3, M1 8-core, 8GB, 256GB",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 779,
+        "description": "The new generation of MacBook Air from Apple is a real revolution in terms of performance in this compact laptop. It offers all the features and functions you love, but the performance is on another level. With the new MacBook Air, you can edit high-resolution video and also take advantage of professional applications.",
+        "details": [
+            {
+                "Warranty":4,
+                "Bluetooth":"5.3",
+                "Operativ System":"Apple Mac OS",
+                "RAM Capacity":"8GB",
+                "Chipset":"Apple M1",
+                "Display":"OLED Retina " ,
+                "Brightness [nit]":"1200",
+                "Memory Type":"SSD 256",
+                "Charging":"USB-C"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734727591/mac-removebg-preview_vkzyjn.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734727625/mac-removebg-preview_1_n2yd5w.png"
+            
+          ]
       },{
-        "id": 14,
-        "brand": "Nike",
-        "name": "Running Shoes",
+        "id": 23,
+        "brand": "Apple",
+        "name": "Apple Studio Display, Nano-Texture Glass",
         "stock": 50,
-        "price": 100,
-        "description": "High-quality running shoes.",
-        "details": "Additional details about the product."
+        "price": 1961,
+        "description": "The Apple Studio Display 5K monitor stands out not only for its design, but also for its exceptional parameters, considerable brightness and an exceptional contrast ratio. The Apple Studio Display 5K is a monitor that takes your comfort into account.",
+        "details": [
+            {
+                "Warranty":4,
+                "Consume [kWh/1000h]":"21",
+                "Display":"Super OLED Retina XDR++" ,
+                "Brightness [nit]":"2400",
+                "Resolution":"5120 x 2880 (5K UHD)",
+                "Format":"16:9"
+            }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734727933/applemonitor-removebg-preview_qorwa0.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734727980/applemonitor-removebg-preview_1_lkyey3.png"
+            
+          ]
+      },{
+        "id": 24,
+        "brand": "Apple",
+        "name": "Apple iPhone 15, 128GB",
+        "stock": 50,
+        "price": 919,
+        "description": "A great phone for any occasion. This is the Apple iPhone 15, which in addition to its unique design and exceptional quality offers a full range of top features, including double optical zoom and the Dynamic Island notification system. The iPhone 15's perfect image is ensured by the 6.1 OLED Super Retina XDR display with support for True Tone technology, which adjusts the display based on the ambient light.",
+        "details": [
+            {
+              "Warranty":4,
+              "Bluetooth":"5.2",
+              "Operativ System":"Apple Mac OS",
+              "RAM Capacity":"6GB",
+              "Chipset":"Apple A16 Bionic",
+              "Display":"OLED" ,
+              "Brightness [nit]":"1300",
+              "Memory Type":"SSD 128",
+              "Charging":"USB-C",
+              "Cameras":"48Mp + 12Mp"
+            }
+          ],
+          "type":"Phones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734728224/iphon15-removebg-preview_isgthx.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734728257/iphone15-removebg-preview_d8nzam.png"
+            
+          ]
+      },{
+        "id": 25,
+        "brand": "Apple",
+        "name": "Apple AirPods (3rd generation)",
+        "stock": 50,
+        "price": 189,
+        "description": "AirPods are lightweight and feature a contoured design. They sit at the right angle for comfort and to better direct audio into your ear. The body is 33 percent shorter than AirPods (2nd generation) and includes a force sensor for easy control of music and calls.",
+        "details": [
+            {
+              "Warranty":3,
+              "Bluetooth":"5.0",
+             "Color":"White",
+              "IPX":"IPX4"
+            }
+          ],
+          "type":"Headphones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734729338/airpods-removebg-preview_mg7vrc.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734729357/airpods-removebg-preview_1_lt7asy.png"
+            
+          ]
       }
 
   ]
