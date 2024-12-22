@@ -336,7 +336,7 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
       <div className="loader"></div>
       <div className="empty"></div>
     </div> :
-         <div className='products h-full md:h-screen' >
+         <div className={`products ${showProduct ? 'h-full' : 'h-fit'} transition-all`} >
   {showProduct ? (
    <ProductDetails 
    product={showProduct}
@@ -416,7 +416,7 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
       )}
     </div>
      </div>
-       <div className="flex gap-3 items-center cursor-pointer">
+       <div className="flex gap-3 items-center cursor-pointer mr-0 md:mr-2">
        <Link 
      to="/order-summary" 
      state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
@@ -684,6 +684,7 @@ className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-cent
       </motion.div>
   
 <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+  <div className="empty"></div>
  </div>
 }
      </div>
@@ -1096,7 +1097,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
               placeholder='Search Products'
             />
           </div>
-            <div className="flex gap-3 items-center cursor-pointer">
+            <div className="flex gap-3 items-center cursor-pointer mr-0 md:mr-2">
             <Link 
           to="/order-summary" 
           state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route

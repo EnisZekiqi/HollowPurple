@@ -181,6 +181,7 @@ const seeProduct =(product)=>{
   }, 4000);
 }
 
+
 ///go back to searching function /////
 
 
@@ -332,7 +333,7 @@ useEffect(() => {
       <div className="loader"></div>
       <div className="empty"></div>
     </div> :
-            <div className='products h-full md:h-screen' >
+            <div className={`products ${showProduct ? 'h-full' : 'h-fit'} transition-all`}>
      {showProduct ? (
       <ProductDetails 
       product={showProduct}
@@ -412,7 +413,7 @@ useEffect(() => {
       )}
     </div>
         </div>
-          <div className="flex gap-3 items-center cursor-pointer">
+          <div className="flex gap-3 items-center cursor-pointer mr-0 md:mr-2">
           <Link 
         to="/order-summary" 
         state={{ orderDetails: orderCheckInfo, orderTime: new Date().toLocaleString() }} // Passing state to the next route
@@ -672,6 +673,7 @@ className="product-grid grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-cent
         </div>
       </motion.div>
    <FavoriteDrawer seeProduct={seeProduct} DrawerIsOpen={DrawerOpener} removeFavorites={removeFavorites} onClose={()=>setDrawerOpener(false)} />
+    <div className="empty"></div>
     </div>
 }
         </div>
@@ -1026,6 +1028,10 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
   const handleTech =(tech)=>{
     chooseTech(tech)
   }
+
+  const chooseAgain =()=>{
+    seeProduct(null)
+  }
   
     return (
      <div>
@@ -1230,7 +1236,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
      <a href="/products"><p>Product</p></a>
       <IoIosArrowForward/>
       <Link to='/tech'>
-         <p onClick={()=>handleTech(product.type)}>
+         <p onClick={chooseAgain}>
       {product.type}</p></Link>
       <IoIosArrowForward/>
       <p>{product.name}</p>

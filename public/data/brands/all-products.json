@@ -640,6 +640,206 @@
              "https://res.cloudinary.com/datm8nslc/image/upload/v1734729357/airpods-removebg-preview_1_lt7asy.png"
             
           ]
+      },{
+        "id": 26,
+        "brand": "Samsung",
+        "name": " Samsung Galaxy S24 8GB/ 128GB",
+        "stock": 50,
+        "price": 749,
+        "description": "Next to the Samsung Galaxy S24, I don't have any cellular intelligence, but I don't have to worry about my performance and performance. Pajisja ofron një gamë të gjithanshme funksionesh për të përmirësuar përvojën tuaj celular, duke siguruar që të qëndroni të lidhur me stil.",
+        "details": [
+            {
+              "Warranty":3,
+              "Bluetooth":"5.2",
+             "Color":"Black",
+             "Chipset":"SnapDragon 8 Gen",
+             "Display":"Super Older QuadHd " ,
+             "Brightness [nit]":"2200",
+             "Memory Type":"128GB",
+             "Charging":"USB-C"
+            }
+          ],
+          "type":"Phones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734896867/samsung-removebg-preview_znqxd7.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734896906/samsung-removebg-preview_1_l2ehwu.png"
+            
+          ]
+      },{
+        "id": 27,
+        "brand": "Samsung",
+        "name": "  Samsung Galaxy Buds FE",
+        "stock": 50,
+        "price": 109,
+        "description": "You can listen to music from Samsung Galaxy Buds FE. I adjust the tire ergonomically so that it moves forward, so it doesn't hurt me.Harrojeni zhurmën shpërqendruese të ambientit dhe zhytuni në muzikë. Falë funksionit Active Noise Cancellation, do të keni qetësinë për të zgjedhur dhe të mund të shijoni çdo moment pa ndërhyrje.",
+        "details": [
+            {
+              "Warranty":3,
+              "Bluetooth":"5.3",
+             "Color":"Silver",
+             "Noise Cancelling":"Yes",
+             "Charging":"USB-C",
+              "IPX":"IPX2"
+            }
+          ],
+          "type":"Headphones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734897070/samsung-removebg-preview_2_gdinii.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734897103/samsun-removebg-preview_gp4f3n.png"
+            
+          ]
+      },{
+        "id": 28,
+        "brand": "Samsung",
+        "name": "Monitor Samsung Odyssey G9, 49E",
+        "stock": 50,
+        "price": 899,
+        "description": "Përjetoni nivelin tjetër të lojërave emocionuese me skena të gjalla që mbështillen fort rreth pamjes suaj. Ekrani 1000R super ultra has 49 inç me resolucion Dual QHD and plotëson shikimin tuaj periferik dhe ju fton brenda rolit të personazhit.",
+        "details": [
+            {
+              "Warranty":3,
+             "Color":"Black",
+             "backlighting":"RGB",
+             "Resolution":"5120 x 1440 (DQHD)",
+              "IPX":"IPX2",
+              "HDMI":"1"
+            }
+          ],
+          "type":"Monitor",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734897520/samsung-removebg-preview_3_b0hxyk.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734897642/samsung-removebg-preview_4_tuf8xr.png"
+            
+          ]
+      },{
+        "id": 29,
+        "brand": "Samsung",
+        "name": "Projector Samsung SP-LFF3CLAXXXH Ultra DLP",
+        "stock": 50,
+        "price": 899,
+        "description": "Përshkrimi është duke u përpunuar, ndërkohë mund të shikoni specifikat teknike, apo kontaktoni në chat, email dhe messenger për detaje të mëtutjeshme.Ju faleminderit për mirëkuptim.",
+        "details": [
+            {
+              "Warranty":3,
+             "Color":"White"
+            }
+          ],
+          "type":"Projector",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734899923/samsun-removebg-preview_1_nr5uer.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734902385/samsung-removebg-preview_5_eu4bur.png"
+            
+          ]
+      },{
+        "id": 29,
+        "brand": "Logitech",
+        "name": " Logitech G Pro X Superlight",
+        "stock": 50,
+        "price": 99,
+        "description": "But Logitech is now a professional product, which weighs 63 gr, which is 25% but it is standard and Logitech is PRO. Kjo është arritur përmes inxhinierisë precize që lejon reduktimin ekstrem të peshës pa asnjë kompromis në performancën and malusit.",
+        "details": [
+            {
+              "Warranty":3,
+             "Color":"White",
+             "Maximum sensitivity [DPI]":"22200",
+             "Distance":"10m",
+             "Mouse Type":"Wireless"
+            }
+          ],
+          "type":"Mouse",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734902558/logi-removebg-preview_c3gkma.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734902587/logi-removebg-preview_1_b8msru.png"
+            
+          ]
+      },{
+        "id": 30,
+        "brand": "Logitech",
+        "name": "Headphones  Logitech G Pro X",
+        "stock": 50,
+        "price": 157,
+        "description": "Quality gaming headset with Logitech G Pro X microphone that brings you true comfort, lightweight construction and power with a frequency range of 20-20,000 kHz from a resistance of 35 ohms and a sensitivity of 91.7 db SPL.",
+        "details": [
+            {
+              "Warranty":3,
+             "Color":"Black",
+             "Distance":"13m",
+             "Headphones Type":"With Wire",
+             "Microphone":"Integrated"
+            }
+          ],
+          "type":"Headphones",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734902914/logitech-removebg-preview_ju5ifb.png",
+             "https://res.cloudinary.com/datm8nslc/image/upload/v1734902952/logitech-removebg-preview_1_oppeyj.png"
+            
+          ]
+      },{
+        "id": 30,
+        "brand": "Lenovo",
+        "name": "Laptop Lenovo Ideapad Slim, 15.6",
+        "stock": 50,
+        "price": 399,
+        "description": "The numeric keypad may have some foreign symbols. Meanwhile, the operating system is in a trial version or is not installed at all. The description is being processed, in the meantime you can view the technical specifications, or contact us in chat, email and messenger for further details. Thank you for your understanding.",
+        "details": [
+            {
+             "Warranty":1,
+                "Weight":"474g",
+                "USB 3.2":"2",
+                "Memory Type":"DDR4",
+                "Resolution":"1920 x 1080",
+                "Operativ System":"Windows 11 Home",
+                "HDMI":"1"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734903196/lenovo-removebg-preview_njdjzy.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734903245/lenovo-removebg-preview_1_asuh5r.png"
+            
+          ]
       }
+      ,{
+        "id": 31,
+        "brand": "Razer",
+        "name": "Laptop Razer Blade 17, 17.3",
+        "stock": 50,
+        "price": 3009,
+        "description": "Discover incredible power and performance with the Razer Blade 17 Laptop. Equipped with a stunning 17.3 display, this laptop is designed for those seeking an exceptional gaming and productivity experience. The Intel Core i7-12800HX processor delivers speed and efficiency, allowing you to tackle even the most demanding tasks with ease.",
+        "details": [
+            {
+             "Warranty":1,
+                "Weight":"474g",
+                "USB 3.2":"2",
+                "Memory Type":"DDR4",
+                "Resolution":"1920 x 1080",
+                "Operativ System":"Windows 11 Home",
+                "HDMI":"1"
+            }
+          ],
+          "type":"Pc and Laptops",
+          "deliveryKosovo":"3 day in Kosovo",
+          "deliveryBallkan":"5 day in Macedonia,Albania and Montenegro",
+          "images": [
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734903986/razer-removebg-preview_v1vee4.png",
+            "https://res.cloudinary.com/datm8nslc/image/upload/v1734904000/razer-removebg-preview_1_hmifj9.png"
+            
+          ]
+      }
+
 
   ]

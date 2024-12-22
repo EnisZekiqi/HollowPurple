@@ -104,7 +104,7 @@ const Cart = ({ seeProduct}) => {
           <CartResponsive/>
         </div>
         <div className="hidden md:block">
-        <div className="cart h-screen">
+        <div className="cart h-fit">
         <div className="flex p-1.5"> 
         <div className='flex items-center gap-1'>
           <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
@@ -128,75 +128,81 @@ const Cart = ({ seeProduct}) => {
         {cartItems.length > 0 ? (
           cartItems.map((product, index) => (
             <motion.div
-            initial={{opacity:0,y:-15}}
-            animate={{opacity:1,y:0,transition:{duration:0.5,delay:0.5}}}
-           key={index} className="cart-item pl-12 py-3" 
-           style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
-              <div onClick={() => seeProduct(product)}>
-                <div className="flex items-center justify-start w-full mb-4">
-                  {product.images && product.images.length > 0 && (
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      style={{ width: '85px', height: '85px', objectFit: 'contain' }}
-                    />
-                  )}
-                   <div className="flex items-center gap-14 justify-around">
-                   <p className="flex flex-col gap-2">
-                  <strong className="text-md font-semibold text-[#fbfbfb] text-start">{product.name}</strong>
-                  <p className="text-sm font-light text-[#d6d6dc] text-start"> {(productStock && productStock[product.id]) ?? product.stock} Available</p>
-                </p>
-                   <div className="flex flex-col justify-around gap-8">
-                   <div className="flex justify-around items-center gap-16">
-                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Price</p>
-                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Type</p>
-                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Brand</p>
-                    <p className="text-md font-semibold text-[#fbfbfb] text-center">Quantity</p>
-                    </div>
-                    <div className="flex justify-around items-center gap-16">
-                    <p className="text-sm font-light text-[#d6d6dc] text-center">{product.price}$</p>
-                    <p  className="text-sm font-light text-[#d6d6dc] text-center" style={{border:'1px solid #3b3b45',backgroundColor:'#242329',padding:'4px',borderRadius:'10px'}}>{product.type}</p>
-                    <p  className="text-sm font-light text-[#d6d6dc] text-center" >{product.brand}</p>
-                    <div className="flex flex-col gap-2 items-center">
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="px-2 py-1"
-                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
-                        onClick={() => handleQuantityChange(product.id, -1)}
-                      >
-                        -
-                      </button>
-                      <input
-                        className="w-[30px] input-no-arrows"
-                        type="text"
-                        value={product.quantity}
-                        readOnly
-                      />
-                      <button
-                        className="px-2 py-1"
-                        style={{ border: "1px solid #3b3b45", borderRadius: "5px" }}
-                        onClick={() => handleQuantityChange(product.id, 1)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                    </div>
-                   </div>
-                  
-                
-             
-             <div className="flex gap-2 ml-8">
-             <button className="order" onClick={() => orderNow(product)}>Order Now</button>
-             <button onClick={() => handleRemoveItem(product)}><MdDeleteOutline style={{width:'25px',height:'25px'}}/></button>
-             </div>
-                   </div>
-                </div>
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.5 } }}
+            key={index}
+            className="cart-item py-3 flex items-center justify-around"
+            style={{ borderBottom: '1px solid rgba(67, 67, 99,0.4)' }}
+          >
+            {/* Product Image */}
+            <div className="w-[100px] flex justify-center">
+              {product.images && product.images.length > 0 && (
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="w-[85px] h-[85px] object-contain"
+                />
+              )}
+            </div>
+
+            {/* Product Details */}
+            <div className="flex-1 flex flex-col gap-1 px-4">
+              <strong className="text-md font-semibold text-[#fbfbfb]">{product.name}</strong>
+              <p className="text-sm font-light text-[#d6d6dc]">{(productStock && productStock[product.id]) ?? product.stock} Available</p>
+            </div>
+
+            {/* Price, Type, Brand, and Quantity */}
+            <div className="flex-1 flex flex-col gap-1">
+              <div className="flex justify-center items-center gap-6">
+                <p className="text-md font-semibold text-[#fbfbfb]">Price</p>
+                <p className="text-sm font-light text-[#d6d6dc]">{product.price}$</p>
               </div>
-              {product.quantity >= product.stock && (
-                      <p className="text-xs text-center font-extralight">The value exceeds available stock</p>
-                    )}
-            </motion.div>
+              <div className="flex justify-center items-center gap-6">
+                <p className="text-md font-semibold text-[#fbfbfb]">Type</p>
+                <p className="text-sm font-light text-[#d6d6dc]">{product.type}</p>
+              </div>
+              <div className="flex justify-center items-center gap-6">
+                <p className="text-md font-semibold text-[#fbfbfb]">Brand</p>
+                <p className="text-sm font-light text-[#d6d6dc]">{product.brand}</p>
+              </div>
+            </div>
+
+            {/* Quantity Controls */}
+            <div className="flex items-center gap-2 mr-2">
+              <button
+                className="px-2 py-1 border border-[#3b3b45] rounded-md"
+                onClick={() => handleQuantityChange(product.id, -1)}
+              >
+                -
+              </button>
+              <input
+                className="w-[40px] text-center bg-transparent border border-[#3b3b45] rounded-md"
+                type="text"
+                value={product.quantity}
+                readOnly
+              />
+              <button
+                className="px-2 py-1 border border-[#3b3b45] rounded-md"
+                onClick={() => handleQuantityChange(product.id, 1)}
+              >
+                +
+              </button>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-4 ml-4 ">
+              <button
+                className="px-4 py-1 text-sm text-[#fbfbfb] bg-[#6f6e9e] rounded-md"
+                onClick={() => orderNow(product)}
+              >
+                Order Now
+              </button>
+              <button onClick={() => handleRemoveItem(product)}>
+                <MdDeleteOutline style={{ width: '25px', height: '25px' }} />
+              </button>
+            </div>
+          </motion.div>
+
           ))
         ) : (
           <div className="flex flex-col justify-center items-center w-full gap-3">
@@ -233,12 +239,41 @@ const Cart = ({ seeProduct}) => {
     setQuantity(newQuantity);
  };
 
+
+ const [widthResponsive,setWidthResponsive]=useState(false)
+
+ useEffect(() => {
+  // Function to check window width and update state
+  const checkWidth = () => {
+    // Get the width of the window
+    const windowWidth = window.innerWidth;
+
+    // Set state based on window width
+    if (windowWidth === 764) {
+      setWidthResponsive(true);
+    } else {
+      setWidthResponsive(false);
+    }
+  };
+
+  // Initial check on mount
+  checkWidth();
+
+  // Set up an event listener for resizing the window
+  window.addEventListener("resize", checkWidth);
+
+  // Cleanup the event listener on unmount
+  return () => {
+    window.removeEventListener("resize", checkWidth);
+  };
+}, []);
+
  const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
+ maxWidth:'500px',
   bgcolor: 'rgba( 1, 1, 3, 0.87 )',
   border: '2px solid #585782',
   boxShadow: 24,
@@ -407,24 +442,24 @@ const Cart = ({ seeProduct}) => {
             </div> 
          
           <div>
-        <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
-        <img width="50px" src={orderProduct.images[0]} alt="" />
-       <div className="flex flex-col items-start gap-1">
-       <p className='text-[#fbfbfb]'> {orderProduct?.name}</p>
-       <div className="flex gap-6">
-         <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
-       <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
+        <div className="sticky flex flex-col md:flex-row items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+        <img width="55px" src={orderProduct.images[0]} alt="" />
+       <div className="flex flex-col items-start gap-1 mt-4 md:mt-0">
+       <p className='text-[#fbfbfb] text-center'> {orderProduct?.name}</p>
+       <div className="flex gap-6 items-center mt-2">
+         <p className=' text-xs font-semibold md:text-md md:font-bold flex  items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
+       <p className=' text-xs font-semibold md:text-md md:font-bold flex  items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
        </div>
         </div>
-        <div className="flex justify-between items-center gap-4 mt-6">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-6">
         <input value={Name} onChange={handleNameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Name" />
         <input value={Surname} onChange={handleSurnameChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Surname" />
         </div>
-        <div className="flex justify-between items-center gap-4 mt-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-8">
         <input value={Phone} onChange={handlePhoneChange } className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Phone Number" />
         <input value={Email} onChange={handleEmailChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Email" />
         </div>
-        <div className="flex justify-between items-center gap-4 mt-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-8">
         <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />
         <select
         className="rounded-md p-1 w-full"
@@ -457,15 +492,15 @@ const Cart = ({ seeProduct}) => {
         <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
         <div className="flex items-center justify-between gap-2">
          
-          <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
+          <button className='text-start mt-2 mb-2 text-xs font-light md:font-normal md:text-sm rounded-md px-1 py-2 flex items-center gap-1' 
           onClick={()=>setPayment('cash')}
           style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
             >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
-          <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+          <button className='text-start mt-2 rounded-md  text-xs font-light md:font-normal md:text-sm px-1 py-2 flex items-center gap-1'
            onClick={()=>setPayment('online')}
              style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
             >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
-             <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+             <button className='text-start mt-2 rounded-md  text-xs font-light md:font-normal md:text-sm px-1 py-2 flex items-center gap-1'
            onClick={()=>setPayment('bank')}
              style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
             >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
@@ -648,7 +683,7 @@ const Cart = ({ seeProduct}) => {
       
       return(
         <div>
-          <div className="cart h-screen">
+          <div className="cart h-fit">
         <div className="flex p-1.5"> 
         <div className='flex items-center gap-1'>
           <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>
@@ -683,7 +718,7 @@ const Cart = ({ seeProduct}) => {
                     <img
                       src={product.images[0]}
                       alt={product.name}
-                      style={{ width: '55px', height: '55px', objectFit: 'contain' }}
+                      style={{ width: '65px', height: '65px', objectFit: 'contain' }}
                     />
                   )}
                   </div>
@@ -722,7 +757,7 @@ const Cart = ({ seeProduct}) => {
                   
                 </div>
               </div>
-              <button className="order3 w-full " onClick={() => orderNow(product)}>Order Now</button>
+              <button className="order3 w-[96%] md:w-full" onClick={() => orderNow(product)}>Order Now</button>
               {product.quantity >= (product.stock || productStock) && (
                       <p className="text-xs text-center font-extralight">The value exceeds available stock</p>
                     )}
@@ -743,6 +778,7 @@ const Cart = ({ seeProduct}) => {
   handleStockUpdate={handleStockUpdate}
   onClose={() => setOrderDrawer(false)}
 />
+<div className="empty"></div>
       </div>
         </div>
       )
