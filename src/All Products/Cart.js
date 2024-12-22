@@ -683,7 +683,7 @@ const Cart = ({ seeProduct}) => {
       
       return(
         <div>
-          <div className="cart h-fit">
+          <div className="cart h-full">
         <div className="flex p-1.5"> 
         <div className='flex items-center gap-1'>
           <a href="/products"> <h1  className='font-bold text-lg cursor-pointer md:text-xl'>HollowPurple</h1></a>

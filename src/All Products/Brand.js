@@ -1580,11 +1580,11 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
      top: '50%',
      left: '50%',
      transform: 'translate(-50%, -50%)',
-     width: 500,
+     maxWidth: 500,
      bgcolor: 'rgba( 1, 1, 3, 0.87 )',
      border: '2px solid #585782',
      boxShadow: 24,
-     p: 2,
+     p: 3,
      borderRadius:'10px'
    };
  
@@ -1764,16 +1764,16 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
            </div> 
         
          <div>
-       <div className="sticky flex items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
+       <div className="sticky flex flex-col md:flex-row items-center gap-4 mt-4 px-4 pb-2" style={{borderBottom:'1px solid rgba(67, 67, 99,0.4)'}}>
        <img width="50px" src={orderProduct.images[0]} alt="" />
       <div className="flex flex-col items-start gap-1">
-      <p className='text-[#fbfbfb]'> {orderProduct?.name}</p>
-      <div className="flex gap-6">
-        <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
-      <p className='font-semibold text-sm flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
+      <p className='text-[#fbfbfb] text-center'> {orderProduct?.name}</p>
+      <div className="flex gap-6 mt-2 md:mt-0">
+        <p className='text-xs font-bold md:text-md md:font-bold flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Price</strong>{priceQuantity}$</p>
+      <p className='text-xs font-bold md:text-md md:font-bold flex items-center gap-1 text-[#fbfbfb]'> <strong className='text-xs font-light'>Quantity</strong> {productValue}</p></div>
       </div>
        </div>
-       <div className="flex justify-between items-center gap-4 mt-6">
+       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-6">
        <input 
          value={Name} 
          onChange={handleNameChange} 
@@ -1793,7 +1793,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
          placeholder="Surname" 
        />
        </div>
-       <div className="flex justify-between items-center gap-4 mt-8">
+       <div className="flex  flex-col md:flex-row justify-between items-center gap-4 mt-8">
        <input 
          value={Phone} 
          onChange={handlePhoneChange} 
@@ -1813,7 +1813,7 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
          required 
        />
        </div>
-       <div className="flex justify-between items-center gap-4 mt-8">
+       <div className="flex  flex-col md:flex-row justify-between items-center gap-4 mt-8">
        <input value={Adress} onChange={handleAdressChange} className="rounded-md p-1 w-full" style={{backgroundColor:'transparent',border:'1px solid #585782',color:'#fbfbfb'}} type="text" placeholder="Adress" />
        <select
        className="rounded-md p-1 w-full"
@@ -1846,15 +1846,15 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
        <h1 className='text-xs font-light text-[#fbfbfb] text-start'>Mode of Payment</h1>
        <div className="flex items-center justify-between gap-2">
         
-         <button className='text-start mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
+         <button className='text-start text-xs font-light md:font-normal md:text-sm mt-2 mb-2 rounded-md px-1 py-2 flex items-center gap-1' 
          onClick={()=>setPayment('cash')}
          style={{color:payment === 'cash' ? '#fbfbfb':'#d6d6dc',border:payment ==='cash' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
            >{payment === 'cash' ? <MdCircle style={{color:'#6f6e9e',transition:'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay in cash</button>
-         <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+         <button className='text-start mt-2 text-xs font-light md:font-normal md:text-sm rounded-md px-1 py-2 flex items-center gap-1'
           onClick={()=>setPayment('online')}
             style={{color:payment ==='online' ? '#fbfbfb':'#d6d6dc',border:payment ==='online' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
            >{payment === 'online' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay Online</button>
-            <button className='text-start mt-2 rounded-md px-1 py-2 flex items-center gap-1'
+            <button className='text-start mt-2 text-xs font-light md:font-normal md:text-sm rounded-md px-1 py-2 flex items-center gap-1'
           onClick={()=>setPayment('bank')}
             style={{color:payment ==='bank' ? '#fbfbfb':'#d6d6dc',border:payment ==='bank' ? '1px solid #6f6e9e':'1px solid rgba(59, 59, 69,0.5)',transition:'all 0.5s ease'}}
            >{payment === 'bank' ? <MdCircle style={{color:'#6f6e9e' ,transition :'all 0.5s ease'}}/> : <MdOutlineCircle style={{color:'#6f6e9e'}}/>} Pay by bank </button>
