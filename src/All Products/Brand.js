@@ -135,6 +135,17 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
     const [showTechBrands,setShowTechBrands]=useState('tech') //// show either brands or tech
     const [drawerTechBrand,setDrawerTechBrand]=useState(false)
 
+      useEffect(() => {
+            
+                if (drawerTechBrand) {
+                  document.body.style.overflow = 'hidden';
+                  window.scrollTo(0, 0);
+                } else {
+                  document.body.style.overflow = 'auto';
+                }
+              }, [drawerTechBrand]);
+
+
     const toggleDrawer = () => {
       setDrawerTechBrand(!drawerTechBrand);
     };
@@ -441,9 +452,17 @@ const Brand = ({selectedBrand,chooseBrand,chooseTech,loadingBrand,setLoadingBran
          <div className="contentorder ">
            <div className="flex flex-col items-center">
              <div className="flex items-center gap-2 " style={{width:'280px'}}>
-               <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
-               <div className="flex flex-col">
-                 <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
+             <div className="h-[60px]">
+                 <img className='w-[52px] h-[52px] object-contain max-w-full max-h-full' src={orderCheckInfo.productImage} alt="Product" />
+                 </div>
+                  <div className="flex flex-col">
+                  <p className="text-sm font-light text-[#fbfbfb]">
+                  {orderCheckInfo.productName.length > 23
+                    ? `${orderCheckInfo.productName.slice(0, 23)}...`
+                    : orderCheckInfo.productName.length >= 20
+                    ? orderCheckInfo.productName
+                    : `${orderCheckInfo.productName.slice(0, 20)}...`}
+                </p>
                  <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
                    <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
                  </p>
@@ -1115,43 +1134,51 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
     </div>
     
     <div className="absolute">
-      {orderCheck && orderCheckInfo && (
-          <div className='ml-2 mr-4'>
-            <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
-            <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-10 md:-ml-12" style={{border:'1px solid #6f6e9e',zIndex:10}}>
-              <div className="contentorder ">
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center gap-2 " style={{width:'280px'}}>
-                    <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
-                    <div className="flex flex-col">
-                      <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
-                      <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                        <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
-                      </p>
-                      <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                        <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
-                      </p>
-                      <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
-                        <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                  className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
-                  onClick={(e) => {
-                    e.preventDefault(); // Prevent default link navigation
-                    e.stopPropagation(); // Prevent event bubbling
-                    DismissOrderCheck(); // Close the order check
-                  }}
-                  style={{ zIndex: 4000 }}
-                >
-                  Check Later
-                </button>
-                </div>
-              </div>
-            </div>
-          </div>
-      )}
+    {orderCheck && orderCheckInfo && (
+     <div className='ml-2 mr-4'>
+       <div className="absolute left-1/2 top-[14px] h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#242329]" style={{borderTop:'1px solid #6f6e9e',borderLeft:'1px solid #6f6e9e', zIndex:100}} />
+       <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-[74px] bg-[#242329] p-1.5 rounded-md -ml-14 md:-ml-16" style={{border:'1px solid #6f6e9e',zIndex:10}}>
+         <div className="contentorder ">
+           <div className="flex flex-col items-center">
+             <div className="flex items-center gap-2 " style={{width:'280px'}}>
+             <div className="h-[60px]">
+                 <img className='w-[52px] h-[52px] object-contain max-w-full max-h-full' src={orderCheckInfo.productImage} alt="Product" />
+                 </div>
+                  <div className="flex flex-col">
+                  <p className="text-sm font-light text-[#fbfbfb]">
+                    {orderCheckInfo.productName.length > 23
+                      ? `${orderCheckInfo.productName.slice(0, 23)}...`
+                      : orderCheckInfo.productName.length >= 20
+                      ? orderCheckInfo.productName
+                      : `${orderCheckInfo.productName.slice(0, 20)}...`}
+                  </p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
+                 </p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Quantity</strong> {orderCheckInfo.productValue}
+                 </p>
+                 <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
+                   <strong className='text-xs font-light text-[#9f9fac]'>Price</strong> {orderCheckPrice.priceQuantity}$ 
+                 </p>
+               </div>
+             </div>
+             <button
+             className='text-sm font-normal text-[#fbfbfb] bg-[#6f6e9e] w-full rounded-md p-0.5 mt-1'
+             onClick={(e) => {
+               e.preventDefault(); // Prevent default link navigation
+               e.stopPropagation(); // Prevent event bubbling
+               DismissOrderCheck(); // Close the order check
+             }}
+             style={{ zIndex: 4000 }}
+           >
+             Check Later
+           </button>
+           </div>
+         </div>
+       </div>
+     </div>
+ )}
     </div>
   </div>
           </Link>

@@ -237,6 +237,7 @@ const [alertFav,setAlertFav]=useState('')
  //// updating when you remove to favorites 
 
 const [DrawerOpener,setDrawerOpener]=useState(false)
+const [favSee,setFavSee]=useState(false)
 
 const addToFavorites = (product) => {
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -254,7 +255,10 @@ const addToFavorites = (product) => {
     setAlertFav('Product is already in favorites!');
     setOpen(true)
   }
+  setFavSee(!isAlreadyFavorite); 
 };
+
+
 
 
 const removeFavorites =(product)=>{
@@ -474,9 +478,17 @@ useEffect(() => {
             <div className="contentorder ">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2 " style={{width:'280px'}}>
-                  <img width="45px" height="45px" src={orderCheckInfo.productImage} alt="Product" />
+                 <div className="h-[60px]">
+                 <img className='w-[52px] h-[52px] object-contain max-w-full max-h-full' src={orderCheckInfo.productImage} alt="Product" />
+                 </div>
                   <div className="flex flex-col">
-                    <p className='text-sm font-light text-[#fbfbfb]'>{orderCheckInfo.productName}</p>
+                  <p className="text-sm font-light text-[#fbfbfb]">
+                  {orderCheckInfo.productName.length > 23
+                    ? `${orderCheckInfo.productName.slice(0, 23)}...`
+                    : orderCheckInfo.productName.length >= 20
+                    ? orderCheckInfo.productName
+                    : `${orderCheckInfo.productName.slice(0, 20)}...`}
+                </p>
                     <p className='text-sm font-normal text-[#d6d6dc] flex items-center gap-1'>
                       <strong className='text-xs font-light text-[#9f9fac]'>Ordered By :</strong> {orderCheckInfo.Name} {orderCheckInfo.Surname}
                     </p>
@@ -707,8 +719,15 @@ useEffect(() => {
       <button onClick={() => seeProduct(product)} className="text-[#fbfbfb] rounded-md bg-transparent p-1 w-full" style={{ border: '1px solid #6f6e9e' }}>
         More Details
       </button>
-      <button onClick={() => addToFavorites(product)} className="bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md">
-        <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+      <button
+        onClick={() => addToFavorites(product)} 
+        className="bg-[#6f6e9e] text-[#fbfbfb] p-1 rounded-md"
+      >
+        {favSee ? (
+          <MdFavorite style={{ width: '25px', height: '25px' }} />
+        ) : (
+          <MdFavoriteBorder style={{ width: '25px', height: '25px' }} />
+        )}
       </button>
     </div>
   </div>

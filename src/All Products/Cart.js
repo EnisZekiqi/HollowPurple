@@ -361,6 +361,26 @@ const Cart = ({ seeProduct}) => {
         }, 3000);
         return;
       }
+
+      const orderDetails = {
+        Name,
+        Surname,
+        Phone,
+        Email,
+        Adress,
+        citySelect,
+        productValue,
+        productName: orderProduct.name,
+        productImage: orderProduct.images[0], // first image
+        quantity,
+      };
+    
+      localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+      
+      // Save the order time as the current time
+      const orderTime = new Date().toLocaleString();
+      localStorage.setItem('orderTime', orderTime);
+    
     
       if (isNaN(productStock) || isNaN(quantity)) {
         alert("Invalid stock or quantity");
@@ -378,7 +398,7 @@ const Cart = ({ seeProduct}) => {
       const updatedStock = productStock - quantity;
       handleStockUpdate(orderProduct.id, updatedStock); // Pass correct productId and newStock
     
-      setErrorBuy('');
+      setErrorBuy('Order submitted successfully');
       setTimeout(() => setErrorBuy(''), 3000);
     
       // Reset the form fields
@@ -680,7 +700,7 @@ const Cart = ({ seeProduct}) => {
       const [OrderDrawer, setOrderDrawer] = useState(false);
       const [orderProduct, setOrderProduct] = useState(null);
 
-      const heightshit = cartItems.length > 0 ? 'h-screen' : 'h-full';
+      const heightshit = cartItems.length > 0 ? 'min-h-screen' : 'min-h-full';
 
       
       return(

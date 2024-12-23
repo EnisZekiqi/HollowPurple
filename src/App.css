@@ -104,7 +104,14 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 .drawer2::-webkit-scrollbar-thumb:hover {
   background-color: #8b88c5; /* Darker shade when hovering */
 }
-
+.truncate {
+  display: block;         /* Ensure block display for text overflow */
+  width: max-content;     /* Set width based on content */
+  max-width: 23ch;        /* Restrict max width to ~23 characters */
+  overflow: hidden;       /* Hide any overflow text */
+  text-overflow: ellipsis; /* Add ellipsis (...) if overflow occurs */
+  white-space: nowrap;    /* Prevent text from wrapping to next line */
+}
 .pdoructImage{
   width:400px;
 height:400px;
