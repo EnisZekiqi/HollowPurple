@@ -436,10 +436,16 @@ useEffect(() => {
   </p>
 )}
   
-  <div className="flex flex-col">
+  <div className="flex flex-col" style={{ cursor: orderCountShow && orderCount === 0 ? 'not-allowed' : 'pointer' }}>
+  <button
+    onClick={orderCount > 0 ? orderCountShow : null} // Replace 'handleDeliveryClick' with your actual click handler
+    disabled={orderCount === 0} // Disable the button when orderCount is 0
+    style={{ cursor: orderCount === 0 ? 'not-allowed' : 'pointer' }}
+    className="disabled:opacity-50" // Optional: add opacity styling to make it look disabled
+  >
     <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-  </div>
-  
+  </button>
+</div>
   <div className="absolute">
   {orderCheck && orderCheckInfo && (
      <div className='ml-2 mr-4'>
@@ -1121,10 +1127,16 @@ const ProductDetails =({product, handleGoBack, allProducts, seeProduct,loadingTi
     </p>
   )}
     
-    <div className="flex flex-col">
-      <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
-    </div>
-    
+   <div className="flex flex-col" style={{ cursor: orderCountShow && orderCount === 0 ? 'not-allowed' : 'pointer' }}>
+   <button
+     onClick={orderCount > 0 ? orderCountShow : null} // Replace 'handleDeliveryClick' with your actual click handler
+     disabled={orderCount === 0} // Disable the button when orderCount is 0
+     style={{ cursor: orderCount === 0 ? 'not-allowed' : 'pointer' }}
+     className="disabled:opacity-50" // Optional: add opacity styling to make it look disabled
+   >
+     <MdOutlineDeliveryDining style={{ width: '25px', height: '25px' }} />
+   </button>
+ </div>
     <div className="absolute">
     {orderCheck && orderCheckInfo && (
      <div className='ml-2 mr-4'>
