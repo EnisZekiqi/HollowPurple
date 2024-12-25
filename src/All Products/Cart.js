@@ -372,7 +372,7 @@ const Cart = ({ seeProduct}) => {
         productValue,
         productName: orderProduct.name,
         productImage: orderProduct.images[0], // first image
-        quantity,
+        priceQuantity,
       };
     
       localStorage.setItem('orderDetails', JSON.stringify(orderDetails));

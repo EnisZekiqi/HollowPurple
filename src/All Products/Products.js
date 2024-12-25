@@ -242,22 +242,27 @@ const [favSee,setFavSee]=useState(false)
 const addToFavorites = (product) => {
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
   const isAlreadyFavorite = favorites.some(item => item.id === product.id);
-  
+
   if (!isAlreadyFavorite) {
+    // Add product to favorites
     favorites.push(product);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    setOpen(true)
-    setTimeout(() => {
-      setOpen(false)
-    }, 3000);
     setAlertFav('Product added to favorites!');
+    setFavSee(true); // Mark this product as a favorite
   } else {
-    setAlertFav('Product is already in favorites!');
-    setOpen(true)
+    // Remove product from favorites
+    favorites = favorites.filter(item => item.id !== product.id);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    setAlertFav('Product removed from favorites!');
+    setFavSee(false); // Mark this product as not a favorite
   }
-  setFavSee(!isAlreadyFavorite); 
-};
 
+  // Show the alert for 3 seconds
+  setOpen(true);
+  setTimeout(() => {
+    setOpen(false);
+  }, 3000);
+};
 
 
 
